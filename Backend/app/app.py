@@ -27,8 +27,8 @@ def main():
     try:
         time_slots = generate_time_slots()
         groups, sections = generate_groups_and_sections()
-        rooms = load_rooms_from_csv("/home/taqsiim/dev/Time-Table-Generator/Backend/CSV/rooms.csv")
-        lab_instructors = load_lab_instructors_from_csv("/home/taqsiim/dev/Time-Table-Generator/Backend/CSV/inslab.csv")
+        rooms = load_rooms_from_csv("./Backend/CSV/rooms.csv")
+        lab_instructors = load_lab_instructors_from_csv("./Backend/CSV/inslab.csv")
         level_1_data, level_2_data = load_course_data()
     except FileNotFoundError as e:
         print(f"ERROR: Could not load required CSV file: {e}")
