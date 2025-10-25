@@ -14,6 +14,7 @@ from app.data_loader import (
     load_course_data
 )
 from app.instructor_assignment import assign_instructors_to_labs
+import os
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend access
@@ -28,11 +29,19 @@ def initialize_scheduler():
 
     print("Initializing timetable scheduler...")
 
+    # Determine CSV directory (env var CSV_DIR takes precedence; otherwise use project CSV folder)
+    csv_dir = os.environ.get("CSV_DIR") or os.path.join(os.path.dirname(__file__), "..", "CSV")
+    csv_dir = os.path.abspath(csv_dir)
+
+    # Build CSV file paths
+    rooms_csv = os.path.join(csv_dir, "rooms.csv")
+    lab_instructors_csv = os.path.join(csv_dir, "inslab.csv")
+
     # Load all data
     time_slots = generate_time_slots()
     groups, sections = generate_groups_and_sections()
-    rooms = load_rooms_from_csv("./CSV/rooms.csv")
-    lab_instructors = load_lab_instructors_from_csv("./CSV/inslab.csv")
+    rooms = load_rooms_from_csv(rooms_csv)
+    lab_instructors = load_lab_instructors_from_csv(lab_instructors_csv)
     level_1_data, level_2_data = load_course_data()
 
     # Create scheduler
