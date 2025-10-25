@@ -4,7 +4,7 @@ Data loading and initialization functions
 
 import csv
 from typing import List, Tuple
-from models import TimeSlot, Group, Section, Room, LabInstructor
+from .models import TimeSlot, Group, Section, Room, LabInstructor
 
 
 def generate_time_slots() -> List[TimeSlot]:

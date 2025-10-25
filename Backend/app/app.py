@@ -2,17 +2,17 @@
 Main execution script for College Timetable Scheduling System
 """
 
-from data_loader import (
+from .data_loader import (
     generate_time_slots,
     generate_groups_and_sections,
     load_rooms_from_csv,
     load_lab_instructors_from_csv,
     load_course_data
 )
-from scheduler import TimetableScheduler
-from instructor_assignment import assign_instructors_to_labs
-from validators import validate_schedule, validate_instructor_assignments
-from exporters import export_to_csv, export_section_timetables, export_json_timetable
+from .scheduler import TimetableScheduler
+from .instructor_assignment import assign_instructors_to_labs
+from .validators import validate_schedule, validate_instructor_assignments
+from .exporters import export_to_csv, export_section_timetables, export_json_timetable
 
 
 def main():
@@ -27,8 +27,8 @@ def main():
     try:
         time_slots = generate_time_slots()
         groups, sections = generate_groups_and_sections()
-        rooms = load_rooms_from_csv("./Backend/CSV/rooms.csv")
-        lab_instructors = load_lab_instructors_from_csv("./Backend/CSV/inslab.csv")
+        rooms = load_rooms_from_csv("/home/taqsiim/dev/Time-Table-Generator/Backend/CSV/rooms.csv")
+        lab_instructors = load_lab_instructors_from_csv("/home/taqsiim/dev/Time-Table-Generator/Backend/CSV/inslab.csv")
         level_1_data, level_2_data = load_course_data()
     except FileNotFoundError as e:
         print(f"ERROR: Could not load required CSV file: {e}")

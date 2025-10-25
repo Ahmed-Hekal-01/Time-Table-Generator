@@ -3,8 +3,8 @@ Constraint checking functions for scheduling
 """
 
 from typing import Tuple
-from models import LabInstructor, Assignment
-from trackers import InstructorTracker, ScheduleTracker
+from .models import LabInstructor, Assignment
+from .trackers import InstructorTracker, ScheduleTracker
 
 
 def can_assign_instructor_to_lab(

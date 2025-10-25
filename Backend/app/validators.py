@@ -4,9 +4,9 @@ Validation functions for checking schedule constraints
 
 from typing import List, Tuple
 from collections import defaultdict
-from models import LabInstructor
-from scheduler import TimetableScheduler
-from trackers import InstructorTracker
+from .models import LabInstructor
+from .scheduler import TimetableScheduler
+from .trackers import InstructorTracker
 
 
 def validate_schedule(scheduler: TimetableScheduler) -> Tuple[bool, List[str]]:

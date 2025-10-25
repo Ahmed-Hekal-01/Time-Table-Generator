@@ -5,8 +5,8 @@ Timetable scheduling algorithm
 import random
 from typing import List
 from collections import defaultdict
-from models import Room, Group, Section, TimeSlot, Lecture, Lab, Assignment
-from trackers import ScheduleTracker
+from .models import Room, Group, Section, TimeSlot, Lecture, Lab, Assignment
+from .trackers import ScheduleTracker
 
 
 class TimetableScheduler:

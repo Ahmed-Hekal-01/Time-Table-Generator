@@ -4,7 +4,7 @@ Tracker classes for managing schedules and constraints
 
 from typing import Dict, Optional, Set, List
 from collections import defaultdict
-from models import LabInstructor
+from .models import LabInstructor
 
 
 class ScheduleTracker:

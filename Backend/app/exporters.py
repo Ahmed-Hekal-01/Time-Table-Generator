@@ -6,7 +6,7 @@ import csv
 import json
 import os
 from datetime import datetime
-from scheduler import TimetableScheduler
+from .scheduler import TimetableScheduler
 
 
 def export_to_csv(scheduler: TimetableScheduler, filename: str = "timetable.csv"):

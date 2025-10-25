@@ -4,10 +4,10 @@ Lab instructor assignment logic
 
 from typing import List
 from collections import defaultdict
-from models import LabInstructor
-from scheduler import TimetableScheduler
-from trackers import InstructorTracker
-from constraints import can_assign_instructor_to_lab
+from .models import LabInstructor
+from .scheduler import TimetableScheduler
+from .trackers import InstructorTracker
+from .constraints import can_assign_instructor_to_lab
 
 
 def assign_instructors_to_labs(
