@@ -1,0 +1,14 @@
+Timetable for L2-G2-S3
+Day,Slot,Time,Type,Course Code,Course Name,Room,Instructor,Lab Instructor
+Monday,1,9:00-10:30,Lecture,ACM215,ODE,B17 F1.16,Prof. Ayman Arafa,N/A
+Monday,2,10:45-12:15,Lab,ACM215,ODE,B18 F1.08,Eng. Yousef Said (Lab),Eng. Yousef Said
+Monday,3,12:30-14:00,Lecture,LRA306,Natural Resources and Sustainability,B17 F1.15,Prof. LRA,N/A
+Monday,4,14:15-15:45,Lab,CSE214,Computer Organization,B17 F1.17,Eng. Heba Abdelkader (Lab),Eng. Heba Abdelkader
+Sunday,1,9:00-10:30,Lecture,CNC111,Network and Web Programming,B18 F1.21,Prof. Ahmed Antar,N/A
+Sunday,2,10:45-12:15,Lecture,CSC211,Software Engineering,B17 G.09,Prof. Ahmed Arafa,N/A
+Sunday,3,12:30-14:00,Lecture,CSE214,Computer Organization,B18 G.08,Prof. Mostafa Soliman,N/A
+Sunday,4,14:15-15:45,Lecture,MTH212,Probability and Statistics,B18 G.08,Prof. Ahmed Zakaria,N/A
+Tuesday,1,9:00-10:30,Lab,CNC111,Network and Web Programming,B18 G.19,Eng. Alaa Essam (Lab),Eng. Alaa Essam
+Wednesday,1,9:00-10:30,Lab,CSC211,Software Engineering,B18 G.18,Eng. Menna Mahmoud (Lab),Eng. Menna Mahmoud
+Wednesday,2,10:45-12:15,Lab,MTH212,Probability and Statistics,B25 F1.14,Eng. Statistics Expert (Lab),Eng. Statistics Expert
+Wednesday,4,14:15-15:45,Lab,LRA403,JA Language 3,B18 F1.05,Prof. JA Culture Specialist (Lab),Prof. JA Culture Specialist

@@ -1,0 +1,1562 @@
+[
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 8,
+      "day": "Mon",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 3,
+      "day": "Sun",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C102",
+    "courseName": "Japanese 1",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 5,
+      "day": "Mon",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C103",
+    "courseName": "Physics 1",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 14,
+      "day": "Wed",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C103",
+    "courseName": "Physics 1",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 15,
+      "day": "Wed",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 2,
+      "day": "Sun",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 17,
+      "day": "Thu",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 11,
+      "day": "Tue",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 9,
+      "day": "Tue",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 0,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 13,
+      "day": "Wed",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 0,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 20,
+      "day": "Thu",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 0,
+    "section": 2,
+    "isLab": true,
+    "timeslot": {
+      "id": 16,
+      "day": "Wed",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 7,
+      "day": "Mon",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 9,
+      "day": "Tue",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C102",
+    "courseName": "Japanese 1",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 14,
+      "day": "Wed",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C103",
+    "courseName": "Physics 1",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 11,
+      "day": "Tue",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C103",
+    "courseName": "Physics 1",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 20,
+      "day": "Thu",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 1,
+      "day": "Sun",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 6,
+      "day": "Mon",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 2,
+      "day": "Sun",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 13,
+      "day": "Wed",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 1,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 17,
+      "day": "Thu",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 1,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 15,
+      "day": "Wed",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 1,
+    "section": 2,
+    "isLab": true,
+    "timeslot": {
+      "id": 3,
+      "day": "Sun",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 1,
+      "day": "Sun",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 6,
+      "day": "Mon",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C102",
+    "courseName": "Japanese 1",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 15,
+      "day": "Wed",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C103",
+    "courseName": "Physics 1",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 9,
+      "day": "Tue",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C103",
+    "courseName": "Physics 1",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 7,
+      "day": "Mon",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 13,
+      "day": "Wed",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 10,
+      "day": "Tue",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 17,
+      "day": "Thu",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 20,
+      "day": "Thu",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 2,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 2,
+      "day": "Sun",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 2,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 11,
+      "day": "Tue",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 1,
+    "group": 2,
+    "section": 2,
+    "isLab": true,
+    "timeslot": {
+      "id": 14,
+      "day": "Wed",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 2,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 11,
+      "day": "Tue",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 2,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 20,
+      "day": "Thu",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 2,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 9,
+      "day": "Tue",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 2,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 1,
+      "day": "Sun",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 2,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 5,
+      "day": "Mon",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 2,
+    "group": 0,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 16,
+      "day": "Wed",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 2,
+    "group": 0,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 4,
+      "day": "Sun",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 2,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 10,
+      "day": "Tue",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 2,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 5,
+      "day": "Mon",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 2,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 20,
+      "day": "Thu",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 2,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 7,
+      "day": "Mon",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 2,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 14,
+      "day": "Wed",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 2,
+    "group": 1,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 9,
+      "day": "Tue",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 2,
+    "group": 1,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 8,
+      "day": "Mon",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 19,
+      "day": "Thu",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 6,
+      "day": "Mon",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 0,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 8,
+      "day": "Mon",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 15,
+      "day": "Wed",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 0,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 7,
+      "day": "Mon",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 4,
+      "day": "Sun",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 16,
+      "day": "Wed",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 0,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 12,
+      "day": "Tue",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 0,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 18,
+      "day": "Thu",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 16,
+      "day": "Wed",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 4,
+      "day": "Sun",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 1,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 18,
+      "day": "Thu",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 1,
+      "day": "Sun",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 1,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 10,
+      "day": "Tue",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 2,
+      "day": "Sun",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 17,
+      "day": "Thu",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 1,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 5,
+      "day": "Mon",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 1,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 12,
+      "day": "Tue",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 12,
+      "day": "Tue",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 7,
+      "day": "Mon",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 2,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 9,
+      "day": "Tue",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 8,
+      "day": "Mon",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 2,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 1,
+      "day": "Sun",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 18,
+      "day": "Thu",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 13,
+      "day": "Wed",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 2,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 6,
+      "day": "Mon",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 2,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 19,
+      "day": "Thu",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 3,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 3,
+      "day": "Sun",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 3,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 10,
+      "day": "Tue",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 3,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 7,
+      "day": "Mon",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 3,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 18,
+      "day": "Thu",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 3,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 20,
+      "day": "Thu",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 3,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 12,
+      "day": "Tue",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C101",
+    "courseName": "Fundamentals of Programming",
+    "level": 3,
+    "group": 3,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 19,
+      "day": "Thu",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 3,
+    "group": 3,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 1,
+      "day": "Sun",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C106",
+    "courseName": "Software Lab",
+    "level": 3,
+    "group": 3,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 5,
+      "day": "Mon",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T2"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 5,
+      "day": "Mon",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 15,
+      "day": "Wed",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 0,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 4,
+      "day": "Sun",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 4,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 12,
+      "day": "Tue",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 4,
+    "group": 0,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 8,
+      "day": "Mon",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 0,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 1,
+      "day": "Sun",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T1"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 14,
+      "day": "Wed",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 11,
+      "day": "Tue",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 1,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 7,
+      "day": "Mon",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 4,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 18,
+      "day": "Thu",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 4,
+    "group": 1,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 13,
+      "day": "Wed",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 1,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 17,
+      "day": "Thu",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "T1"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 17,
+      "day": "Thu",
+      "start": "09:00",
+      "end": "10:30"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 2,
+      "day": "Sun",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "D4"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 2,
+    "section": 0,
+    "isLab": true,
+    "timeslot": {
+      "id": 10,
+      "day": "Tue",
+      "start": "10:45",
+      "end": "12:15"
+    },
+    "staff": "T3"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 4,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 4,
+      "day": "Sun",
+      "start": "14:45",
+      "end": "16:15"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C104",
+    "courseName": "Math 1",
+    "level": 4,
+    "group": 2,
+    "section": -1,
+    "isLab": false,
+    "timeslot": {
+      "id": 3,
+      "day": "Sun",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "D1"
+  },
+  {
+    "courseId": "C105",
+    "courseName": "Digital Logic Design",
+    "level": 4,
+    "group": 2,
+    "section": 1,
+    "isLab": true,
+    "timeslot": {
+      "id": 19,
+      "day": "Thu",
+      "start": "13:00",
+      "end": "14:30"
+    },
+    "staff": "T3"
+  }
+]

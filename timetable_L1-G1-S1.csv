@@ -1,0 +1,13 @@
+Timetable for L1-G1-S1
+Day,Slot,Time,Type,Course Code,Course Name,Room,Instructor,Lab Instructor
+Monday,1,9:00-10:30,Lecture,PHY113,Physics 1,B17 F1.03,Prof. Adel Fathy,N/A
+Monday,2,10:45-12:15,Lecture,LRA101,JA Culture,B17 F1.15,Prof. Sherien,N/A
+Monday,4,14:15-15:45,Lab,CSC111,Fundamentals of Programming,B25 F1.10,Eng. Mariam Ismael (Lab),Eng. Mariam Ismael
+Sunday,1,9:00-10:30,Lecture,MTH111,Math 1,B17 F1.03,Prof. Ayman Arafa,N/A
+Sunday,2,10:45-12:15,Lecture,LRA104,Music,B17 F1.15,Music Prof,N/A
+Sunday,3,12:30-14:00,Lecture,ECE111,Digital Logic Design,B17 F1.15,Prof. Ahmed Allam,N/A
+Sunday,4,14:15-15:45,Lecture,CSC111,Fundamentals of Programming,B17 F1.16,Prof. Reda Elbasyoine,N/A
+Thursday,1,9:00-10:30,Lab,LRA401,JA Language 1,B18 G.03,Prof. Yumi Sato (Lab),Prof. Yumi Sato
+Thursday,3,12:30-14:00,Lab,MTH111,Math 1,B18 F1.01,Eng. nesrien ahmed (Lab),Eng. nesrien ahmed
+Tuesday,2,10:45-12:15,Lab,ECE111,Digital Logic Design,B7.f1.04,ECE Department Staff (Lab),ECE Department Staff
+Tuesday,4,14:15-15:45,Lab,PHY113,Physics 1,CEO.PHYLAB,BAS Department Staff (Lab),BAS Department Staff

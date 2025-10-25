@@ -1,0 +1,13 @@
+Timetable for L1-G3-S1
+Day,Slot,Time,Type,Course Code,Course Name,Room,Instructor,Lab Instructor
+Monday,3,12:30-14:00,Lecture,PHY113,Physics 1,B17 F1.03,Prof. Adel Fathy,N/A
+Monday,4,14:15-15:45,Lecture,LRA101,JA Culture,B17 F1.03,Prof. Sherien,N/A
+Sunday,1,9:00-10:30,Lecture,ECE111,Digital Logic Design,B17 F1.16,Prof. Ahmed Allam,N/A
+Sunday,2,10:45-12:15,Lecture,CSC111,Fundamentals of Programming,B17 F1.16,Prof. Reda Elbasyoine,N/A
+Sunday,3,12:30-14:00,Lecture,MTH111,Math 1,B17 F1.03,Prof. Ayman Arafa,N/A
+Sunday,4,14:15-15:45,Lecture,LRA104,Music,B17 F1.03,Music Prof,N/A
+Thursday,3,12:30-14:00,Lab,ECE111,Digital Logic Design,B7.f1.04,ECE Department Staff (Lab),ECE Department Staff
+Thursday,4,14:15-15:45,Lab,MTH111,Math 1,B17 G.08,Eng. nesrien ahmed (Lab),Eng. nesrien ahmed
+Tuesday,1,9:00-10:30,Lab,PHY113,Physics 1,CEO.PHYLAB,BAS Department Staff (Lab),BAS Department Staff
+Tuesday,4,14:15-15:45,Lab,LRA401,JA Language 1,B18 F1.20,Prof. Lina Morales (Lab),Prof. Lina Morales
+Wednesday,4,14:15-15:45,Lab,CSC111,Fundamentals of Programming,B17 G.02,Eng. Nada Essam (Lab),Eng. Nada Essam

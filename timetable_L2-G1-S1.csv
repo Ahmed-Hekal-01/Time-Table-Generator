@@ -1,0 +1,14 @@
+Timetable for L2-G1-S1
+Day,Slot,Time,Type,Course Code,Course Name,Room,Instructor,Lab Instructor
+Monday,1,9:00-10:30,Lecture,CSE214,Computer Organization,B17 G.09,Prof. Mostafa Soliman,N/A
+Monday,2,10:45-12:15,Lecture,LRA306,Natural Resources and Sustainability,B17 G.09,Prof. LRA,N/A
+Monday,4,14:15-15:45,Lab,ACM215,ODE,B08 F1.11,Eng. Ali Sato (Lab),Eng. Ali Sato
+Sunday,1,9:00-10:30,Lecture,CSC211,Software Engineering,B17 G.09,Prof. Ahmed Arafa,N/A
+Sunday,2,10:45-12:15,Lecture,CNC111,Network and Web Programming,B18 F1.21,Prof. Ahmed Antar,N/A
+Sunday,3,12:30-14:00,Lecture,MTH212,Probability and Statistics,B18 F1.21,Prof. Ahmed Zakaria,N/A
+Sunday,4,14:15-15:45,Lecture,ACM215,ODE,B17 G.09,Prof. Ayman Arafa,N/A
+Thursday,1,9:00-10:30,Lab,MTH212,Probability and Statistics,B10 F1.07,Eng. Math Specialist 1 (Lab),Eng. Math Specialist 1
+Thursday,4,14:15-15:45,Lab,LRA403,JA Language 3,B18 F1.12,Prof. Yumi Sato (Lab),Prof. Yumi Sato
+Tuesday,1,9:00-10:30,Lab,CSC211,Software Engineering,B07 F1.24,Eng. Menna Mahmoud (Lab),Eng. Menna Mahmoud
+Wednesday,1,9:00-10:30,Lab,CNC111,Network and Web Programming,B07 F1.20,Eng. Alaa Essam (Lab),Eng. Alaa Essam
+Wednesday,2,10:45-12:15,Lab,CSE214,Computer Organization,B26 G.10,Eng. Heba Abdelkader (Lab),Eng. Heba Abdelkader
