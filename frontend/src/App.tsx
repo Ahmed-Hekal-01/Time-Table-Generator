@@ -42,6 +42,7 @@ function App() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [regenerating, setRegenerating] = useState<boolean>(false);
+  const [activeView, setActiveView] = useState<string>('levels');
 
   const API_BASE_URL = 'http://127.0.0.1:5000/api';
 
@@ -198,11 +199,11 @@ function App() {
     };
 
     return (
-      <div id="combined" className="combined-table" style={{overflowX: 'auto'}}>
-        <h2 style={{backgroundColor: '#673AB7', color: 'white', padding: '15px', textAlign: 'center'}}>
+      <div id="combined" className="combined-table">
+        <h2 style={{backgroundColor: '#673AB7', color: 'white', padding: '15px', textAlign: 'center', margin: '0'}}>
           📚 LEVEL 1 & LEVEL 2 - COMBINED SCHEDULE
         </h2>
-        <table style={{width: 'auto', fontSize: '0.9rem'}}>
+        <table>
           <thead>
             {/* Header Row 1: Day, Time, LEVEL 1, LEVEL 2 */}
             <tr>
@@ -282,8 +283,7 @@ function App() {
 
     return (
       <div id="sections" className="section-schedules">
-        <div style={{borderTop: '3px solid #673AB7', margin: '40px 0'}}></div>
-        <h2 style={{backgroundColor: '#FF9800', color: 'white', padding: '15px', textAlign: 'center'}}>
+        <h2 style={{backgroundColor: '#FF9800', color: 'white', padding: '15px', textAlign: 'center', margin: '20px 0 10px 0'}}>
           📋 SECTION TIMETABLES
         </h2>
 
@@ -390,8 +390,7 @@ function App() {
 
     return (
       <div id="professors" className="professor-schedules">
-        <div style={{borderTop: '3px solid #673AB7', margin: '40px 0'}}></div>
-        <h2 style={{backgroundColor: '#9C27B0', color: 'white', padding: '15px', textAlign: 'center'}}>
+        <h2 style={{backgroundColor: '#9C27B0', color: 'white', padding: '15px', textAlign: 'center', margin: '0 0 10px 0'}}>
           👨‍🏫 PROFESSOR TIMETABLES
         </h2>
 
@@ -426,16 +425,16 @@ function App() {
                 <tbody>
                   {TIME_SLOTS.map(slot => (
                     <tr key={slot.slot}>
-                      <td className="time-col">{slot.time}</td>
+                      <td className="time-col" style={{fontSize: '0.8rem', textAlign: 'center'}}>{slot.time}</td>
                       {DAYS.map(day => {
                         const item = schedule[day][slot.slot];
                         if (item) {
                           return (
-                            <td key={day} className="lecture">
-                              <span className="course-code">{item.course_code}</span>
-                              <span className="course-name">{item.course_name}</span>
-                              <span className="room">LEC {item.room}</span>
-                              <span style={{fontSize: '0.7rem', color: '#666'}}>Groups: {item.groups.join(', ')}</span>
+                            <td key={day} className="lecture" style={{fontSize: '0.7rem', padding: '3px'}}>
+                              <div style={{fontWeight: 'bold', fontSize: '0.8rem', marginBottom: '2px'}}>{item.course_code}</div>
+                              <div style={{fontSize: '0.7rem', marginBottom: '2px'}}>{item.course_name}</div>
+                              <div style={{color: '#666', fontSize: '0.6rem'}}>LEC {item.room}</div>
+                              <div style={{fontSize: '0.6rem', color: '#666'}}>Groups: {item.groups.join(', ')}</div>
                             </td>
                           );
                         } else {
@@ -498,21 +497,19 @@ function App() {
             <tbody>
               {TIME_SLOTS.map(slot => (
                 <tr key={slot.slot}>
-                  <td className="time-col">{slot.time}</td>
+                  <td className="time-col" style={{fontSize: '0.8rem', textAlign: 'center'}}>{slot.time}</td>
                   {DAYS.map(day => {
                     const item = schedule[day][slot.slot];
                     if (item) {
                       const cssClass = item.type === 'lecture' ? 'lecture' : 'lab';
                       return (
-                        <td key={day} className={cssClass}>
-                          <span className="course-code">{item.course_code}</span>
-                          <span className="course-name">{item.course_name}</span>
-                          {item.type === 'lecture' ? (
-                            <span className="instructor">{item.instructor}</span>
-                          ) : (
-                            <span className="lab-instructor">{item.instructor || 'N/A'}</span>
-                          )}
-                          <span style={{fontSize: '0.7rem', color: '#666'}}>{item.assigned_to.join(', ')}</span>
+                        <td key={day} className={cssClass} style={{fontSize: '0.7rem', padding: '3px'}}>
+                          <div style={{fontWeight: 'bold', fontSize: '0.8rem', marginBottom: '2px'}}>{item.course_code}</div>
+                          <div style={{fontSize: '0.7rem', marginBottom: '2px'}}>{item.course_name}</div>
+                          <div style={{color: item.type === 'lecture' ? '#1976d2' : '#d32f2f', fontSize: '0.7rem', marginBottom: '2px'}}>
+                            {item.instructor}
+                          </div>
+                          <div style={{fontSize: '0.6rem', color: '#666'}}>{item.assigned_to.join(', ')}</div>
                         </td>
                       );
                     } else {
@@ -529,12 +526,11 @@ function App() {
 
     return (
       <div id="rooms" className="room-schedules">
-        <div style={{borderTop: '3px solid #673AB7', margin: '40px 0'}}></div>
-        <h2 style={{backgroundColor: '#FF5722', color: 'white', padding: '15px', textAlign: 'center'}}>
+        <h2 style={{backgroundColor: '#FF5722', color: 'white', padding: '15px', textAlign: 'center', margin: '0 0 10px 0'}}>
           🚪 ROOM TIMETABLES
         </h2>
 
-        <h3 style={{backgroundColor: '#f0f0f0', padding: '8px'}}>Lecture Rooms</h3>
+        <h3 style={{backgroundColor: '#f0f0f0', padding: '8px', margin: '10px 0'}}>Lecture Rooms</h3>
         {lecRooms.map(room => renderRoomGrid(room))}
 
         <h3 style={{backgroundColor: '#f0f0f0', padding: '8px'}}>Lab Rooms</h3>
@@ -551,8 +547,7 @@ function App() {
 
     return (
       <div id="lab-instructors" className="lab-instructor-schedules">
-        <div style={{borderTop: '3px solid #673AB7', margin: '40px 0'}}></div>
-        <h2 style={{backgroundColor: '#00BCD4', color: 'white', padding: '15px', textAlign: 'center'}}>
+        <h2 style={{backgroundColor: '#00BCD4', color: 'white', padding: '15px', textAlign: 'center', margin: '0 0 10px 0'}}>
           🔬 LAB INSTRUCTOR TIMETABLES
         </h2>
 
@@ -586,16 +581,16 @@ function App() {
                 <tbody>
                   {TIME_SLOTS.map(slot => (
                     <tr key={slot.slot}>
-                      <td className="time-col">{slot.time}</td>
+                      <td className="time-col" style={{fontSize: '0.8rem', textAlign: 'center'}}>{slot.time}</td>
                       {DAYS.map(day => {
                         const item = schedule[day][slot.slot];
                         if (item) {
                           return (
-                            <td key={day} className="lab">
-                              <span className="course-code">{item.course_code}</span>
-                              <span className="course-name">{item.course_name}</span>
-                              <span className="room">LAB {item.room}</span>
-                              <span style={{fontSize: '0.7rem', color: '#666'}}>{item.sections.join(', ')}</span>
+                            <td key={day} className="lab" style={{fontSize: '0.7rem', padding: '3px'}}>
+                              <div style={{fontWeight: 'bold', fontSize: '0.8rem', marginBottom: '2px'}}>{item.course_code}</div>
+                              <div style={{fontSize: '0.7rem', marginBottom: '2px'}}>{item.course_name}</div>
+                              <div style={{color: '#666', fontSize: '0.6rem'}}>LAB {item.room}</div>
+                              <div style={{fontSize: '0.6rem', color: '#666'}}>{item.sections.join(', ')}</div>
                             </td>
                           );
                         } else {
@@ -633,21 +628,30 @@ function App() {
       return <div className="no-data">No data available</div>;
     }
 
-    return (
-      <>
-        {renderCombinedLevelTable()}
-        {renderSectionSchedules()}
-        {renderProfessors()}
-        {renderRooms()}
-        {renderLabInstructors()}
-      </>
-    );
+    // Show only the active view
+    switch (activeView) {
+      case 'levels':
+        return (
+          <>
+            {renderCombinedLevelTable()}
+            {renderSectionSchedules()}
+          </>
+        );
+      case 'professors':
+        return renderProfessors();
+      case 'rooms':
+        return renderRooms();
+      case 'lab-instructors':
+        return renderLabInstructors();
+      default:
+        return renderCombinedLevelTable();
+    }
   };
 
   return (
-    <div className="app" style={{fontFamily: 'Arial, sans-serif', margin: '10px', fontSize: '10px', backgroundColor: '#f5f5f5'}}>
-      <div className="container" style={{maxWidth: '1800px', margin: '0 auto', backgroundColor: 'white', padding: '20px'}}>
-        <h1 style={{textAlign: 'center', color: 'white', fontSize: '1.5rem', margin: '10px 0', backgroundColor: '#673AB7', padding: '15px'}}>
+    <div className="app">
+      <div className="container">
+        <h1 className="app-header">
           🎓 CSIT College Timetable
         </h1>
 
@@ -664,17 +668,34 @@ function App() {
           </button>
         </div>
 
-        <nav style={{backgroundColor: '#f5f5f5', padding: '15px', margin: '15px 0', border: '1px solid #ddd', textAlign: 'center'}}>
-          <strong>Quick Navigation:</strong>
-          {' '}
-          <a href="#combined" style={{margin: '0 15px', textDecoration: 'none', color: '#1976d2', fontWeight: 'bold', fontSize: '0.9rem'}}>Level Overview</a> |
-          <a href="#sections" style={{margin: '0 15px', textDecoration: 'none', color: '#1976d2', fontWeight: 'bold', fontSize: '0.9rem'}}>Section Timetables</a> |
-          <a href="#professors" style={{margin: '0 15px', textDecoration: 'none', color: '#1976d2', fontWeight: 'bold', fontSize: '0.9rem'}}>Professor Timetables</a> |
-          <a href="#rooms" style={{margin: '0 15px', textDecoration: 'none', color: '#1976d2', fontWeight: 'bold', fontSize: '0.9rem'}}>Room Timetables</a> |
-          <a href="#lab-instructors" style={{margin: '0 15px', textDecoration: 'none', color: '#1976d2', fontWeight: 'bold', fontSize: '0.9rem'}}>Lab Instructor Timetables</a>
+        <nav className="nav-tabs">
+          <button 
+            onClick={() => setActiveView('levels')}
+            className={activeView === 'levels' ? 'active' : ''}
+          >
+            📚 Levels
+          </button>
+          <button 
+            onClick={() => setActiveView('professors')}
+            className={activeView === 'professors' ? 'active' : ''}
+          >
+            👨‍🏫 Professors
+          </button>
+          <button 
+            onClick={() => setActiveView('rooms')}
+            className={activeView === 'rooms' ? 'active' : ''}
+          >
+            🏛️ Rooms
+          </button>
+          <button 
+            onClick={() => setActiveView('lab-instructors')}
+            className={activeView === 'lab-instructors' ? 'active' : ''}
+          >
+            🔬 Lab Instructors
+          </button>
         </nav>
 
-        <main id="content">
+        <main className="main-content">
           {renderContent()}
         </main>
 

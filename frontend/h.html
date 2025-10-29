@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Timetable - CSIT</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 10px;
+            font-size: 10px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+        }
+        h1 { 
+            text-align: center; 
+            color: #333; 
+            font-size: 18px;
+            margin: 10px 0;
+            background-color: #673AB7;
+            color: white;
+            padding: 15px;
+        }
+        h2 { 
+            color: #333; 
+            font-size: 14px;
+            margin: 15px 0 5px 0;
+            background-color: #f0f0f0;
+            padding: 8px;
+        }
+        h3 {
+            color: #555;
+            font-size: 12px;
+            margin: 10px 0 5px 0;
+        }
+        .nav-menu {
+            background-color: #f5f5f5;
+            padding: 15px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .nav-menu a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #1976d2;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .nav-menu a:hover {
+            text-decoration: underline;
+        }
+        .nav-menu a.active {
+            font-weight: bold;
+            text-decoration: underline;
+            color: #673AB7;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: #666;
+        }
+        .section-divider {
+            margin: 40px 0;
+            border-top: 3px solid #673AB7;
+        }
+        table { 
+            border-collapse: collapse; 
+            width: 100%; 
+            margin: 10px 0;
+            font-size: 9px;
+        }
+        th, td { 
+            border: 1px solid #000; 
+            padding: 4px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        th { 
+            background-color: #d0d0d0; 
+            font-weight: bold;
+            font-size: 10px;
+        }
+        .time-col {
+            background-color: #e8e8e8;
+            font-weight: bold;
+            font-size: 9px;
+            min-width: 60px;
+        }
+        .day-col {
+            background-color: #d0d0d0;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        .lecture { 
+            background-color: #e3f2fd;
+            font-size: 8px;
+            padding: 5px;
+        }
+        .lab { 
+            background-color: #fff3e0;
+            font-size: 8px;
+            padding: 5px;
+        }
+        .course-code {
+            font-weight: bold;
+            font-size: 9px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .course-name {
+            font-size: 8px;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .instructor {
+            font-size: 7px;
+            color: #1976d2;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 1px;
+        }
+        .lab-instructor {
+            font-size: 7px;
+            color: #d32f2f;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 1px;
+        }
+        .room {
+            font-size: 7px;
+            color: #666;
+            display: block;
+        }
+        .level1-header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .level2-header {
+            background-color: #FF9800;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .group-header {
+            background-color: #2196F3;
+            color: white;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .section-header {
+            background-color: #FF9800;
+            color: white;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .prof-header {
+            background-color: #9C27B0;
+            color: white;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .room-header {
+            background-color: #FF5722;
+            color: white;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .lab-inst-header {
+            background-color: #00BCD4;
+            color: white;
+            padding: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .summary-box {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 10px;
+        }
+        .metadata {
+            background-color: #e8f5e9;
+            padding: 10px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+            font-size: 10px;
+        }
+        @media print {
+            .nav-menu {
+                display: none;
+            }
+            body {
+                font-size: 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 CSIT College Timetable</h1>
+        <div class="metadata" id="metadata"></div>
+        
+        <div class="nav-menu">
+            <strong>Select View:</strong>
+            <a href="#" onclick="showView('levels'); return false;" id="nav-levels">📚 Levels</a> |
+            <a href="#" onclick="showView('professors'); return false;" id="nav-professors">👨‍🏫 Professors</a> |
+            <a href="#" onclick="showView('rooms'); return false;" id="nav-rooms">🏛️ Rooms</a> |
+            <a href="#" onclick="showView('lab-instructors'); return false;" id="nav-lab-instructors">🔬 Lab Instructors</a>
+        </div>
+        
+        <div id="loading" class="loading">Loading timetable data...</div>
+        <div id="content"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000/api';
+        let allData = {
+            levels: null,
+            professors: null,
+            rooms: null,
+            labInstructors: null
+        };
+        let currentView = 'levels';
+
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"];
+        const timeSlots = [
+            {slot: 1, time: "9:00-10:30"},
+            {slot: 2, time: "10:45-12:15"},
+            {slot: 3, time: "12:30-14:00"},
+            {slot: 4, time: "14:15-15:45"}
+        ];
+
+        async function loadAllData() {
+            try {
+                document.getElementById('loading').textContent = 'Loading timetable data...';
+                
+                const [levelsRes, profsRes, roomsRes, labInsRes] = await Promise.all([
+                    fetch(`${API_BASE}/levels`),
+                    fetch(`${API_BASE}/professors`),
+                    fetch(`${API_BASE}/rooms`),
+                    fetch(`${API_BASE}/lab-instructors`)
+                ]);
+
+                allData.levels = await levelsRes.json();
+                allData.professors = await profsRes.json();
+                allData.rooms = await roomsRes.json();
+                allData.labInstructors = await labInsRes.json();
+
+                document.getElementById('loading').style.display = 'none';
+                showView('levels');
+            } catch (error) {
+                document.getElementById('loading').innerHTML = 
+                    `<p style="color: red;">Error loading data: ${error.message}</p>
+                     <p>Make sure the API server is running: <code>python api.py</code></p>`;
+            }
+        }
+
+        function showView(view) {
+            currentView = view;
+            
+            // Update navigation active state
+            document.querySelectorAll('.nav-menu a').forEach(a => {
+                a.classList.remove('active');
+            });
+            document.getElementById(`nav-${view}`).classList.add('active');
+
+            renderMetadata();
+            
+            if (view === 'levels') {
+                renderLevels();
+            } else if (view === 'professors') {
+                renderProfessors();
+            } else if (view === 'rooms') {
+                renderRooms();
+            } else if (view === 'lab-instructors') {
+                renderLabInstructors();
+            }
+        }
+
+        function renderMetadata() {
+            const html = `
+                <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                <p><strong>Days:</strong> ${days.join(', ')}</p>
+                <p><strong>Time Slots:</strong> ${timeSlots.map(t => `Slot ${t.slot}: ${t.time}`).join(' | ')}</p>
+            `;
+            document.getElementById('metadata').innerHTML = html;
+        }
+
+        function renderLevels() {
+            let html = '<div class="section-divider"></div>';
+            html += '<h1 id="levels" style="background-color: #673AB7;">📚 LEVEL 1 & LEVEL 2 - COMBINED SCHEDULE</h1>';
+
+            const levelsData = allData.levels.levels;
+            html += renderCombinedLevelTable(levelsData);
+
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function renderCombinedLevelTable(levelsData) {
+            const level1Groups = [];
+            const level2Groups = [];
+
+            // Organize Level 1 groups
+            Object.keys(levelsData.Level1 || {}).sort().forEach(groupId => {
+                const group = levelsData.Level1[groupId];
+                level1Groups.push({
+                    groupId: group.group_id,
+                    sections: group.sections.sort(),
+                    lectures: group.lectures || [],
+                    labs_by_section: group.labs_by_section || {}
+                });
+            });
+
+            // Organize Level 2 groups
+            Object.keys(levelsData.Level2 || {}).sort().forEach(groupId => {
+                const group = levelsData.Level2[groupId];
+                level2Groups.push({
+                    groupId: group.group_id,
+                    sections: group.sections.sort(),
+                    lectures: group.lectures || [],
+                    labs_by_section: group.labs_by_section || {}
+                });
+            });
+
+            let html = '<div style="overflow-x: auto;"><table style="width: auto;">';
+            
+            // Header Row 1: Day, Time, LEVEL 1, LEVEL 2
+            html += '<tr>';
+            html += '<th class="time-col" rowspan="3">Day</th>';
+            html += '<th class="time-col" rowspan="3">Time</th>';
+            html += `<th colspan="${level1Groups.length * 3}" style="background-color: #4CAF50; color: white; font-size: 12px;">LEVEL 1</th>`;
+            html += `<th colspan="${level2Groups.length * 3}" style="background-color: #FF9800; color: white; font-size: 12px;">LEVEL 2</th>`;
+            html += '</tr>';
+
+            // Header Row 2: Group names
+            html += '<tr>';
+            level1Groups.forEach(group => {
+                html += `<th colspan="3" style="background-color: #2196F3; color: white;">${group.groupId}</th>`;
+            });
+            level2Groups.forEach(group => {
+                html += `<th colspan="3" style="background-color: #FF5722; color: white;">${group.groupId}</th>`;
+            });
+            html += '</tr>';
+
+            // Header Row 3: Section numbers (S1, S2, S3)
+            html += '<tr>';
+            level1Groups.forEach(group => {
+                group.sections.forEach(sectionId => {
+                    const sectionNum = sectionId.split('-S')[1];
+                    html += `<th style="font-size: 8px;">S${sectionNum}</th>`;
+                });
+            });
+            level2Groups.forEach(group => {
+                group.sections.forEach(sectionId => {
+                    const sectionNum = sectionId.split('-S')[1];
+                    html += `<th style="font-size: 8px;">S${sectionNum}</th>`;
+                });
+            });
+            html += '</tr>';
+
+            // Data rows: Each day and time slot
+            days.forEach((day, dayIdx) => {
+                let firstSlotOfDay = true;
+                timeSlots.forEach((slot, slotIdx) => {
+                    html += '<tr>';
+
+                    // Day column (rowspan for all slots in this day)
+                    if (firstSlotOfDay) {
+                        const borderStyle = dayIdx > 0 ? "border-top: 3px solid #000;" : "";
+                        html += `<td class="time-col" rowspan="${timeSlots.length}" style="font-size: 9px; font-weight: bold; background-color: #d0d0d0; ${borderStyle}">${day}</td>`;
+                        firstSlotOfDay = false;
+                    }
+
+                    // Time column
+                    const borderStyle = (slotIdx === 0 && dayIdx > 0) ? "border-top: 3px solid #000;" : "";
+                    html += `<td class="time-col" style="font-size: 8px; text-align: center; ${borderStyle}">${slot.time}</td>`;
+
+                    // Process Level 1 groups
+                    level1Groups.forEach(group => {
+                        html += renderGroupCells(group, day, slot.slot, dayIdx, slotIdx);
+                    });
+
+                    // Process Level 2 groups
+                    level2Groups.forEach(group => {
+                        html += renderGroupCells(group, day, slot.slot, dayIdx, slotIdx);
+                    });
+
+                    html += '</tr>';
+                });
+            });
+
+            html += '</table></div>';
+            return html;
+        }
+
+        function renderGroupCells(group, day, slotNumber, dayIdx, slotIdx) {
+            let html = '';
+            const borderStyle = (slotIdx === 0 && dayIdx > 0) ? "border-top: 3px solid #000;" : "";
+
+            // Get assignments for each section in this group
+            const sectionAssignments = [];
+            group.sections.forEach(sectionId => {
+                let assignment = null;
+
+                // Check lectures (shared by all sections)
+                const lecture = group.lectures.find(lec => lec.day === day && lec.slot === slotNumber);
+                if (lecture) {
+                    assignment = { type: 'lecture', ...lecture };
+                }
+
+                // Check labs (specific to section)
+                const labs = group.labs_by_section[sectionId] || [];
+                const lab = labs.find(l => l.day === day && l.slot === slotNumber);
+                if (lab) {
+                    assignment = { type: 'lab', ...lab };
+                }
+
+                sectionAssignments.push(assignment);
+            });
+
+            // Check if all sections have the same lecture
+            const firstAssignment = sectionAssignments[0];
+            const isSharedLecture = firstAssignment && 
+                                   firstAssignment.type === 'lecture' &&
+                                   sectionAssignments.every(a => 
+                                       a && a.type === 'lecture' && 
+                                       a.course_code === firstAssignment.course_code
+                                   );
+
+            if (isSharedLecture) {
+                // Merge cells for lecture (colspan=3)
+                const assignment = firstAssignment;
+                html += `<td class="lecture" colspan="3" style="font-size: 7px; padding: 3px; min-width: 100px; ${borderStyle}">`;
+                html += `<div style="font-weight: bold; font-size: 8px; margin-bottom: 2px;">${assignment.course_code}</div>`;
+                html += `<div style="font-size: 7px; margin-bottom: 2px;">${assignment.course_name}</div>`;
+                html += `<div style="color: #1976d2; font-size: 7px; margin-bottom: 2px;">${assignment.instructor}</div>`;
+                html += `<div style="color: #666; font-size: 6px;">LEC ${assignment.room}</div>`;
+                html += '</td>';
+            } else {
+                // Separate cells for each section (labs or different assignments)
+                sectionAssignments.forEach(assignment => {
+                    if (assignment) {
+                        const cssClass = assignment.type === 'lecture' ? 'lecture' : 'lab';
+                        const roomType = assignment.type === 'lecture' ? 'LEC' : 'LAB';
+                        const instructorName = assignment.type === 'lecture' ? assignment.instructor : assignment.instructor;
+                        
+                        html += `<td class="${cssClass}" style="font-size: 7px; padding: 3px; min-width: 100px; ${borderStyle}">`;
+                        html += `<div style="font-weight: bold; font-size: 8px; margin-bottom: 2px;">${assignment.course_code}</div>`;
+                        html += `<div style="font-size: 7px; margin-bottom: 2px;">${assignment.course_name}</div>`;
+                        html += `<div style="color: ${assignment.type === 'lecture' ? '#1976d2' : '#d32f2f'}; font-size: 7px; margin-bottom: 2px;">${instructorName}</div>`;
+                        html += `<div style="color: #666; font-size: 6px;">${roomType} ${assignment.room}</div>`;
+                        html += '</td>';
+                    } else {
+                        html += `<td style="min-width: 100px; ${borderStyle}"></td>`;
+                    }
+                });
+            }
+
+            return html;
+        }
+
+        function renderSections() {
+            let html = '<div class="section-divider"></div>';
+            html += '<h1 id="sections" style="background-color: #FF9800;">📋 SECTION TIMETABLES</h1>';
+
+            const levelsData = allData.levels.levels;
+            
+            ['Level1', 'Level2'].forEach((levelKey, idx) => {
+                const levelNum = idx + 1;
+                html += `<h2>Level ${levelNum} - Sections</h2>`;
+                
+                const groups = levelsData[levelKey];
+                Object.keys(groups).sort().forEach(groupId => {
+                    const group = groups[groupId];
+                    
+                    group.sections.forEach(sectionId => {
+                        html += renderSectionSchedule(group, sectionId);
+                    });
+                });
+            });
+
+            document.getElementById('content').innerHTML += html;
+        }
+
+        function renderSectionSchedule(group, sectionId) {
+            let html = `<div class="section-header">Section: ${sectionId}</div>`;
+            html += '<table><tr><th class="time-col">Time</th>';
+            
+            days.forEach(day => {
+                html += `<th class="day-col">${day}</th>`;
+            });
+            html += '</tr>';
+
+            // Create schedule grid
+            const schedule = {};
+            days.forEach(day => {
+                schedule[day] = {};
+                timeSlots.forEach(slot => {
+                    schedule[day][slot.slot] = null;
+                });
+            });
+
+            // Add lectures (shared with group)
+            if (group.lectures) {
+                group.lectures.forEach(lec => {
+                    schedule[lec.day][lec.slot] = {
+                        type: 'lecture',
+                        ...lec
+                    };
+                });
+            }
+
+            // Add labs (section-specific)
+            if (group.labs_by_section && group.labs_by_section[sectionId]) {
+                group.labs_by_section[sectionId].forEach(lab => {
+                    schedule[lab.day][lab.slot] = {
+                        type: 'lab',
+                        ...lab
+                    };
+                });
+            }
+
+            // Render rows
+            timeSlots.forEach(slot => {
+                html += `<tr><td class="time-col">${slot.time}</td>`;
+                days.forEach(day => {
+                    const item = schedule[day][slot.slot];
+                    if (item) {
+                        const cssClass = item.type === 'lecture' ? 'lecture' : 'lab';
+                        html += `<td class="${cssClass}">`;
+                        html += `<span class="course-code">${item.course_code}</span>`;
+                        html += `<span class="course-name">${item.course_name}</span>`;
+                        if (item.type === 'lecture') {
+                            html += `<span class="instructor">${item.instructor}</span>`;
+                            html += `<span class="room">LEC ${item.room}</span>`;
+                        } else {
+                            html += `<span class="lab-instructor">${item.instructor || 'N/A'}</span>`;
+                            html += `<span class="room">LAB ${item.room}</span>`;
+                        }
+                        html += `</td>`;
+                    } else {
+                        html += '<td></td>';
+                    }
+                });
+                html += '</tr>';
+            });
+
+            html += '</table>';
+            return html;
+        }
+
+        function renderProfessors() {
+            const professors = allData.professors.professors;
+            const profNames = Object.keys(professors).sort();
+            
+            let html = '<h1 style="background-color: #9C27B0;">👨‍🏫 PROFESSOR TIMETABLES</h1>';
+            html += '<div style="overflow-x: auto;"><table style="width: auto;">';
+            
+            // Header Row 1: Day, Time, Professor Names
+            html += '<tr>';
+            html += '<th class="time-col" rowspan="2">Day</th>';
+            html += '<th class="time-col" rowspan="2">Time</th>';
+            profNames.forEach(profName => {
+                html += `<th style="background-color: #9C27B0; color: white;">${profName}</th>`;
+            });
+            html += '</tr>';
+
+            // Data rows: Each day and time slot
+            days.forEach((day, dayIdx) => {
+                let firstSlotOfDay = true;
+                timeSlots.forEach((slot, slotIdx) => {
+                    html += '<tr>';
+
+                    // Day column
+                    if (firstSlotOfDay) {
+                        const borderStyle = dayIdx > 0 ? "border-top: 3px solid #000;" : "";
+                        html += `<td class="time-col" rowspan="${timeSlots.length}" style="font-size: 9px; font-weight: bold; background-color: #d0d0d0; ${borderStyle}">${day}</td>`;
+                        firstSlotOfDay = false;
+                    }
+
+                    // Time column
+                    const borderStyle = (slotIdx === 0 && dayIdx > 0) ? "border-top: 3px solid #000;" : "";
+                    html += `<td class="time-col" style="font-size: 8px; text-align: center; ${borderStyle}">${slot.time}</td>`;
+
+                    // Professor cells
+                    profNames.forEach(profName => {
+                        const prof = professors[profName];
+                        const lecture = prof.lectures.find(lec => lec.day === day && lec.slot === slot.slot);
+                        
+                        if (lecture) {
+                            html += `<td class="lecture" style="font-size: 7px; padding: 3px; min-width: 100px; ${borderStyle}">`;
+                            html += `<div style="font-weight: bold; font-size: 8px; margin-bottom: 2px;">${lecture.course_code}</div>`;
+                            html += `<div style="font-size: 7px; margin-bottom: 2px;">${lecture.course_name}</div>`;
+                            html += `<div style="color: #666; font-size: 6px;">LEC ${lecture.room}</div>`;
+                            html += `<div style="font-size: 6px; color: #666;">${lecture.groups.join(', ')}</div>`;
+                            html += '</td>';
+                        } else {
+                            html += `<td style="min-width: 100px; ${borderStyle}"></td>`;
+                        }
+                    });
+
+                    html += '</tr>';
+                });
+            });
+
+            html += '</table></div>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function renderRooms() {
+            const rooms = allData.rooms.rooms;
+            const roomNames = Object.keys(rooms).sort();
+            
+            let html = '<h1 style="background-color: #FF5722;">🏛️ ROOM OCCUPANCY</h1>';
+            html += '<div style="overflow-x: auto;"><table style="width: auto;">';
+            
+            // Header Row: Day, Time, Room Names
+            html += '<tr>';
+            html += '<th class="time-col" rowspan="2">Day</th>';
+            html += '<th class="time-col" rowspan="2">Time</th>';
+            roomNames.forEach(roomName => {
+                const room = rooms[roomName];
+                const roomType = room.room_type.toUpperCase();
+                html += `<th style="background-color: ${room.room_type === 'lec' ? '#2196F3' : '#FF9800'}; color: white; font-size: 8px;">${roomName}<br>(${roomType})</th>`;
+            });
+            html += '</tr>';
+
+            // Data rows: Each day and time slot
+            days.forEach((day, dayIdx) => {
+                let firstSlotOfDay = true;
+                timeSlots.forEach((slot, slotIdx) => {
+                    html += '<tr>';
+
+                    // Day column
+                    if (firstSlotOfDay) {
+                        const borderStyle = dayIdx > 0 ? "border-top: 3px solid #000;" : "";
+                        html += `<td class="time-col" rowspan="${timeSlots.length}" style="font-size: 9px; font-weight: bold; background-color: #d0d0d0; ${borderStyle}">${day}</td>`;
+                        firstSlotOfDay = false;
+                    }
+
+                    // Time column
+                    const borderStyle = (slotIdx === 0 && dayIdx > 0) ? "border-top: 3px solid #000;" : "";
+                    html += `<td class="time-col" style="font-size: 8px; text-align: center; ${borderStyle}">${slot.time}</td>`;
+
+                    // Room cells
+                    roomNames.forEach(roomName => {
+                        const room = rooms[roomName];
+                        const assignment = room.schedule.find(item => item.day === day && item.slot === slot.slot);
+                        
+                        if (assignment) {
+                            const cssClass = assignment.type === 'lecture' ? 'lecture' : 'lab';
+                            html += `<td class="${cssClass}" style="font-size: 7px; padding: 3px; min-width: 80px; ${borderStyle}">`;
+                            html += `<div style="font-weight: bold; font-size: 8px; margin-bottom: 2px;">${assignment.course_code}</div>`;
+                            html += `<div style="font-size: 7px; margin-bottom: 2px;">${assignment.course_name}</div>`;
+                            html += `<div style="color: ${assignment.type === 'lecture' ? '#1976d2' : '#d32f2f'}; font-size: 7px; margin-bottom: 2px;">${assignment.instructor}</div>`;
+                            html += `<div style="font-size: 6px; color: #666;">${assignment.assigned_to.join(', ')}</div>`;
+                            html += '</td>';
+                        } else {
+                            html += `<td style="min-width: 80px; ${borderStyle}"></td>`;
+                        }
+                    });
+
+                    html += '</tr>';
+                });
+            });
+
+            html += '</table></div>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function renderLabInstructors() {
+            const instructors = allData.labInstructors.instructors;
+            const instNames = Object.keys(instructors).sort();
+            
+            let html = '<h1 style="background-color: #00BCD4;">🔬 LAB INSTRUCTOR SCHEDULES</h1>';
+            html += '<div style="overflow-x: auto;"><table style="width: auto;">';
+            
+            // Header Row: Day, Time, Instructor Names
+            html += '<tr>';
+            html += '<th class="time-col" rowspan="2">Day</th>';
+            html += '<th class="time-col" rowspan="2">Time</th>';
+            instNames.forEach(instName => {
+                const inst = instructors[instName];
+                html += `<th style="background-color: #00BCD4; color: white; font-size: 8px;">${instName}<br>(${inst.labs.length} labs)</th>`;
+            });
+            html += '</tr>';
+
+            // Data rows: Each day and time slot
+            days.forEach((day, dayIdx) => {
+                let firstSlotOfDay = true;
+                timeSlots.forEach((slot, slotIdx) => {
+                    html += '<tr>';
+
+                    // Day column
+                    if (firstSlotOfDay) {
+                        const borderStyle = dayIdx > 0 ? "border-top: 3px solid #000;" : "";
+                        html += `<td class="time-col" rowspan="${timeSlots.length}" style="font-size: 9px; font-weight: bold; background-color: #d0d0d0; ${borderStyle}">${day}</td>`;
+                        firstSlotOfDay = false;
+                    }
+
+                    // Time column
+                    const borderStyle = (slotIdx === 0 && dayIdx > 0) ? "border-top: 3px solid #000;" : "";
+                    html += `<td class="time-col" style="font-size: 8px; text-align: center; ${borderStyle}">${slot.time}</td>`;
+
+                    // Instructor cells
+                    instNames.forEach(instName => {
+                        const inst = instructors[instName];
+                        const lab = inst.labs.find(l => l.day === day && l.slot === slot.slot);
+                        
+                        if (lab) {
+                            html += `<td class="lab" style="font-size: 7px; padding: 3px; min-width: 100px; ${borderStyle}">`;
+                            html += `<div style="font-weight: bold; font-size: 8px; margin-bottom: 2px;">${lab.course_code}</div>`;
+                            html += `<div style="font-size: 7px; margin-bottom: 2px;">${lab.course_name}</div>`;
+                            html += `<div style="color: #666; font-size: 6px;">LAB ${lab.room}</div>`;
+                            html += `<div style="font-size: 6px; color: #666;">${lab.section}</div>`;
+                            html += '</td>';
+                        } else {
+                            html += `<td style="min-width: 100px; ${borderStyle}"></td>`;
+                        }
+                    });
+
+                    html += '</tr>';
+                });
+            });
+
+            html += '</table></div>';
+            document.getElementById('content').innerHTML = html;
+        }
+
+        // Load data on page load
+        window.onload = loadAllData;
+    </script>
+</body>
+</html>
+
+

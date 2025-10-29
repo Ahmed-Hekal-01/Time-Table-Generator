@@ -6,44 +6,53 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: Arial, sans-serif;
   line-height: 1.6;
   color: #333;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #f5f5f5;
   min-height: 100vh;
+  margin: 10px;
+  font-size: 10px;
 }
 
 #root {
   min-height: 100vh;
+  width: 100%;
 }
 
 .app {
-  max-width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   min-height: 100vh;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  background: white;
+  padding: 0;
+}
+
+.container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 /* Header */
 .app-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-color: #673AB7;
   color: white;
-  padding: 2rem;
+  padding: 15px;
   text-align: center;
-  border-radius: 0 0 20px 20px;
-  margin-bottom: 2rem;
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .app-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 0.5rem;
+  font-size: 18px;
+  margin: 10px 0;
   font-weight: 700;
 }
 
 .app-header p {
-  font-size: 1.1rem;
+  font-size: 12px;
   opacity: 0.9;
 }
 
@@ -53,41 +62,42 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
-  margin: 0 2rem 2rem 2rem;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 1rem;
+  margin: 15px 0;
+  padding: 15px;
+  border: 1px solid #ddd;
+  background-color: #f5f5f5;
+  text-align: center;
 }
 
 .nav-tabs button {
   background: white;
-  border: 2px solid #667eea;
-  color: #667eea;
-  padding: 12px 20px;
-  border-radius: 25px;
+  border: 2px solid #1976d2;
+  color: #1976d2;
+  padding: 8px 15px;
+  border-radius: 5px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: bold;
   transition: all 0.3s ease;
-  font-size: 0.95rem;
-  min-width: 120px;
+  font-size: 12px;
+  text-decoration: none;
 }
 
 .nav-tabs button:hover {
-  background: #667eea;
-  color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+  text-decoration: underline;
 }
 
 .nav-tabs button.active {
-  background: #667eea;
-  color: white;
-  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+  font-weight: bold;
+  text-decoration: underline;
+  color: #673AB7;
+  border-color: #673AB7;
 }
 
 /* Main content */
 .main-content {
-  padding: 0 2rem 2rem 2rem;
+  padding: 0;
   min-height: 400px;
+  overflow-x: auto;
 }
 
 /* Loading state */
@@ -200,10 +210,9 @@ body {
 /* Table styles */
 .table-container {
   background: white;
-  border-radius: 10px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0;
   overflow-x: auto;
+  width: 100%;
 }
 
 .table-container h3 {
@@ -308,6 +317,10 @@ body {
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .app {
+    padding: 5px;
+  }
+
   .app-header {
     padding: 1.5rem 1rem;
   }
@@ -317,7 +330,7 @@ body {
   }
 
   .nav-tabs {
-    margin: 0 1rem 2rem 1rem;
+    margin: 0 0.5rem 1rem 0.5rem;
     flex-direction: column;
     align-items: center;
   }
@@ -328,11 +341,11 @@ body {
   }
 
   .main-content {
-    padding: 0 1rem 2rem 1rem;
+    padding: 0 0.5rem 1rem 0.5rem;
   }
 
   .table-container {
-    padding: 1rem;
+    padding: 0.5rem;
   }
 
   .data-table {
@@ -343,9 +356,18 @@ body {
   .data-table td {
     padding: 8px 10px;
   }
+
+  .combined-table table,
+  .section-schedules table {
+    font-size: 8px;
+  }
 }
 
 @media (max-width: 480px) {
+  body {
+    font-size: 9px;
+  }
+
   .app-header h1 {
     font-size: 1.5rem;
   }
@@ -363,4 +385,155 @@ body {
   .data-table td {
     padding: 6px 8px;
   }
+
+  .combined-table table,
+  .section-schedules table {
+    font-size: 7px;
+  }
+}
+
+@media print {
+  .nav-tabs {
+    display: none;
+  }
+  
+  body {
+    font-size: 9px;
+  }
+}
+
+/* Timetable-specific styles */
+.combined-table {
+  overflow-x: auto;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.combined-table table,
+.section-schedules table,
+.professor-schedules table,
+.room-schedules table,
+.lab-instructor-schedules table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0;
+  font-size: 9px;
+  table-layout: fixed;
+}
+
+.combined-table th,
+.combined-table td,
+.section-schedules th,
+.section-schedules td,
+.professor-schedules th,
+.professor-schedules td,
+.room-schedules th,
+.room-schedules td,
+.lab-instructor-schedules th,
+.lab-instructor-schedules td {
+  border: 1px solid #000;
+  padding: 4px;
+  text-align: center;
+  vertical-align: middle;
+  min-width: 120px;
+}
+
+.combined-table th,
+.section-schedules th,
+.professor-schedules th,
+.room-schedules th,
+.lab-instructor-schedules th {
+  background-color: #d0d0d0;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+.time-col {
+  background-color: #e8e8e8;
+  font-weight: bold;
+  font-size: 9px;
+  min-width: 80px !important;
+  width: 80px;
+}
+
+.day-col {
+  background-color: #d0d0d0;
+  font-weight: bold;
+  font-size: 10px;
+  min-width: 120px;
+  width: auto;
+}
+
+.lecture {
+  background-color: #e3f2fd;
+  font-size: 8px;
+  padding: 5px;
+  min-height: 60px;
+  min-width: 120px;
+}
+
+.lab {
+  background-color: #fff3e0;
+  font-size: 8px;
+  padding: 5px;
+  min-height: 60px;
+  min-width: 120px;
+}
+
+/* Empty cells should also have consistent sizing */
+.professor-schedules td:empty,
+.room-schedules td:empty,
+.lab-instructor-schedules td:empty,
+.section-schedules td:empty {
+  background-color: #f9f9f9;
+  min-height: 60px;
+  min-width: 120px;
+}
+
+.course-code {
+  font-weight: bold;
+  font-size: 9px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.course-name {
+  font-size: 8px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.instructor {
+  font-size: 7px;
+  color: #1976d2;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.lab-instructor {
+  font-size: 7px;
+  color: #d32f2f;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 1px;
+}
+
+.room {
+  font-size: 7px;
+  color: #666;
+  display: block;
+}
+
+.metadata {
+  background-color: #e8f5e9;
+  padding: 10px;
+  margin: 10px 0;
+  border-left: 4px solid #4CAF50;
+  font-size: 10px;
+}
+
+.metadata p {
+  margin: 5px 0;
 }
