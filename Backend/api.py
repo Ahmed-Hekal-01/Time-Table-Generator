@@ -58,12 +58,13 @@ def initialize_scheduler():
     groups, sections = generate_groups_and_sections()
     rooms = load_rooms_from_csv(rooms_csv)
     lab_instructors = load_lab_instructors_from_csv(lab_instructors_csv)
-    level_1_data, level_2_data = load_course_data()
+    level_1_data, level_2_data, level_3_data, level_4_data = load_course_data()
 
     # Create scheduler
     scheduler = TimetableScheduler(
         rooms, groups, sections, time_slots,
-        level_1_data, level_2_data
+        level_1_data, level_2_data, level_3_data, level_4_data,
+        lab_instructors
     )
 
     # Generate schedule
@@ -89,7 +90,7 @@ def get_levels_table():
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
-    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"]
     time_slots_info = [
         {"slot": 1, "time": "9:00-10:30"},
         {"slot": 2, "time": "10:45-12:15"},
@@ -105,8 +106,8 @@ def get_levels_table():
         "levels": {}
     }
 
-    # Organize by level and group
-    for level in [1, 2]:
+    # Organize by level and group (now includes L1, L2, L3, L4)
+    for level in [1, 2, 3, 4]:
         levels_data["levels"][f"Level{level}"] = {}
 
         for group in scheduler.groups:
@@ -184,7 +185,7 @@ def get_lab_instructors_table():
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
-    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"]
     time_slots_info = [
         {"slot": 1, "time": "9:00-10:30"},
         {"slot": 2, "time": "10:45-12:15"},
@@ -240,7 +241,7 @@ def get_professors_table():
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
-    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"]
     time_slots_info = [
         {"slot": 1, "time": "9:00-10:30"},
         {"slot": 2, "time": "10:45-12:15"},
@@ -295,7 +296,7 @@ def get_rooms_table():
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
-    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"]
+    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"]
     time_slots_info = [
         {"slot": 1, "time": "9:00-10:30"},
         {"slot": 2, "time": "10:45-12:15"},

@@ -27,6 +27,7 @@ class Lecture:
     instructor_name: str
     instructor_id: int
     level: int
+    is_graduation_project: bool = False
 
 
 @dataclass
@@ -49,12 +50,13 @@ class Room:
 
 @dataclass
 class Section:
-    """Represents a section within a group"""
+    """Represents a section within a group (L1/L2) or department (L3/L4)"""
     section_id: str
     level: int
     group_number: int
     section_number: int
     group_id: str
+    department: Optional[str] = None  # For L3/L4: CSC, CNC, BIF, AID
 
 
 @dataclass
@@ -63,6 +65,15 @@ class Group:
     group_id: str
     level: int
     group_number: int
+    sections: List[Section] = field(default_factory=list)
+
+
+@dataclass
+class Department:
+    """Represents a department in L3/L4 (CSC, CNC, BIF, AID)"""
+    department_id: str
+    department_name: str
+    level: int
     sections: List[Section] = field(default_factory=list)
 
 
