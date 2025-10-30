@@ -26,11 +26,27 @@ def assign_instructors_to_labs(
         instructor_tracker.instructors[instructor.instructor_id] = instructor
 
     # Get all lab assignments (already scheduled with time slots)
-    lab_assignments = [a for a in scheduler.assignments if a.type == "lab"]
+    all_lab_assignments = [a for a in scheduler.assignments if a.type == "lab"]
+    
+    # Separate already assigned labs from unassigned ones
+    already_assigned = [a for a in all_lab_assignments if a.lab_instructor_id]
+    lab_assignments = [a for a in all_lab_assignments if not a.lab_instructor_id]
 
-    print(f"\nDebug: Total lab assignments to process: {len(lab_assignments)}")
+    print(f"\nDebug: Total lab assignments: {len(all_lab_assignments)}")
+    print(f"Debug: Already assigned during scheduling: {len(already_assigned)}")
+    print(f"Debug: Remaining to assign: {len(lab_assignments)}")
+    
+    # Register already assigned instructors in the tracker
+    for lab in already_assigned:
+        instructor_tracker.assign(
+            lab.lab_instructor_id,
+            lab.time_slot.day,
+            lab.time_slot.slot_number,
+            lab.assignment_id,
+            session_hours
+        )
 
-    # Sort by constraint difficulty (fewer qualified instructors = harder to assign)
+    # Sort remaining labs by constraint difficulty (fewer qualified instructors = harder to assign)
     def count_qualified_instructors(lab_assignment):
         count = sum(1 for inst in lab_instructors
                     if lab_assignment.course_code in inst.qualified_labs)
@@ -95,7 +111,7 @@ def assign_instructors_to_labs(
                 break
 
         if not assigned:
-            print(f"ERROR: Cannot assign instructor to {lab_assignment.course_code} "
+            print(f"WARNING: Cannot assign instructor to {lab_assignment.course_code} "
                   f"for {lab_assignment.assigned_to[0]} at "
                   f"{lab_assignment.time_slot.day} slot {lab_assignment.time_slot.slot_number}")
 
@@ -110,6 +126,14 @@ def assign_instructors_to_labs(
                 )
                 print(f"  - {instructor.instructor_name}: {reason}")
 
-            return False
+            # Leave lab unassigned but continue with others
+            print(f"  → Leaving {lab_assignment.course_code} unassigned and continuing...")
 
+    # Return True even if some labs couldn't be assigned
+    # This allows the timetable to be generated with most labs assigned
+    unassigned_count = sum(1 for lab in lab_assignments if not lab.lab_instructor_name)
+    print(f"\n✓ Lab instructor assignment complete: {len(lab_assignments) - unassigned_count}/{len(lab_assignments)} labs assigned")
+    if unassigned_count > 0:
+        print(f"  Warning: {unassigned_count} labs remain unassigned due to scheduling conflicts")
+    
     return True

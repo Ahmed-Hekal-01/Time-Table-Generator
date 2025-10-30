@@ -2,6 +2,7 @@
 Main execution script for College Timetable Scheduling System
 """
 
+import os
 from .data_loader import (
     generate_time_slots,
     generate_groups_and_sections,
@@ -22,14 +23,40 @@ def main():
     print("=" * 60)
     print()
 
-        # Step 1: Load all data
+    # Step 1: Load all data
     print("Step 1: Loading data...")
     try:
+        # Determine CSV directory (env var CSV_DIR takes precedence; otherwise use Backend/CSV folder)
+        csv_dir = os.environ.get("CSV_DIR")
+        if not csv_dir:
+            # Get the directory containing this file (app folder)
+            app_dir = os.path.dirname(os.path.abspath(__file__))
+            # Backend folder is the parent of app folder
+            backend_dir = os.path.dirname(app_dir)
+            # CSV folder is in the Backend directory
+            csv_dir = os.path.join(backend_dir, "CSV")
+        
+        csv_dir = os.path.abspath(csv_dir)
+        
+        # Verify CSV directory exists
+        if not os.path.exists(csv_dir):
+            raise Exception(f"CSV directory not found: {csv_dir}")
+
+        # Build CSV file paths
+        rooms_csv = os.path.join(csv_dir, "rooms.csv")
+        lab_instructors_csv = os.path.join(csv_dir, "inslab.csv")
+        
+        # Verify CSV files exist
+        if not os.path.exists(rooms_csv):
+            raise Exception(f"rooms.csv not found: {rooms_csv}")
+        if not os.path.exists(lab_instructors_csv):
+            raise Exception(f"inslab.csv not found: {lab_instructors_csv}")
+
         time_slots = generate_time_slots()
         groups, sections = generate_groups_and_sections()
-        rooms = load_rooms_from_csv("./Backend/CSV/rooms.csv")
-        lab_instructors = load_lab_instructors_from_csv("./Backend/CSV/inslab.csv")
-        level_1_data, level_2_data = load_course_data()
+        rooms = load_rooms_from_csv(rooms_csv)
+        lab_instructors = load_lab_instructors_from_csv(lab_instructors_csv)
+        level_1_data, level_2_data, level_3_data, level_4_data = load_course_data()
     except FileNotFoundError as e:
         print(f"ERROR: Could not load required CSV file: {e}")
         return
@@ -45,49 +72,27 @@ def main():
     print(f"  - Lab Instructors: {len(lab_instructors)}")
     print(f"  - Level 1 courses: {len(level_1_data['lectures'])} lectures, {len(level_1_data['labs'])} labs")
     print(f"  - Level 2 courses: {len(level_2_data['lectures'])} lectures, {len(level_2_data['labs'])} labs")
+    print(f"  - Level 3 departments: CSC, CNC, BIF, AID")
+    print(f"  - Level 4 departments: CSC, CNC, BIF, AID")
     print()
 
-    # Try up to 5 times to generate a valid schedule with instructors assigned
-    max_attempts = 5
-    for attempt in range(1, max_attempts + 1):
-        if attempt > 1:
-            print(f"\n{'=' * 60}")
-            print(f"Retry attempt {attempt}/{max_attempts}...")
-            print(f"{'=' * 60}\n")
+    # Step 2: Initialize scheduler
+    print("Step 2: Initializing scheduler...")
+    scheduler = TimetableScheduler(rooms, groups, sections, time_slots, level_1_data, level_2_data, level_3_data, level_4_data, lab_instructors)
+    print()
 
-        # Step 2: Initialize scheduler
-        print("Step 2: Initializing scheduler...")
-        scheduler = TimetableScheduler(rooms, groups, sections, time_slots, level_1_data, level_2_data, lab_instructors)
-        print()
+    # Step 3: Generate schedule
+    print("Step 3: Generating timetable...")
+    success = scheduler.generate_schedule()
+    print()
 
-        # Step 3: Generate schedule
-        print("Step 3: Generating timetable...")
-        success = scheduler.generate_schedule()
-        print()
+    if not success:
+        print("ERROR: Failed to generate complete timetable!")
+        return
 
-        if not success:
-            print("ERROR: Failed to generate complete timetable!")
-            if attempt < max_attempts:
-                continue
-            else:
-                return
-
-        # Step 4: Assign lab instructors
-        print("Step 4: Assigning lab instructors...")
-        instructor_success = assign_instructors_to_labs(scheduler, lab_instructors)
-
-        if not instructor_success:
-            print("ERROR: Failed to assign instructors to all labs!")
-            if attempt < max_attempts:
-                continue
-            else:
-                return
-
-        # Success! Break out of retry loop
-        break
-
-    labs_with_instructors = len([a for a in scheduler.assignments if a.type == "lab" and a.lab_instructor_id])
-    print(f"✓ Lab instructors assigned: {labs_with_instructors}/{len([a for a in scheduler.assignments if a.type == 'lab'])} labs")
+    # Step 4: Assign lab instructors (accept partial assignments)
+    print("Step 4: Assigning lab instructors...")
+    assign_instructors_to_labs(scheduler, lab_instructors)
     print()
 
     # Step 5: Validate schedule

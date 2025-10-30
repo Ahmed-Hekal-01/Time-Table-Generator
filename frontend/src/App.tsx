@@ -15,6 +15,7 @@ interface Assignment {
   course_name: string;
   room: string;
   instructor?: string;
+  lab_instructor_name?: string;
   type?: string;
   sections?: string[];
   groups?: string[];
@@ -98,6 +99,33 @@ function App() {
     loadAllData();
   }, []);
 
+  // Helper function to get course color class
+  const getCourseColorClass = (courseCode: string, courseType: string) => {
+    let colorClass = courseType === 'lecture' ? 'lecture' : 'lab';
+    
+    // Check for Graduation Project
+    if (courseCode.includes('GP') || courseCode.includes('Graduation')) {
+      return `${colorClass} gp-course`;
+    }
+    
+    // Department-specific colors
+    if (courseCode.startsWith('CSC')) {
+      return `${colorClass} csc-course`;
+    } else if (courseCode.startsWith('CNC')) {
+      return `${colorClass} cnc-course`;
+    } else if (courseCode.startsWith('BIF')) {
+      return `${colorClass} bif-course`;
+    } else if (courseCode.startsWith('AID')) {
+      return `${colorClass} aid-course`;
+    } else if (courseCode.startsWith('MTH') || courseCode.startsWith('ACM')) {
+      return `${colorClass} math-course`;
+    } else if (courseCode.startsWith('LRA')) {
+      return `${colorClass} language-course`;
+    }
+    
+    return colorClass;
+  };
+
   // Combined Level 1 & 2 Table (like HTML template)
   const renderCombinedLevelTable = () => {
     if (!allData?.levels?.levels) return null;
@@ -105,6 +133,8 @@ function App() {
     const levelsData = allData.levels.levels;
     const level1Groups: any[] = [];
     const level2Groups: any[] = [];
+    const level3Groups: any[] = [];
+    const level4Groups: any[] = [];
 
     // Organize Level 1 groups
     Object.keys(levelsData.Level1 || {}).sort().forEach(groupId => {
@@ -121,6 +151,28 @@ function App() {
     Object.keys(levelsData.Level2 || {}).sort().forEach(groupId => {
       const group = levelsData.Level2[groupId];
       level2Groups.push({
+        groupId: group.group_id,
+        sections: group.sections.sort(),
+        lectures: group.lectures || [],
+        labs_by_section: group.labs_by_section || {}
+      });
+    });
+
+    // Organize Level 3 groups
+    Object.keys(levelsData.Level3 || {}).sort().forEach(groupId => {
+      const group = levelsData.Level3[groupId];
+      level3Groups.push({
+        groupId: group.group_id,
+        sections: group.sections.sort(),
+        lectures: group.lectures || [],
+        labs_by_section: group.labs_by_section || {}
+      });
+    });
+
+    // Organize Level 4 groups
+    Object.keys(levelsData.Level4 || {}).sort().forEach(groupId => {
+      const group = levelsData.Level4[groupId];
+      level4Groups.push({
         groupId: group.group_id,
         sections: group.sections.sort(),
         lectures: group.lectures || [],
@@ -164,29 +216,41 @@ function App() {
       if (isSharedLecture) {
         // Merge cells for lecture
         const assignment = firstAssignment;
+        const colorClass = getCourseColorClass(assignment.course_code, 'lecture');
         cells.push(
-          <td key={`${group.groupId}-merged`} className="lecture" colSpan={3} style={{fontSize: '0.7rem', padding: '3px', minWidth: '100px'}}>
+          <td key={`${group.groupId}-merged`} className={colorClass} colSpan={3} style={{fontSize: '0.7rem', padding: '3px', minWidth: '100px'}}>
             <div style={{fontWeight: 'bold', fontSize: '0.8rem', marginBottom: '2px'}}>{assignment.course_code}</div>
             <div style={{fontSize: '0.7rem', marginBottom: '2px'}}>{assignment.course_name}</div>
-            <div style={{color: '#1976d2', fontSize: '0.7rem', marginBottom: '2px'}}>{assignment.instructor}</div>
-            <div style={{color: '#666', fontSize: '0.6rem'}}>LEC {assignment.room}</div>
+            <div style={{color: '#0d47a1', fontSize: '0.75rem', fontWeight: 'bold', marginBottom: '2px', backgroundColor: 'rgba(255,255,255,0.5)', padding: '2px 4px', borderRadius: '3px', display: 'inline-block'}}>{assignment.instructor}</div>
+            <div style={{color: '#555', fontSize: '0.65rem', fontWeight: '600'}}>LEC {assignment.room}</div>
           </td>
         );
       } else {
         // Separate cells for each section
         sectionAssignments.forEach((assignment, idx) => {
           if (assignment) {
-            const cssClass = assignment.type === 'lecture' ? 'lecture' : 'lab';
-            const roomType = assignment.type === 'lecture' ? 'LEC' : 'LAB';
+            const colorClass = getCourseColorClass(assignment.course_code, assignment.type);
+            const isLab = assignment.type === 'lab';
+            const instructorName = isLab ? (assignment.lab_instructor_name || assignment.instructor || 'Unassigned') : assignment.instructor;
 
+            const roomType = assignment.type === 'lecture' ? 'LEC' : 'LAB';
             cells.push(
-              <td key={`${group.groupId}-${idx}`} className={cssClass} style={{fontSize: '0.7rem', padding: '3px', minWidth: '100px'}}>
+              <td key={`${group.groupId}-${idx}`} className={colorClass} style={{fontSize: '0.7rem', padding: '3px', minWidth: '100px'}}>
                 <div style={{fontWeight: 'bold', fontSize: '0.8rem', marginBottom: '2px'}}>{assignment.course_code}</div>
                 <div style={{fontSize: '0.7rem', marginBottom: '2px'}}>{assignment.course_name}</div>
-                <div style={{color: assignment.type === 'lecture' ? '#1976d2' : '#d32f2f', fontSize: '0.7rem', marginBottom: '2px'}}>
-                  {assignment.instructor}
+                <div style={{
+                  color: assignment.type === 'lecture' ? '#0d47a1' : '#b71c1c', 
+                  fontSize: '0.75rem', 
+                  fontWeight: 'bold', 
+                  marginBottom: '2px',
+                  backgroundColor: 'rgba(255,255,255,0.5)',
+                  padding: '2px 4px',
+                  borderRadius: '3px',
+                  display: 'inline-block'
+                }}>
+                  {instructorName}
                 </div>
-                <div style={{color: '#666', fontSize: '0.6rem'}}>{roomType} {assignment.room}</div>
+                <div style={{color: '#555', fontSize: '0.65rem', fontWeight: '600'}}>{roomType} {assignment.room}</div>
               </td>
             );
           } else {
@@ -199,27 +263,36 @@ function App() {
     };
 
     return (
-      <div id="combined" className="combined-table">
-        <h2 style={{backgroundColor: '#673AB7', color: 'white', padding: '15px', textAlign: 'center', margin: '0'}}>
-          📚 LEVEL 1 & LEVEL 2 - COMBINED SCHEDULE
+      <div id="combined-all-levels" className="combined-table">
+        <h2 style={{backgroundColor: '#673AB7', color: 'white', padding: '20px', textAlign: 'center', margin: '0', fontSize: '1.5rem', fontWeight: 'bold'}}>
+          ALL LEVELS - COMPLETE COLLEGE TIMETABLE
         </h2>
+        <div style={{overflowX: 'auto', width: '100%'}}>
         <table>
           <thead>
-            {/* Header Row 1: Day, Time, LEVEL 1, LEVEL 2 */}
+            {/* Header Row 1: Day, Time, LEVEL 1, LEVEL 2, LEVEL 3, LEVEL 4 */}
             <tr>
               <th className="time-col" rowSpan={3}>Day</th>
               <th className="time-col" rowSpan={3}>Time</th>
-              <th colSpan={level1Groups.length * 3} style={{backgroundColor: '#4CAF50', color: 'white', fontSize: '1rem'}}>LEVEL 1</th>
-              <th colSpan={level2Groups.length * 3} style={{backgroundColor: '#FF9800', color: 'white', fontSize: '1rem'}}>LEVEL 2</th>
+              <th className="level-1-header" colSpan={level1Groups.length * 3} style={{fontSize: '1rem'}}>LEVEL 1</th>
+              <th className="level-2-header" colSpan={level2Groups.length * 3} style={{fontSize: '1rem'}}>LEVEL 2</th>
+              <th className="level-3-header" colSpan={level3Groups.reduce((sum, g) => sum + g.sections.length, 0)} style={{fontSize: '1rem'}}>LEVEL 3</th>
+              <th className="level-4-header" colSpan={level4Groups.reduce((sum, g) => sum + g.sections.length, 0)} style={{fontSize: '1rem'}}>LEVEL 4</th>
             </tr>
 
-            {/* Header Row 2: Group names */}
+            {/* Header Row 2: Group/Department names */}
             <tr>
               {level1Groups.map(group => (
-                <th key={group.groupId} colSpan={3} style={{backgroundColor: '#2196F3', color: 'white'}}>{group.groupId}</th>
+                <th key={group.groupId} colSpan={3} style={{background: 'linear-gradient(135deg, #66bb6a 0%, #4caf50 100%)', color: 'white', fontSize: '0.9rem'}}>{group.groupId}</th>
               ))}
               {level2Groups.map(group => (
-                <th key={group.groupId} colSpan={3} style={{backgroundColor: '#FF5722', color: 'white'}}>{group.groupId}</th>
+                <th key={group.groupId} colSpan={3} style={{background: 'linear-gradient(135deg, #42a5f5 0%, #2196f3 100%)', color: 'white', fontSize: '0.9rem'}}>{group.groupId}</th>
+              ))}
+              {level3Groups.map(group => (
+                <th key={group.groupId} colSpan={group.sections.length} style={{background: 'linear-gradient(135deg, #ffa726 0%, #ff9800 100%)', color: 'white', fontSize: '0.9rem'}}>{group.groupId}</th>
+              ))}
+              {level4Groups.map(group => (
+                <th key={group.groupId} colSpan={group.sections.length} style={{background: 'linear-gradient(135deg, #ab47bc 0%, #9c27b0 100%)', color: 'white', fontSize: '0.9rem'}}>{group.groupId}</th>
               ))}
             </tr>
 
@@ -228,13 +301,25 @@ function App() {
               {level1Groups.map(group =>
                 group.sections.map((sectionId: string) => {
                   const sectionNum = sectionId.split('-S')[1];
-                  return <th key={sectionId} style={{fontSize: '0.8rem'}}>S{sectionNum}</th>;
+                  return <th key={sectionId} style={{fontSize: '0.75rem', background: 'linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100)', fontWeight: 'bold'}}>S{sectionNum}</th>;
                 })
               )}
               {level2Groups.map(group =>
                 group.sections.map((sectionId: string) => {
                   const sectionNum = sectionId.split('-S')[1];
-                  return <th key={sectionId} style={{fontSize: '0.8rem'}}>S{sectionNum}</th>;
+                  return <th key={sectionId} style={{fontSize: '0.75rem', background: 'linear-gradient(135deg, #bbdefb 0%, #90caf9 100%)', fontWeight: 'bold'}}>S{sectionNum}</th>;
+                })
+              )}
+              {level3Groups.map(group =>
+                group.sections.map((sectionId: string) => {
+                  const sectionNum = sectionId.split('-S')[1];
+                  return <th key={sectionId} style={{fontSize: '0.75rem', background: 'linear-gradient(135deg, #ffcc80 0%, #ffb74d 100%)', fontWeight: 'bold'}}>{sectionNum}</th>;
+                })
+              )}
+              {level4Groups.map(group =>
+                group.sections.map((sectionId: string) => {
+                  const sectionNum = sectionId.split('-S')[1];
+                  return <th key={sectionId} style={{fontSize: '0.75rem', background: 'linear-gradient(135deg, #ce93d8 0%, #ba68c8 100%)', fontWeight: 'bold', color: 'white'}}>{sectionNum}</th>;
                 })
               )}
             </tr>
@@ -252,25 +337,150 @@ function App() {
                       <td
                         className="time-col"
                         rowSpan={TIME_SLOTS.length}
-                        style={{fontSize: '0.9rem', fontWeight: 'bold', backgroundColor: '#d0d0d0', ...borderStyle}}
+                        style={{
+                          fontSize: '1rem', 
+                          fontWeight: 'bold', 
+                          backgroundColor: '#d0d0d0', 
+                          position: 'sticky',
+                          left: 0,
+                          zIndex: 11,
+                          ...borderStyle
+                        }}
                       >
                         {day}
                         {(firstSlotOfDay = false, null)}
                       </td>
                     )}
 
-                    <td className="time-col" style={{fontSize: '0.8rem', textAlign: 'center', ...borderStyle}}>
+                    <td className="time-col" style={{
+                      fontSize: '0.9rem', 
+                      textAlign: 'center', 
+                      position: 'sticky',
+                      left: 0,
+                      zIndex: 11,
+                      backgroundColor: '#e8e8e8',
+                      ...borderStyle
+                    }}>
                       {slot.time}
                     </td>
 
+                    {/* Level 1 & 2 groups (with 3 sections each) */}
                     {level1Groups.map(group => renderGroupCells(group, day, slot.slot))}
                     {level2Groups.map(group => renderGroupCells(group, day, slot.slot))}
+
+                    {/* Level 3 groups (departments with varying sections) */}
+                    {level3Groups.map(group => {
+                      const lecture = group.lectures.find((lec: Assignment) => lec.day === day && lec.slot === slot.slot);
+                      const allSectionsHaveSameLecture = lecture && group.sections.every((sid: string) => {
+                        const sectionLabs = group.labs_by_section[sid] || [];
+                        return !sectionLabs.find((l: Assignment) => l.day === day && l.slot === slot.slot);
+                      });
+
+                      if (allSectionsHaveSameLecture && lecture) {
+                        // Merge cells for lecture across all sections
+                        return (
+                          <td key={`${group.groupId}-merged`} className="lecture" colSpan={group.sections.length} style={{fontSize: '0.75rem', padding: '8px', minWidth: '130px'}}>
+                            <div style={{fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '3px'}}>{lecture.course_code}</div>
+                            <div style={{fontSize: '0.75rem', marginBottom: '3px', lineHeight: '1.2'}}>{lecture.course_name}</div>
+                            <div style={{color: '#1976d2', fontSize: '0.8rem', marginBottom: '2px'}}>{lecture.instructor}</div>
+                            <div style={{color: '#666', fontSize: '0.7rem'}}>LEC {lecture.room}</div>
+                          </td>
+                        );
+                      }
+
+                      // Separate cells for each section
+                      return group.sections.map((sectionId: string) => {
+                        const labs = group.labs_by_section[sectionId] || [];
+                        const lab = labs.find((l: Assignment) => l.day === day && l.slot === slot.slot);
+                        const sectionLecture = !lab ? lecture : null;
+                        const assignment = lab || sectionLecture;
+                        
+                        if (assignment) {
+                          const isLab = !!lab;
+                          const instructorName = isLab ? (assignment.lab_instructor_name || assignment.instructor || 'Unassigned') : assignment.instructor;
+                          return (
+                            <td key={`${group.groupId}-${sectionId}`} className={isLab ? 'lab' : 'lecture'} style={{fontSize: '0.75rem', padding: '6px', minWidth: '130px'}}>
+                              <div style={{fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '3px'}}>{assignment.course_code}</div>
+                              <div style={{fontSize: '0.7rem', marginBottom: '3px', lineHeight: '1.2'}}>{assignment.course_name}</div>
+                              <div style={{color: isLab ? '#d32f2f' : '#1976d2', fontSize: '0.75rem', marginBottom: '2px'}}>{instructorName}</div>
+                              <div style={{color: '#666', fontSize: '0.7rem'}}>{isLab ? 'LAB' : 'LEC'} {assignment.room}</div>
+                            </td>
+                          );
+                        }
+                        return <td key={`${group.groupId}-${sectionId}`} style={{minWidth: '130px'}}></td>;
+                      });
+                    })}
+
+                    {/* Level 4 groups (departments with varying sections + GP) */}
+                    {level4Groups.map(group => {
+                      const lecture = group.lectures.find((lec: Assignment) => lec.day === day && lec.slot === slot.slot);
+                      const isGP = lecture && (lecture.course_name?.includes('Graduation') || lecture.course_code?.includes('GP'));
+                      const allSectionsHaveSameLecture = lecture && group.sections.every((sid: string) => {
+                        const sectionLabs = group.labs_by_section[sid] || [];
+                        return !sectionLabs.find((l: Assignment) => l.day === day && l.slot === slot.slot);
+                      });
+
+                      if (allSectionsHaveSameLecture && lecture) {
+                        // Merge cells for lecture/GP across all sections
+                        return (
+                          <td key={`${group.groupId}-merged`} 
+                              className="lecture" 
+                              colSpan={group.sections.length} 
+                              style={{
+                                fontSize: '0.75rem', 
+                                padding: '8px', 
+                                minWidth: '130px',
+                                backgroundColor: isGP ? '#FFF9C4' : undefined
+                              }}>
+                            <div style={{fontWeight: 'bold', fontSize: '0.9rem', marginBottom: '3px'}}>
+                              {lecture.course_code} {isGP && '🎓'}
+                            </div>
+                            <div style={{fontSize: '0.75rem', marginBottom: '3px', lineHeight: '1.2'}}>{lecture.course_name}</div>
+                            <div style={{color: '#1976d2', fontSize: '0.8rem', marginBottom: '2px'}}>{lecture.instructor}</div>
+                            <div style={{color: '#666', fontSize: '0.7rem'}}>LEC {lecture.room}</div>
+                          </td>
+                        );
+                      }
+
+                      // Separate cells for each section
+                      return group.sections.map((sectionId: string) => {
+                        const labs = group.labs_by_section[sectionId] || [];
+                        const lab = labs.find((l: Assignment) => l.day === day && l.slot === slot.slot);
+                        const sectionLecture = !lab ? lecture : null;
+                        const assignment = lab || sectionLecture;
+                        
+                        if (assignment) {
+                          const isLab = !!lab;
+                          const isGPCell = assignment.course_name?.includes('Graduation') || assignment.course_code?.includes('GP');
+                          const instructorName = isLab ? (assignment.lab_instructor_name || assignment.instructor || 'Unassigned') : assignment.instructor;
+                          return (
+                            <td key={`${group.groupId}-${sectionId}`} 
+                                className={isLab ? 'lab' : 'lecture'} 
+                                style={{
+                                  fontSize: '0.75rem', 
+                                  padding: '6px', 
+                                  minWidth: '130px',
+                                  backgroundColor: isGPCell ? '#FFF9C4' : undefined
+                                }}>
+                              <div style={{fontWeight: 'bold', fontSize: '0.85rem', marginBottom: '3px'}}>
+                                {assignment.course_code} {isGPCell && '🎓'}
+                              </div>
+                              <div style={{fontSize: '0.7rem', marginBottom: '3px', lineHeight: '1.2'}}>{assignment.course_name}</div>
+                              <div style={{color: isLab ? '#d32f2f' : '#1976d2', fontSize: '0.75rem', marginBottom: '2px'}}>{instructorName}</div>
+                              <div style={{color: '#666', fontSize: '0.7rem'}}>{isLab ? 'LAB' : 'LEC'} {assignment.room}</div>
+                            </td>
+                          );
+                        }
+                        return <td key={`${group.groupId}-${sectionId}`} style={{minWidth: '130px'}}></td>;
+                      });
+                    })}
                   </tr>
                 );
               });
             })}
           </tbody>
         </table>
+        </div>
       </div>
     );
   };
@@ -631,12 +841,7 @@ function App() {
     // Show only the active view
     switch (activeView) {
       case 'levels':
-        return (
-          <>
-            {renderCombinedLevelTable()}
-            {renderSectionSchedules()}
-          </>
-        );
+        return renderCombinedLevelTable();
       case 'professors':
         return renderProfessors();
       case 'rooms':
@@ -652,7 +857,7 @@ function App() {
     <div className="app">
       <div className="container">
         <h1 className="app-header">
-          🎓 CSIT College Timetable
+          CSIT College Timetable
         </h1>
 
         <div style={{backgroundColor: '#e8f5e9', padding: '10px', margin: '10px 0', borderLeft: '4px solid #4CAF50', fontSize: '0.9rem'}}>
@@ -662,9 +867,9 @@ function App() {
           <button
             onClick={handleRegenerate}
             disabled={regenerating}
-            style={{marginTop: '10px', padding: '8px 16px', backgroundColor: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer', borderRadius: '4px'}}
+            style={{marginTop: '10px', padding: '8px 16px', backgroundColor: '#4CAF50', color: 'white', border: 'none', cursor: regenerating ? 'not-allowed' : 'pointer', borderRadius: '4px', opacity: regenerating ? 0.6 : 1}}
           >
-            {regenerating ? '♻️ Regenerating...' : '♻️ Regenerate Timetable'}
+            {regenerating ? 'Regenerating...' : 'Regenerate Timetable'}
           </button>
         </div>
 
@@ -673,25 +878,25 @@ function App() {
             onClick={() => setActiveView('levels')}
             className={activeView === 'levels' ? 'active' : ''}
           >
-            📚 Levels
+            Levels
           </button>
           <button 
             onClick={() => setActiveView('professors')}
             className={activeView === 'professors' ? 'active' : ''}
           >
-            👨‍🏫 Professors
+            Professors
           </button>
           <button 
             onClick={() => setActiveView('rooms')}
             className={activeView === 'rooms' ? 'active' : ''}
           >
-            🏛️ Rooms
+            Rooms
           </button>
           <button 
             onClick={() => setActiveView('lab-instructors')}
             className={activeView === 'lab-instructors' ? 'active' : ''}
           >
-            🔬 Lab Instructors
+            Lab Instructors
           </button>
         </nav>
 

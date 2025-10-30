@@ -407,7 +407,9 @@ body {
   overflow-x: auto;
   width: 100%;
   padding: 0;
-  margin: 0;
+  margin: 0 0 20px 0;
+  border: 2px solid #673AB7;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .combined-table table,
@@ -416,10 +418,11 @@ body {
 .room-schedules table,
 .lab-instructor-schedules table {
   border-collapse: collapse;
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   margin: 0;
-  font-size: 9px;
-  table-layout: fixed;
+  font-size: 11px;
+  table-layout: auto;
 }
 
 .combined-table th,
@@ -432,11 +435,13 @@ body {
 .room-schedules td,
 .lab-instructor-schedules th,
 .lab-instructor-schedules td {
-  border: 1px solid #000;
-  padding: 4px;
+  border: 1px solid #333;
+  padding: 8px 6px;
   text-align: center;
   vertical-align: middle;
-  min-width: 120px;
+  min-width: 140px;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .combined-table th,
@@ -444,41 +449,63 @@ body {
 .professor-schedules th,
 .room-schedules th,
 .lab-instructor-schedules th {
-  background-color: #d0d0d0;
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  color: white;
   font-weight: bold;
-  font-size: 10px;
+  font-size: 12px;
+  padding: 10px 6px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .time-col {
-  background-color: #e8e8e8;
+  background: linear-gradient(135deg, #5e35b1 0%, #4527a0 100%);
+  color: white;
   font-weight: bold;
-  font-size: 9px;
-  min-width: 80px !important;
-  width: 80px;
+  font-size: 11px;
+  min-width: 100px !important;
+  width: 100px;
+  position: sticky;
+  left: 0;
+  z-index: 10;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .day-col {
-  background-color: #d0d0d0;
+  background: linear-gradient(135deg, #673ab7 0%, #512da8 100%);
+  color: white;
   font-weight: bold;
   font-size: 10px;
   min-width: 120px;
   width: auto;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
 
 .lecture {
-  background-color: #e3f2fd;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+  border-left: 4px solid #1976d2;
   font-size: 8px;
   padding: 5px;
   min-height: 60px;
   min-width: 120px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lecture:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
 .lab {
-  background-color: #fff3e0;
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border-left: 4px solid #f57c00;
   font-size: 8px;
   padding: 5px;
   min-height: 60px;
   min-width: 120px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.lab:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
 
 /* Empty cells should also have consistent sizing */
@@ -505,25 +532,99 @@ body {
 }
 
 .instructor {
-  font-size: 7px;
-  color: #1976d2;
+  font-size: 8px;
+  color: #0d47a1;
   font-weight: bold;
   display: block;
   margin-bottom: 1px;
+  text-shadow: 0px 0px 1px rgba(255,255,255,0.8);
+  background-color: rgba(255,255,255,0.4);
+  padding: 2px 4px;
+  border-radius: 3px;
 }
 
 .lab-instructor {
-  font-size: 7px;
-  color: #d32f2f;
+  font-size: 8px;
+  color: #b71c1c;
   font-weight: bold;
   display: block;
   margin-bottom: 1px;
+  text-shadow: 0px 0px 1px rgba(255,255,255,0.8);
+  background-color: rgba(255,255,255,0.4);
+  padding: 2px 4px;
+  border-radius: 3px;
 }
 
 .room {
   font-size: 7px;
   color: #666;
   display: block;
+}
+
+/* Department-specific colors */
+.csc-course {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%) !important;
+  border-left: 4px solid #4caf50 !important;
+}
+
+.cnc-course {
+  background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%) !important;
+  border-left: 4px solid #fbc02d !important;
+}
+
+.bif-course {
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%) !important;
+  border-left: 4px solid #9c27b0 !important;
+}
+
+.aid-course {
+  background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%) !important;
+  border-left: 4px solid #e91e63 !important;
+}
+
+/* Graduation Project styling */
+.gp-course {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%) !important;
+  border-left: 4px solid #d32f2f !important;
+  font-weight: bold;
+  box-shadow: 0 3px 6px rgba(211, 47, 47, 0.3) !important;
+}
+
+/* Math/Statistics courses */
+.math-course {
+  background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%) !important;
+  border-left: 4px solid #0097a7 !important;
+}
+
+/* Language courses */
+.language-course {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%) !important;
+  border-left: 4px solid #ff6f00 !important;
+}
+
+/* Level headers with colors */
+.level-1-header {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%) !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.level-2-header {
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%) !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.level-3-header {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%) !important;
+  color: white !important;
+  font-weight: bold;
+}
+
+.level-4-header {
+  background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%) !important;
+  color: white !important;
+  font-weight: bold;
 }
 
 .metadata {
