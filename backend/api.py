@@ -82,13 +82,21 @@ def initialize_scheduler():
 
 
 @app.route('/api/levels', methods=['GET'])
-def get_levels_table():
+@app.route('/api/levels/<int:level_id>', methods=['GET'])
+def get_levels_table(level_id=None):
     """
     Endpoint 1: Get timetable organized by levels and groups
-    Returns: Timetable for Level 1 and Level 2 with all groups
+    Returns: Timetable for specified level or all levels (1-4)
+
+    Parameters:
+    - level_id (optional): Specific level to retrieve (1, 2, 3, or 4)
     """
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
+
+    # Validate level_id if provided
+    if level_id is not None and level_id not in [1, 2, 3, 4]:
+        return jsonify({"error": f"Invalid level_id: {level_id}. Must be 1, 2, 3, or 4"}), 400
 
     days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"]
     time_slots_info = [
@@ -106,8 +114,11 @@ def get_levels_table():
         "levels": {}
     }
 
-    # Organize by level and group (now includes L1, L2, L3, L4)
-    for level in [1, 2, 3, 4]:
+    # Determine which levels to process
+    levels_to_process = [level_id] if level_id else [1, 2, 3, 4]
+
+    # Organize by level and group
+    for level in levels_to_process:
         levels_data["levels"][f"Level{level}"] = {}
 
         for group in scheduler.groups:
@@ -176,67 +187,15 @@ def get_levels_table():
     return jsonify(levels_data)
 
 
-@app.route('/api/lab-instructors', methods=['GET'])
-def get_lab_instructors_table():
-    """
-    Endpoint 2: Get timetable organized by lab instructors
-    Returns: Schedule for each lab instructor showing their assigned labs
-    """
-    if scheduler is None:
-        return jsonify({"error": "Scheduler not initialized"}), 500
-
-    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"]
-    time_slots_info = [
-        {"slot": 1, "time": "9:00-10:30"},
-        {"slot": 2, "time": "10:45-12:15"},
-        {"slot": 3, "time": "12:30-14:00"},
-        {"slot": 4, "time": "14:15-15:45"}
-    ]
-
-    instructors_data = {
-        "metadata": {
-            "days": days,
-            "time_slots": time_slots_info
-        },
-        "instructors": {}
-    }
-
-    # Group by lab instructor
-    for assignment in scheduler.assignments:
-        if assignment.type == "lab" and assignment.lab_instructor_name:
-            instructor_name = assignment.lab_instructor_name
-
-            if instructor_name not in instructors_data["instructors"]:
-                instructors_data["instructors"][instructor_name] = {
-                    "instructor_id": assignment.lab_instructor_id,
-                    "instructor_name": instructor_name,
-                    "labs": []
-                }
-
-            instructors_data["instructors"][instructor_name]["labs"].append({
-                "day": assignment.time_slot.day,
-                "slot": assignment.time_slot.slot_number,
-                "time": time_slots_info[assignment.time_slot.slot_number - 1]["time"],
-                "course_code": assignment.course_code,
-                "course_name": assignment.course_name,
-                "room": assignment.room,
-                "sections": assignment.assigned_to
-            })
-
-    # Sort each instructor's labs by day and time
-    for instructor in instructors_data["instructors"].values():
-        instructor["labs"].sort(
-            key=lambda x: (days.index(x["day"]), x["slot"])
-        )
-
-    return jsonify(instructors_data)
-
-
 @app.route('/api/professors', methods=['GET'])
-def get_professors_table():
+@app.route('/api/professors/<string:professor_name>', methods=['GET'])
+def get_professors_table(professor_name=None):
     """
     Endpoint 3: Get timetable organized by professors (lecture instructors)
     Returns: Schedule for each professor showing their lectures
+
+    Parameters:
+    - professor_name (optional): Specific professor name to retrieve
     """
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
@@ -260,15 +219,19 @@ def get_professors_table():
     # Group by professor
     for assignment in scheduler.assignments:
         if assignment.type == "lecture" and assignment.instructor:
-            professor_name = assignment.instructor
+            prof_name = assignment.instructor
 
-            if professor_name not in professors_data["professors"]:
-                professors_data["professors"][professor_name] = {
-                    "professor_name": professor_name,
+            # If specific professor requested, skip others
+            if professor_name and prof_name != professor_name:
+                continue
+
+            if prof_name not in professors_data["professors"]:
+                professors_data["professors"][prof_name] = {
+                    "professor_name": prof_name,
                     "lectures": []
                 }
 
-            professors_data["professors"][professor_name]["lectures"].append({
+            professors_data["professors"][prof_name]["lectures"].append({
                 "day": assignment.time_slot.day,
                 "slot": assignment.time_slot.slot_number,
                 "time": time_slots_info[assignment.time_slot.slot_number - 1]["time"],
@@ -277,6 +240,10 @@ def get_professors_table():
                 "room": assignment.room,
                 "groups": assignment.assigned_to
             })
+
+    # If specific professor requested but not found
+    if professor_name and not professors_data["professors"]:
+        return jsonify({"error": f"Professor '{professor_name}' not found"}), 404
 
     # Sort each professor's lectures by day and time
     for professor in professors_data["professors"].values():
@@ -287,11 +254,83 @@ def get_professors_table():
     return jsonify(professors_data)
 
 
+@app.route('/api/lab-instructors', methods=['GET'])
+@app.route('/api/lab-instructors/<string:instructor_name>', methods=['GET'])
+def get_lab_instructors_table(instructor_name=None):
+    """
+    Endpoint 2: Get timetable organized by lab instructors
+    Returns: Schedule for each lab instructor showing their assigned labs
+
+    Parameters:
+    - instructor_name (optional): Specific lab instructor name to retrieve
+    """
+    if scheduler is None:
+        return jsonify({"error": "Scheduler not initialized"}), 500
+
+    days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Saturday"]
+    time_slots_info = [
+        {"slot": 1, "time": "9:00-10:30"},
+        {"slot": 2, "time": "10:45-12:15"},
+        {"slot": 3, "time": "12:30-14:00"},
+        {"slot": 4, "time": "14:15-15:45"}
+    ]
+
+    instructors_data = {
+        "metadata": {
+            "days": days,
+            "time_slots": time_slots_info
+        },
+        "instructors": {}
+    }
+
+    # Group by lab instructor
+    for assignment in scheduler.assignments:
+        if assignment.type == "lab" and assignment.lab_instructor_name:
+            instr_name = assignment.lab_instructor_name
+
+            # If specific instructor requested, skip others
+            if instructor_name and instr_name != instructor_name:
+                continue
+
+            if instr_name not in instructors_data["instructors"]:
+                instructors_data["instructors"][instr_name] = {
+                    "instructor_id": assignment.lab_instructor_id,
+                    "instructor_name": instr_name,
+                    "labs": []
+                }
+
+            instructors_data["instructors"][instr_name]["labs"].append({
+                "day": assignment.time_slot.day,
+                "slot": assignment.time_slot.slot_number,
+                "time": time_slots_info[assignment.time_slot.slot_number - 1]["time"],
+                "course_code": assignment.course_code,
+                "course_name": assignment.course_name,
+                "room": assignment.room,
+                "sections": assignment.assigned_to
+            })
+
+    # If specific instructor requested but not found
+    if instructor_name and not instructors_data["instructors"]:
+        return jsonify({"error": f"Lab instructor '{instructor_name}' not found"}), 404
+
+    # Sort each instructor's labs by day and time
+    for instructor in instructors_data["instructors"].values():
+        instructor["labs"].sort(
+            key=lambda x: (days.index(x["day"]), x["slot"])
+        )
+
+    return jsonify(instructors_data)
+
+
 @app.route('/api/rooms', methods=['GET'])
-def get_rooms_table():
+@app.route('/api/rooms/<string:room_id>', methods=['GET'])
+def get_rooms_table(room_id=None):
     """
     Endpoint 4: Get timetable organized by rooms
     Returns: Schedule for each room showing what's happening when
+
+    Parameters:
+    - room_id (optional): Specific room code/ID to retrieve
     """
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
@@ -316,6 +355,10 @@ def get_rooms_table():
     for assignment in scheduler.assignments:
         room_name = assignment.room
 
+        # If specific room requested, skip others
+        if room_id and room_name != room_id:
+            continue
+
         if room_name not in rooms_data["rooms"]:
             # Find room type
             room_obj = next((r for r in scheduler.rooms if r.room_code == room_name), None)
@@ -338,6 +381,10 @@ def get_rooms_table():
             "assigned_to": assignment.assigned_to
         })
 
+    # If specific room requested but not found
+    if room_id and not rooms_data["rooms"]:
+        return jsonify({"error": f"Room '{room_id}' not found"}), 404
+
     # Sort each room's schedule by day and time
     for room in rooms_data["rooms"].values():
         room["schedule"].sort(
@@ -354,6 +401,71 @@ def health_check():
         "status": "ok",
         "scheduler_initialized": scheduler is not None,
         "assignments": len(scheduler.assignments) if scheduler else 0
+    })
+
+
+@app.route('/api/list/professors', methods=['GET'])
+def list_professors():
+    """
+    Get list of all professors (lecture instructors)
+    Returns: Array of professor names
+    """
+    if scheduler is None:
+        return jsonify({"error": "Scheduler not initialized"}), 500
+
+    professors = set()
+    for assignment in scheduler.assignments:
+        if assignment.type == "lecture" and assignment.instructor:
+            professors.add(assignment.instructor)
+
+    return jsonify({
+        "professors": sorted(list(professors))
+    })
+
+
+@app.route('/api/list/lab-instructors', methods=['GET'])
+def list_lab_instructors():
+    """
+    Get list of all lab instructors
+    Returns: Array of lab instructor names
+    """
+    if scheduler is None:
+        return jsonify({"error": "Scheduler not initialized"}), 500
+
+    instructors = set()
+    for assignment in scheduler.assignments:
+        if assignment.type == "lab" and assignment.lab_instructor_name:
+            instructors.add(assignment.lab_instructor_name)
+
+    return jsonify({
+        "lab_instructors": sorted(list(instructors))
+    })
+
+
+@app.route('/api/list/rooms', methods=['GET'])
+def list_rooms():
+    """
+    Get list of all rooms with basic info
+    Returns: Array of room objects with room_code and room_type
+    """
+    if scheduler is None:
+        return jsonify({"error": "Scheduler not initialized"}), 500
+
+    rooms = []
+    for room in scheduler.rooms:
+        rooms.append({
+            "room_code": room.room_code,
+            "room_type": room.room_type
+        })
+
+    # Sort by room type (lecture first, then lab) and then by room code
+    rooms.sort(key=lambda x: (x["room_type"], x["room_code"]))
+
+    return jsonify({
+        "rooms": rooms,
+        "total_count": len(rooms),
+        "lecture_rooms": len([r for r in rooms if r["room_type"] == "lec"]),
+        "lab_rooms": len([r for r in rooms if r["room_type"] == "lab"])
     })
 
 
@@ -382,12 +494,19 @@ if __name__ == '__main__':
         print("API Server Starting...")
         print("=" * 60)
         print("\nAvailable Endpoints:")
-        print("  - GET  /api/levels           - Timetable by levels and groups")
-        print("  - GET  /api/lab-instructors  - Timetable by lab instructors")
-        print("  - GET  /api/professors       - Timetable by professors")
-        print("  - GET  /api/rooms            - Timetable by rooms")
-        print("  - GET  /api/health           - Health check")
-        print("  - POST /api/regenerate       - Regenerate timetable")
+        print("  - GET  /api/levels                    - Timetable by levels and groups (all levels)")
+        print("  - GET  /api/levels/<id>               - Timetable for specific level (1-4)")
+        print("  - GET  /api/lab-instructors           - Timetable by lab instructors (all)")
+        print("  - GET  /api/lab-instructors/<name>    - Timetable for specific lab instructor")
+        print("  - GET  /api/professors                - Timetable by professors (all)")
+        print("  - GET  /api/professors/<name>         - Timetable for specific professor")
+        print("  - GET  /api/rooms                     - Timetable by rooms (all)")
+        print("  - GET  /api/rooms/<id>                - Timetable for specific room")
+        print("  - GET  /api/list/professors           - List of all professors")
+        print("  - GET  /api/list/lab-instructors      - List of all lab instructors")
+        print("  - GET  /api/list/rooms                - List of all rooms")
+        print("  - GET  /api/health                    - Health check")
+        print("  - POST /api/regenerate                - Regenerate timetable")
         print("\nServer running on http://localhost:5000")
         print("=" * 60 + "\n")
 

@@ -1,16 +1,10 @@
-import './CSS/index.css'
+import { Home } from './pages/Home';
+import './CSS/index.css';
 
 function App() {
-
-
   return (
-    <>
-
-
-    </>
+    <Home />
   );
-
-
-
 }
-export default App
+
+export default App;
