@@ -146,242 +146,81 @@ def load_lab_instructors_from_csv(filename: str) -> List[LabInstructor]:
     return instructors
 
 
-def load_course_data():
-    """Load course data for all levels (1-4)"""
-    level_1_data = {
-        "lectures": [
-            {"course_code": "MTH111", "course_name": "Math 1", "instructor_name": "Prof. Ayman Arafa",
-             "instructor_id": 1, "level": 1},
-            {"course_code": "LRA104", "course_name": "Music", "instructor_name": "Music Prof", "instructor_id": 2,
-             "level": 1},
-            {"course_code": "ECE111", "course_name": "Digital Logic Design", "instructor_name": "Prof. Ahmed Allam",
-             "instructor_id": 3, "level": 1},
-            {"course_code": "CSC111", "course_name": "Fundamentals of Programming",
-             "instructor_name": "Prof. Reda Elbasyoine", "instructor_id": 4, "level": 1},
-            {"course_code": "PHY113", "course_name": "Physics 1", "instructor_name": "Prof. Adel Fathy",
-             "instructor_id": 5, "level": 1},
-            {"course_code": "LRA101", "course_name": "JA Culture", "instructor_name": "Prof. Sherien",
-             "instructor_id": 6, "level": 1}
-        ],
-        "labs": [
-            {"course_code": "PHY113", "course_name": "Physics 1", "room_code": "CEO.PHYLAB", "level": 1},
-            {"course_code": "ECE111", "course_name": "Digital Logic Design", "room_code": "B7.f1.04", "level": 1},
-            {"course_code": "LRA401", "course_name": "JA Language 1", "room_code": "", "level": 1},
-            {"course_code": "CSC111", "course_name": "Fundamentals of Programming", "room_code": "", "level": 1},
-            {"course_code": "MTH111", "course_name": "Math 1", "room_code": "", "level": 1}
-        ]
-    }
+import json
+import os
 
-    level_2_data = {
-        "lectures": [
-            {"course_code": "ACM215", "course_name": "ODE", "instructor_name": "Prof. Ayman Arafa", "instructor_id": 1,
-             "level": 2},
-            {"course_code": "CSC211", "course_name": "Software Engineering", "instructor_name": "Prof. Ahmed Arafa",
-             "instructor_id": 7, "level": 2},
-            {"course_code": "CNC111", "course_name": "Network and Web Programming",
-             "instructor_name": "Prof. Ahmed Antar", "instructor_id": 8, "level": 2},
-            {"course_code": "MTH212", "course_name": "Probability and Statistics",
-             "instructor_name": "Prof. Ahmed Zakaria", "instructor_id": 9, "level": 2},
-            {"course_code": "CSE214", "course_name": "Computer Organization",
-             "instructor_name": "Prof. Mostafa Soliman", "instructor_id": 10, "level": 2},
-            {"course_code": "LRA306", "course_name": "Natural Resources and Sustainability",
-             "instructor_name": "Prof. LRA", "instructor_id": 11, "level": 2}
-        ],
-        "labs": [
-            {"course_code": "ACM215", "course_name": "ODE", "room_code": "", "level": 2},
-            {"course_code": "CSC211", "course_name": "Software Engineering", "room_code": "", "level": 2},
-            {"course_code": "CNC111", "course_name": "Network and Web Programming", "room_code": "", "level": 2},
-            {"course_code": "MTH212", "course_name": "Probability and Statistics", "room_code": "", "level": 2},
-            {"course_code": "CSE214", "course_name": "Computer Organization", "room_code": "", "level": 2},
-            {"course_code": "LRA403", "course_name": "JA Language 3", "room_code": "", "level": 2}
-        ]
-    }
+def load_professors_from_csv(filename: str) -> List[dict]:
+    """Load professors from CSV file"""
+    professors = []
+    if not os.path.exists(filename):
+        return []
+        
+    with open(filename, 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            professors.append({
+                "instructor_id": int(row['instructor_id']),
+                "instructor_name": row['instructor_name']
+            })
+    return professors
 
-    # Level 3 - Department-specific courses
-    level_3_data = {
-        "CSC": {
-            "lectures": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", 
-                 "instructor_name": "Dr. Hataba", "instructor_id": 12, "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", 
-                 "instructor_name": "Dr. Ahmed Bayumi", "instructor_id": 13, "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", 
-                 "instructor_name": "Dr. Mohamed Issa", "instructor_id": 14, "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", 
-                 "instructor_name": "Prof. Samir Ahmed", "instructor_id": 15, "level": 3},
-                {"course_code": "CSC314", "course_name": "Software Modeling and Analysis", 
-                 "instructor_name": "Dr. Mustafa AlSayed", "instructor_id": 16, "level": 3}
-            ],
-            "labs": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", "room_code": "", "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", "room_code": "", "level": 3},
-                {"course_code": "CSC314", "course_name": "Software Modeling and Analysis", "room_code": "", "level": 3}
-            ]
-        },
-        "AID": {
-            "lectures": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", 
-                 "instructor_name": "Dr. Hataba", "instructor_id": 12, "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", 
-                 "instructor_name": "Dr. Ahmed Bayumi", "instructor_id": 13, "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", 
-                 "instructor_name": "Dr. Mohamed Issa", "instructor_id": 14, "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", 
-                 "instructor_name": "Prof. Samir Ahmed", "instructor_id": 15, "level": 3},
-                {"course_code": "AID311", "course_name": "Mathematics of Data Science", 
-                 "instructor_name": "Dr. Ahmed Anter", "instructor_id": 17, "level": 3}
-            ],
-            "labs": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", "room_code": "", "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", "room_code": "", "level": 3},
-                {"course_code": "AID311", "course_name": "Mathematics of Data Science", "room_code": "", "level": 3}
-            ]
-        },
-        "BIF": {
-            "lectures": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", 
-                 "instructor_name": "Dr. Hataba", "instructor_id": 12, "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", 
-                 "instructor_name": "Dr. Ahmed Bayumi", "instructor_id": 13, "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", 
-                 "instructor_name": "Dr. Mohamed Issa", "instructor_id": 14, "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", 
-                 "instructor_name": "Prof. Samir Ahmed", "instructor_id": 15, "level": 3},
-                {"course_code": "BIF311", "course_name": "Human Biology", 
-                 "instructor_name": "Prof. Eman Allam", "instructor_id": 18, "level": 3}
-            ],
-            "labs": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", "room_code": "", "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", "room_code": "", "level": 3},
-                {"course_code": "BIF311", "course_name": "Human Biology", "room_code": "", "level": 3}
-            ]
-        },
-        "CNC": {
-            "lectures": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", 
-                 "instructor_name": "Dr. Hataba", "instructor_id": 12, "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", 
-                 "instructor_name": "Dr. Ahmed Bayumi", "instructor_id": 13, "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", 
-                 "instructor_name": "Dr. Mohamed Issa", "instructor_id": 14, "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", 
-                 "instructor_name": "Prof. Samir Ahmed", "instructor_id": 15, "level": 3},
-                {"course_code": "CNC312", "course_name": "Foundations of Information Systems", 
-                 "instructor_name": "Dr. Reda", "instructor_id": 19, "level": 3}
-            ],
-            "labs": [
-                {"course_code": "CSC317", "course_name": "Computer Graphics and Visualization", "room_code": "", "level": 3},
-                {"course_code": "AID312", "course_name": "Intelligent Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC314", "course_name": "Database Systems", "room_code": "", "level": 3},
-                {"course_code": "CNC311", "course_name": "Computer Networks", "room_code": "", "level": 3},
-                {"course_code": "CNC312", "course_name": "Foundations of Information Systems", "room_code": "", "level": 3}
-            ]
-        }
-    }
+def save_professors_to_csv(filename: str, professors: List[dict]):
+    """Save professors to CSV file"""
+    with open(filename, 'w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=["instructor_id", "instructor_name"])
+        writer.writeheader()
+        for prof in professors:
+            writer.writerow(prof)
 
-    # Level 4 - Department-specific courses with Graduation Projects
-    level_4_data = {
-        "CSC": {
-            "lectures": [
-                {"course_code": "CSC410", "course_name": "Software Quality", 
-                 "instructor_name": "Dr. Mohamed Khames", "instructor_id": 20, "level": 4},
-                {"course_code": "CSC411", "course_name": "Software Verification and Validation", 
-                 "instructor_name": "Dr. Mohamed Akhames", "instructor_id": 21, "level": 4},
-                {"course_code": "CSC412", "course_name": "Software Security", 
-                 "instructor_name": "Dr. Mustafa AlSayed", "instructor_id": 16, "level": 4},
-                {"course_code": "CSC426", "course_name": "Distributed Systems", 
-                 "instructor_name": "Dr. Mustafa AlSayed", "instructor_id": 16, "level": 4},
-                {"course_code": "CSC413", "course_name": "Graduation Project I", 
-                 "instructor_name": "Various", "instructor_id": 999, "level": 4, "is_graduation_project": True}
-            ],
-            "labs": [
-                {"course_code": "CSC410", "course_name": "Software Quality", "room_code": "", "level": 4},
-                {"course_code": "CSC411", "course_name": "Software Verification and Validation", "room_code": "", "level": 4},
-                {"course_code": "CSC412", "course_name": "Software Security", "room_code": "", "level": 4},
-                {"course_code": "CSC426", "course_name": "Distributed Systems", "room_code": "", "level": 4}
-            ]
-        },
-        "AID": {
-            "lectures": [
-                {"course_code": "AID321", "course_name": "Machine Learning", 
-                 "instructor_name": "Prof. Marghany Hassan", "instructor_id": 22, "level": 4},
-                {"course_code": "AID411", "course_name": "Big Data Analytics & Visualization", 
-                 "instructor_name": "Prof. Marghany Hassan", "instructor_id": 22, "level": 4},
-                {"course_code": "AID413", "course_name": "Data Security", 
-                 "instructor_name": "Dr. Ahmed Arafa", "instructor_id": 7, "level": 4},
-                {"course_code": "AID417", "course_name": "Advanced Data Mining", 
-                 "instructor_name": "Dr. Mohamed Issa", "instructor_id": 14, "level": 4},
-                {"course_code": "AID427", "course_name": "New Trends in Data Science", 
-                 "instructor_name": "Dr. Ahmed Arafa", "instructor_id": 7, "level": 4},
-                {"course_code": "AID428", "course_name": "New Trends in AI", 
-                 "instructor_name": "Dr. Ahmed Bayumi", "instructor_id": 13, "level": 4},
-                {"course_code": "AID414", "course_name": "Graduation Project I", 
-                 "instructor_name": "Various", "instructor_id": 999, "level": 4, "is_graduation_project": True}
-            ],
-            "labs": [
-                {"course_code": "AID321", "course_name": "Machine Learning", "room_code": "", "level": 4},
-                {"course_code": "AID411", "course_name": "Big Data Analytics & Visualization", "room_code": "", "level": 4},
-                {"course_code": "AID413", "course_name": "Data Security", "room_code": "", "level": 4},
-                {"course_code": "AID417", "course_name": "Advanced Data Mining", "room_code": "", "level": 4},
-                {"course_code": "AID427", "course_name": "New Trends in Data Science", "room_code": "", "level": 4},
-                {"course_code": "AID428", "course_name": "New Trends in AI", "room_code": "", "level": 4}
-            ]
-        },
-        "BIF": {
-            "lectures": [
-                {"course_code": "BIF411", "course_name": "Structural Bioinformatics", 
-                 "instructor_name": "Dr. Sameh Shreif", "instructor_id": 23, "level": 4},
-                {"course_code": "BIF412", "course_name": "Management and Design of Health Care Systems", 
-                 "instructor_name": "Dr. Sameh Shreif", "instructor_id": 23, "level": 4},
-                {"course_code": "BIF413", "course_name": "Algorithms in Bioinformatics", 
-                 "instructor_name": "Prof. Marghany", "instructor_id": 24, "level": 4},
-                {"course_code": "BIF424", "course_name": "IT Infrastructure", 
-                 "instructor_name": "Dr. Mohamed Akhames", "instructor_id": 21, "level": 4},
-                {"course_code": "BIF425", "course_name": "New Trends in Bioinformatics", 
-                 "instructor_name": "Dr. Mohamed Issa", "instructor_id": 14, "level": 4},
-                {"course_code": "BIF410", "course_name": "Graduation Project I", 
-                 "instructor_name": "Various", "instructor_id": 999, "level": 4, "is_graduation_project": True}
-            ],
-            "labs": [
-                {"course_code": "BIF411", "course_name": "Structural Bioinformatics", "room_code": "", "level": 4},
-                {"course_code": "BIF412", "course_name": "Management and Design of Health Care Systems", "room_code": "", "level": 4},
-                {"course_code": "BIF413", "course_name": "Algorithms in Bioinformatics", "room_code": "", "level": 4},
-                {"course_code": "BIF424", "course_name": "IT Infrastructure", "room_code": "", "level": 4},
-                {"course_code": "BIF425", "course_name": "New Trends in Bioinformatics", "room_code": "", "level": 4}
-            ]
-        },
-        "CNC": {
-            "lectures": [
-                {"course_code": "CNC411", "course_name": "Fundamentals of Cybersecurity", 
-                 "instructor_name": "Dr. Ahmed Arafa", "instructor_id": 7, "level": 4},
-                {"course_code": "CNC413", "course_name": "Digital Forensics", 
-                 "instructor_name": "Prof. Samir Ahmed", "instructor_id": 15, "level": 4},
-                {"course_code": "CNC415", "course_name": "Network Design and Management", 
-                 "instructor_name": "Dr. Mustafa AlSayed", "instructor_id": 16, "level": 4},
-                {"course_code": "CNC418", "course_name": "Software Security", 
-                 "instructor_name": "Dr. Hataba", "instructor_id": 12, "level": 4},
-                {"course_code": "CNC419", "course_name": "IT Security and Risk Management", 
-                 "instructor_name": "Dr. Hataba", "instructor_id": 12, "level": 4},
-                {"course_code": "CNC414", "course_name": "Graduation Project I", 
-                 "instructor_name": "Various", "instructor_id": 999, "level": 4, "is_graduation_project": True}
-            ],
-            "labs": [
-                {"course_code": "CNC411", "course_name": "Fundamentals of Cybersecurity", "room_code": "", "level": 4},
-                {"course_code": "CNC413", "course_name": "Digital Forensics", "room_code": "", "level": 4},
-                {"course_code": "CNC415", "course_name": "Network Design and Management", "room_code": "", "level": 4},
-                {"course_code": "CNC418", "course_name": "Software Security", "room_code": "", "level": 4},
-                {"course_code": "CNC419", "course_name": "IT Security and Risk Management", "room_code": "", "level": 4}
-            ]
-        }
-    }
+def load_course_data(filename: str = None):
+    """Load course data from JSON file"""
+    if not filename or not os.path.exists(filename):
+        print(f"Warning: Course data file not found: {filename}")
+        return {}, {}, {}, {}
+        
+    with open(filename, 'r', encoding='utf-8') as file:
+        data = json.load(file)
+        
+    return data.get("level_1", {}), data.get("level_2", {}), data.get("level_3", {}), data.get("level_4", {})
 
-    return level_1_data, level_2_data, level_3_data, level_4_data
+def save_course_data(filename: str, level_1: dict, level_2: dict, level_3: dict, level_4: dict):
+    """Save course data to JSON file"""
+    data = {
+        "level_1": level_1,
+        "level_2": level_2,
+        "level_3": level_3,
+        "level_4": level_4
+    }
+    
+    with open(filename, 'w', encoding='utf-8') as file:
+        json.dump(data, file, indent=4)
+
+def save_rooms_to_csv(filename: str, rooms: List[Room]):
+    """Save rooms to CSV file"""
+    with open(filename, 'w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=["room_code", "room_type", "capacity", "building"])
+        writer.writeheader()
+        for room in rooms:
+            writer.writerow({
+                "room_code": room.room_code,
+                "room_type": room.room_type,
+                "capacity": room.capacity,
+                "building": room.building
+            })
+
+def save_lab_instructors_to_csv(filename: str, instructors: List[LabInstructor]):
+    """Save lab instructors to CSV file"""
+    with open(filename, 'w', newline='', encoding='utf-8') as file:
+        writer = csv.DictWriter(file, fieldnames=["instructor_id", "instructor_name", "qualified_labs", "max_hours_per_week", "instructor_type"])
+        writer.writeheader()
+        for inst in instructors:
+            writer.writerow({
+                "instructor_id": inst.instructor_id,
+                "instructor_name": inst.instructor_name,
+                "qualified_labs": "|".join(inst.qualified_labs),
+                "max_hours_per_week": inst.max_hours_per_week,
+                "instructor_type": inst.instructor_type
+            })
 
 
 
