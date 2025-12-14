@@ -36,9 +36,9 @@ def initialize_scheduler():
         backend_dir = os.path.dirname(os.path.abspath(__file__))
         # CSV folder is in the Backend directory
         csv_dir = os.path.join(backend_dir, "CSV")
-    
+
     csv_dir = os.path.abspath(csv_dir)
-    
+
     # Verify CSV directory exists
     if not os.path.exists(csv_dir):
         raise Exception(f"CSV directory not found: {csv_dir}")
@@ -46,7 +46,7 @@ def initialize_scheduler():
     # Build CSV file paths
     rooms_csv = os.path.join(csv_dir, "rooms.csv")
     lab_instructors_csv = os.path.join(csv_dir, "inslab.csv")
-    
+
     # Verify CSV files exist
     if not os.path.exists(rooms_csv):
         raise Exception(f"rooms.csv not found: {rooms_csv}")

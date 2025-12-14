@@ -1,5 +1,7 @@
 :root{
     --bg-color:#0A0A0A;
+    --red-color:#8B0000;
+    --black-color:#050708;
     --text-color: #FBF9F5;
     --font-family: 'jetbrains mono';
 }
