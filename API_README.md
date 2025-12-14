@@ -24,6 +24,11 @@ Get timetable organized by levels and groups.
 **Request:**
 ```bash
 GET http://localhost:5000/api/levels
+GET http://localhost:5000/api/levels/1
+```
+
+**Parameters:**
+- `level_id` (optional): Specific level to retrieve (1, 2, 3, or 4)
 ```
 
 **Response:**
@@ -56,6 +61,11 @@ Get timetable organized by lab instructors.
 **Request:**
 ```bash
 GET http://localhost:5000/api/lab-instructors
+GET http://localhost:5000/api/lab-instructors/John%20Doe
+```
+
+**Parameters:**
+- `instructor_name` (optional): Specific lab instructor name to retrieve
 ```
 
 **Response:**
@@ -88,6 +98,11 @@ Get timetable organized by professors (lecture instructors).
 **Request:**
 ```bash
 GET http://localhost:5000/api/professors
+GET http://localhost:5000/api/professors/Dr.%20Smith
+```
+
+**Parameters:**
+- `professor_name` (optional): Specific professor name to retrieve
 ```
 
 **Response:**
@@ -119,6 +134,11 @@ Get timetable organized by rooms.
 **Request:**
 ```bash
 GET http://localhost:5000/api/rooms
+GET http://localhost:5000/api/rooms/A101
+```
+
+**Parameters:**
+- `room_id` (optional): Specific room code/ID to retrieve
 ```
 
 **Response:**
@@ -146,7 +166,58 @@ GET http://localhost:5000/api/rooms
 }
 ```
 
-### 5. Health Check - `/api/health`
+### 5. List Professors - `/api/list/professors`
+Get a list of all professors.
+
+**Request:**
+```bash
+GET http://localhost:5000/api/list/professors
+```
+
+**Response:**
+```json
+{
+  "professors": ["Dr. Smith", "Dr. Jones", ...]
+}
+```
+
+### 6. List Lab Instructors - `/api/list/lab-instructors`
+Get a list of all lab instructors.
+
+**Request:**
+```bash
+GET http://localhost:5000/api/list/lab-instructors
+```
+
+**Response:**
+```json
+{
+  "lab_instructors": ["John Doe", "Jane Doe", ...]
+}
+```
+
+### 7. List Rooms - `/api/list/rooms`
+Get a list of all rooms with their types.
+
+**Request:**
+```bash
+GET http://localhost:5000/api/list/rooms
+```
+
+**Response:**
+```json
+{
+  "rooms": [
+    {"room_code": "A101", "room_type": "lec"},
+    {"room_code": "Lab1", "room_type": "lab"}
+  ],
+  "total_count": 20,
+  "lecture_rooms": 10,
+  "lab_rooms": 10
+}
+```
+
+### 8. Health Check - `/api/health`
 Check API status.
 
 **Request:**
@@ -163,7 +234,7 @@ GET http://localhost:5000/api/health
 }
 ```
 
-### 6. Regenerate Schedule - `/api/regenerate`
+### 9. Regenerate Schedule - `/api/regenerate`
 Regenerate the timetable.
 
 **Request:**
