@@ -7,20 +7,22 @@ import TA from './TA';
 export const Home = () => {
   const [currentView, setCurrentView] = useState('home');
 
+  const goToHome = () => setCurrentView('home');
+
   const renderView = () => {
     switch (currentView) {
       case 'admin':
-        return <Admin />;
+        return <Admin onBackToHome={goToHome} />;
       case 'student':
-        return <Student />;
+        return <Student onBackToHome={goToHome} />;
       case 'prof':
-        return <Prof />;
+        return <Prof onBackToHome={goToHome} />;
       case 'ta':
-        return <TA />;
+        return <TA onBackToHome={goToHome} />;
       default:
         return (
           <div className="home-container">
-            <h1>Welcome to TimeTabe generator </h1>
+            <h1>Welcome to Timetable Generator</h1>
             <div className="button-group">
               <button className="nav-button" onClick={() => setCurrentView('admin')}>Admin</button>
               <button className="nav-button" onClick={() => setCurrentView('student')}>Student</button>
@@ -34,9 +36,6 @@ export const Home = () => {
 
   return (
     <>
-      {currentView !== 'home' && (
-        <button className="back-button" onClick={() => setCurrentView('home')}>Back to Home</button>
-      )}
       {renderView()}
     </>
   );
