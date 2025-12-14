@@ -1,0 +1,181 @@
+1. for each dep maybe around 5 lecures and 4 to 5 labs 
+2. they yes they share the lecure 
+3. each section has it is own lab , each section should take the lab once in  the week . (what do you mean by 2 slot in lv1,lv2)?
+4. the profs will be assigned to the lectures like lv1 and 2 
+5. lv1 = {
+    lecs = {
+        {courseCode = "MTH111", courseName = "Math 1", instructorName = "Prof. Ayman Arafa", instructorId = 1},
+        {courseCode = "LRA104", courseName = "Music", instructorName = "Music Prof", instructorId = 2},
+        {courseCode = "ECE111", courseName = "Digital Logic Design", instructorName = "Prof. Ahmed Allam", instructorId = 3},
+        {courseCode = "CSC111", courseName = "Fundamentals of Programming", instructorName = "Prof. Reda Elbasyoine", instructorId = 4},
+        {courseCode = "PHY113", courseName = "Physics 1", instructorName = "Prof. Adel Fathy", instructorId = 5},
+        {courseCode = "LRA101", courseName = "JA Culture", instructorName = "Prof. Sherien", instructorId = 6}
+    },
+    labs = {
+        {courseCode = "PHY113", courseName = "Physics 1", roomCode = "CEO.PHYLAB"},
+        {courseCode = "ECE111", courseName = "Digital Logic Design", roomCode = "B7.f1.04"},
+        {courseCode = "LRA401", courseName = "JA Language 1", roomCode = ""},
+        {courseCode = "CSC111", courseName = "Fundamentals of Programming", roomCode = ""},
+        {courseCode = "MTH111", courseName = "Math 1", roomCode = ""}
+    }
+}
+
+lv2 = {
+    lecs = {
+        {courseCode = "ACM215", courseName = "ODE", instructorName = "Prof. Ayman Arafa", instructorId = 1},
+        {courseCode = "CSC211", courseName = "Software Engineering", instructorName = "Prof. Ahmed Arafa", instructorId = 7},
+        {courseCode = "CNC111", courseName = "Network and Web Programming", instructorName = "Prof. Ahmed Antar", instructorId = 8},
+        {courseCode = "MTH212", courseName = "Probability and Statistics", instructorName = "Prof. Ahmed Zakaria", instructorId = 9},
+        {courseCode = "CSE214", courseName = "Computer Organization", instructorName = "Prof. Mostafa Soliman", instructorId = 10},
+        {courseCode = "LRA306", courseName = "Natural Resources and Sustainability", instructorName = "Prof. LRA", instructorId = 11}
+    },
+    labs = {
+        {courseCode = "ACM215", courseName = "ODE", roomCode = ""},
+        {courseCode = "CSC211", courseName = "Software Engineering", roomCode = ""},
+        {courseCode = "CNC111", courseName = "Network and Web Programming", roomCode = ""},
+        {courseCode = "MTH212", courseName = "Probability and Statistics", roomCode = ""},
+        {courseCode = "CSE214", courseName = "Computer Organization", roomCode = ""},
+        {courseCode = "LRA403", courseName = "JA Language 3", roomCode = ""}
+    }
+}
+lv3 = {
+    CSC = {
+        lecs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", instructorName = "Dr. Hataba", instructorId = 12},
+            {courseCode = "AID312", courseName = "Intelligent Systems", instructorName = "Dr. Ahmed Bayumi", instructorId = 13},
+            {courseCode = "CNC314", courseName = "Database Systems", instructorName = "Dr. Mohamed Issa", instructorId = 14},
+            {courseCode = "CNC311", courseName = "Computer Networks", instructorName = "Prof. Samir Ahmed", instructorId = 15},
+            {courseCode = "CSC314", courseName = "Software Modeling and Analysis", instructorName = "Dr. Mustafa AlSayed", instructorId = 16}
+        },
+        labs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", roomCode = ""},
+            {courseCode = "AID312", courseName = "Intelligent Systems", roomCode = ""},
+            {courseCode = "CNC314", courseName = "Database Systems", roomCode = ""},
+            {courseCode = "CNC311", courseName = "Computer Networks", roomCode = ""},
+            {courseCode = "CSC314", courseName = "Software Modeling and Analysis", roomCode = ""}
+        }
+    },
+    AID = {
+        lecs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", instructorName = "Dr. Hataba", instructorId = 12},
+            {courseCode = "AID312", courseName = "Intelligent Systems", instructorName = "Dr. Ahmed Bayumi", instructorId = 13},
+            {courseCode = "CNC314", courseName = "Database Systems", instructorName = "Dr. Mohamed Issa", instructorId = 14},
+            {courseCode = "CNC311", courseName = "Computer Networks", instructorName = "Prof. Samir Ahmed", instructorId = 15},
+            {courseCode = "AID311", courseName = "Mathematics of Data Science", instructorName = "Dr. Ahmed Anter", instructorId = 17}
+        },
+        labs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", roomCode = ""},
+            {courseCode = "AID312", courseName = "Intelligent Systems", roomCode = ""},
+            {courseCode = "CNC314", courseName = "Database Systems", roomCode = ""},
+            {courseCode = "CNC311", courseName = "Computer Networks", roomCode = ""},
+            {courseCode = "AID311", courseName = "Mathematics of Data Science", roomCode = ""}
+        }
+    },
+    BIF = {
+        lecs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", instructorName = "Dr. Hataba", instructorId = 12},
+            {courseCode = "AID312", courseName = "Intelligent Systems", instructorName = "Dr. Ahmed Bayumi", instructorId = 13},
+            {courseCode = "CNC314", courseName = "Database Systems", instructorName = "Dr. Mohamed Issa", instructorId = 14},
+            {courseCode = "CNC311", courseName = "Computer Networks", instructorName = "Prof. Samir Ahmed", instructorId = 15},
+            {courseCode = "BIF311", courseName = "Human Biology", instructorName = "Prof. Eman Allam", instructorId = 18}
+        },
+        labs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", roomCode = ""},
+            {courseCode = "AID312", courseName = "Intelligent Systems", roomCode = ""},
+            {courseCode = "CNC314", courseName = "Database Systems", roomCode = ""},
+            {courseCode = "CNC311", courseName = "Computer Networks", roomCode = ""},
+            {courseCode = "BIF311", courseName = "Human Biology", roomCode = ""}
+        }
+    },
+    CNC = {
+        lecs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", instructorName = "Dr. Hataba", instructorId = 12},
+            {courseCode = "AID312", courseName = "Intelligent Systems", instructorName = "Dr. Ahmed Bayumi", instructorId = 13},
+            {courseCode = "CNC314", courseName = "Database Systems", instructorName = "Dr. Mohamed Issa", instructorId = 14},
+            {courseCode = "CNC311", courseName = "Computer Networks", instructorName = "Prof. Samir Ahmed", instructorId = 15},
+            {courseCode = "CNC312", courseName = "Foundations of Information Systems", instructorName = "Dr. Reda", instructorId = 19}
+        },
+        labs = {
+            {courseCode = "CSC317", courseName = "Computer Graphics and Visualization", roomCode = ""},
+            {courseCode = "AID312", courseName = "Intelligent Systems", roomCode = ""},
+            {courseCode = "CNC314", courseName = "Database Systems", roomCode = ""},
+            {courseCode = "CNC311", courseName = "Computer Networks", roomCode = ""},
+            {courseCode = "CNC312", courseName = "Foundations of Information Systems", roomCode = ""}
+        }
+    }
+}
+
+lv4 = {
+    CSC = {
+        lecs = {
+            {courseCode = "CSC410", courseName = "Software Quality", instructorName = "Dr. Mohamed Khames", instructorId = 20},
+            {courseCode = "CSC411", courseName = "Software Verification and Validation", instructorName = "Dr. Mohamed Akhames", instructorId = 21},
+            {courseCode = "CSC412", courseName = "Software Security", instructorName = "Dr. Mustafa AlSayed", instructorId = 16},
+            {courseCode = "CSC426", courseName = "Distributed Systems", instructorName = "Dr. Mustafa AlSayed", instructorId = 16},
+            {courseCode = "CSC413", courseName = "Graduation Project I", instructorName = "", instructorId = ""}
+        },
+        labs = {
+            {courseCode = "CSC410", courseName = "Software Quality", roomCode = ""},
+            {courseCode = "CSC411", courseName = "Software Verification and Validation", roomCode = ""},
+            {courseCode = "CSC412", courseName = "Software Security", roomCode = ""},
+            {courseCode = "CSC426", courseName = "Distributed Systems", roomCode = ""}
+        }
+    },
+    AID = {
+        lecs = {
+            {courseCode = "AID321", courseName = "Machine Learning", instructorName = "Prof. Marghany Hassan", instructorId = 22},
+            {courseCode = "AID411", courseName = "Big Data Analytics & Visualization", instructorName = "Prof. Marghany Hassan", instructorId = 22},
+            {courseCode = "AID413", courseName = "Data Security", instructorName = "Dr. Ahmed Arafa", instructorId = 7},
+            {courseCode = "AID417", courseName = "Advanced Data Mining", instructorName = "Dr. Mohamed Issa", instructorId = 14},
+            {courseCode = "AID427", courseName = "New Trends in Data Science", instructorName = "Dr. Ahmed Arafa", instructorId = 7},
+            {courseCode = "AID428", courseName = "New Trends in AI", instructorName = "Dr. Ahmed Bayumi", instructorId = 13},
+            {courseCode = "AID414", courseName = "Graduation Project I", instructorName = "", instructorId = ""}
+        },
+        labs = {
+            {courseCode = "AID321", courseName = "Machine Learning", roomCode = ""},
+            {courseCode = "AID411", courseName = "Big Data Analytics & Visualization", roomCode = ""},
+            {courseCode = "AID413", courseName = "Data Security", roomCode = ""},
+            {courseCode = "AID417", courseName = "Advanced Data Mining", roomCode = ""},
+            {courseCode = "AID427", courseName = "New Trends in Data Science", roomCode = ""},
+            {courseCode = "AID428", courseName = "New Trends in AI", roomCode = ""}
+        }
+    },
+    BIF = {
+        lecs = {
+            {courseCode = "BIF411", courseName = "Structural Bioinformatics", instructorName = "Dr. Sameh Shreif", instructorId = 23},
+            {courseCode = "BIF412", courseName = "Management and Design of Health Care Systems", instructorName = "Dr. Sameh Shreif", instructorId = 23},
+            {courseCode = "BIF413", courseName = "Algorithms in Bioinformatics", instructorName = "Prof. Marghany", instructorId = 24},
+            {courseCode = "BIF424", courseName = "IT Infrastructure", instructorName = "Dr. Mohamed Akhames", instructorId = 21},
+            {courseCode = "BIF425", courseName = "New Trends in Bioinformatics", instructorName = "Dr. Mohamed Issa", instructorId = 14},
+            {courseCode = "BIF410", courseName = "Graduation Project I", instructorName = "", instructorId = ""}
+        },
+        labs = {
+            {courseCode = "BIF411", courseName = "Structural Bioinformatics", roomCode = ""},
+            {courseCode = "BIF412", courseName = "Management and Design of Health Care Systems", roomCode = ""},
+            {courseCode = "BIF413", courseName = "Algorithms in Bioinformatics", roomCode = ""},
+            {courseCode = "BIF424", courseName = "IT Infrastructure", roomCode = ""},
+            {courseCode = "BIF425", courseName = "New Trends in Bioinformatics", roomCode = ""}
+        }
+    },
+    CNC = {
+        lecs = {
+            {courseCode = "CNC411", courseName = "Fundamentals of Cybersecurity", instructorName = "Dr. Ahmed Arafa", instructorId = 7},
+            {courseCode = "CNC413", courseName = "Digital Forensics", instructorName = "Prof. Samir Ahmed", instructorId = 15},
+            {courseCode = "CNC415", courseName = "Network Design and Management", instructorName = "Dr. Mustafa AlSayed", instructorId = 16},
+            {courseCode = "CNC418", courseName = "Software Security", instructorName = "Dr. Hataba", instructorId = 12},
+            {courseCode = "CNC419", courseName = "IT Security and Risk Management", instructorName = "Dr. Hataba", instructorId = 12},
+            {courseCode = "CNC414", courseName = "Graduation Project I", instructorName = "", instructorId = ""}
+        },
+        labs = {
+            {courseCode = "CNC411", courseName = "Fundamentals of Cybersecurity", roomCode = ""},
+            {courseCode = "CNC413", courseName = "Digital Forensics", roomCode = ""},
+            {courseCode = "CNC415", courseName = "Network Design and Management", roomCode = ""},
+            {courseCode = "CNC418", courseName = "Software Security", roomCode = ""},
+            {courseCode = "CNC419", courseName = "IT Security and Risk Management", roomCode = ""}
+        }
+    }
+}
+6. all the lab ins will be in inslab.csv (maybe we separe them later if needed but now never mind)
+7. the same time slots 
+8. no it will be enogh
+// note that for level 4 there a coure which is a gradution project and this should take a whole day for each department .
