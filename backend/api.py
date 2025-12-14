@@ -1,6 +1,6 @@
 """
 Flask API for Timetable System
-Provides 4 endpoints for different timetable views
+Provides endpoints for timetable views and data management
 """
 
 from flask import Flask, jsonify, request
@@ -11,21 +11,37 @@ from app.data_loader import (
     generate_groups_and_sections,
     load_rooms_from_csv,
     load_lab_instructors_from_csv,
-    load_course_data
+    load_course_data,
+    load_professors_from_csv,
+    save_course_data,
+    save_rooms_to_csv,
+    save_lab_instructors_to_csv,
+    save_professors_to_csv
 )
 from app.instructor_assignment import assign_instructors_to_labs
+from app.models import Room, LabInstructor
 import os
+import json
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for frontend access
 
-# Global scheduler instance
+# Global scheduler instance and data
 scheduler = None
-
+global_data = {
+    "rooms": [],
+    "lab_instructors": [],
+    "professors": [],
+    "level_1": {},
+    "level_2": {},
+    "level_3": {},
+    "level_4": {}
+}
+file_paths = {}
 
 def initialize_scheduler():
     """Initialize and generate the timetable"""
-    global scheduler
+    global scheduler, global_data, file_paths
 
     print("Initializing timetable scheduler...")
 
@@ -43,28 +59,40 @@ def initialize_scheduler():
     if not os.path.exists(csv_dir):
         raise Exception(f"CSV directory not found: {csv_dir}")
 
-    # Build CSV file paths
-    rooms_csv = os.path.join(csv_dir, "rooms.csv")
-    lab_instructors_csv = os.path.join(csv_dir, "inslab.csv")
+    # Build file paths
+    file_paths = {
+        "rooms": os.path.join(csv_dir, "rooms.csv"),
+        "lab_instructors": os.path.join(csv_dir, "inslab.csv"),
+        "professors": os.path.join(csv_dir, "professors.csv"),
+        "courses": os.path.join(csv_dir, "courses.json")
+    }
 
-    # Verify CSV files exist
-    if not os.path.exists(rooms_csv):
-        raise Exception(f"rooms.csv not found: {rooms_csv}")
-    if not os.path.exists(lab_instructors_csv):
-        raise Exception(f"inslab.csv not found: {lab_instructors_csv}")
+    # Verify critical files exist
+    if not os.path.exists(file_paths["rooms"]):
+        raise Exception(f"rooms.csv not found: {file_paths['rooms']}")
+    if not os.path.exists(file_paths["lab_instructors"]):
+        raise Exception(f"inslab.csv not found: {file_paths['lab_instructors']}")
 
     # Load all data
     time_slots = generate_time_slots()
     groups, sections = generate_groups_and_sections()
-    rooms = load_rooms_from_csv(rooms_csv)
-    lab_instructors = load_lab_instructors_from_csv(lab_instructors_csv)
-    level_1_data, level_2_data, level_3_data, level_4_data = load_course_data()
+    
+    global_data["rooms"] = load_rooms_from_csv(file_paths["rooms"])
+    global_data["lab_instructors"] = load_lab_instructors_from_csv(file_paths["lab_instructors"])
+    global_data["professors"] = load_professors_from_csv(file_paths["professors"])
+    
+    l1, l2, l3, l4 = load_course_data(file_paths["courses"])
+    global_data["level_1"] = l1
+    global_data["level_2"] = l2
+    global_data["level_3"] = l3
+    global_data["level_4"] = l4
 
     # Create scheduler
     scheduler = TimetableScheduler(
-        rooms, groups, sections, time_slots,
-        level_1_data, level_2_data, level_3_data, level_4_data,
-        lab_instructors
+        global_data["rooms"], groups, sections, time_slots,
+        global_data["level_1"], global_data["level_2"], 
+        global_data["level_3"], global_data["level_4"],
+        global_data["lab_instructors"]
     )
 
     # Generate schedule
@@ -73,7 +101,7 @@ def initialize_scheduler():
         raise Exception("Failed to generate timetable")
 
     # Assign lab instructors
-    instructor_success = assign_instructors_to_labs(scheduler, lab_instructors)
+    instructor_success = assign_instructors_to_labs(scheduler, global_data["lab_instructors"])
     if not instructor_success:
         print("Warning: Not all lab instructors could be assigned")
 
@@ -81,20 +109,16 @@ def initialize_scheduler():
     return scheduler
 
 
+# ==========================================
+# Timetable View Endpoints
+# ==========================================
+
 @app.route('/api/levels', methods=['GET'])
 @app.route('/api/levels/<int:level_id>', methods=['GET'])
 def get_levels_table(level_id=None):
-    """
-    Endpoint 1: Get timetable organized by levels and groups
-    Returns: Timetable for specified level or all levels (1-4)
-
-    Parameters:
-    - level_id (optional): Specific level to retrieve (1, 2, 3, or 4)
-    """
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
-    # Validate level_id if provided
     if level_id is not None and level_id not in [1, 2, 3, 4]:
         return jsonify({"error": f"Invalid level_id: {level_id}. Must be 1, 2, 3, or 4"}), 400
 
@@ -114,10 +138,8 @@ def get_levels_table(level_id=None):
         "levels": {}
     }
 
-    # Determine which levels to process
     levels_to_process = [level_id] if level_id else [1, 2, 3, 4]
 
-    # Organize by level and group
     for level in levels_to_process:
         levels_data["levels"][f"Level{level}"] = {}
 
@@ -125,10 +147,7 @@ def get_levels_table(level_id=None):
             if group.level != level:
                 continue
 
-            # Collect all assignments for this group (lectures + labs from all sections)
             group_assignments = []
-
-            # Get lectures (shared by all sections in the group)
             for day in days:
                 for slot_num in range(1, 5):
                     lectures = [
@@ -153,11 +172,9 @@ def get_levels_table(level_id=None):
                             "sections": lecture.assigned_to
                         })
 
-            # Get labs for each section in the group
             section_labs = {}
             for section in group.sections:
                 section_labs[section.section_id] = []
-
                 labs = [
                     a for a in scheduler.assignments
                     if a.type == "lab"
@@ -190,13 +207,6 @@ def get_levels_table(level_id=None):
 @app.route('/api/professors', methods=['GET'])
 @app.route('/api/professors/<string:professor_name>', methods=['GET'])
 def get_professors_table(professor_name=None):
-    """
-    Endpoint 3: Get timetable organized by professors (lecture instructors)
-    Returns: Schedule for each professor showing their lectures
-
-    Parameters:
-    - professor_name (optional): Specific professor name to retrieve
-    """
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
@@ -209,19 +219,13 @@ def get_professors_table(professor_name=None):
     ]
 
     professors_data = {
-        "metadata": {
-            "days": days,
-            "time_slots": time_slots_info
-        },
+        "metadata": {"days": days, "time_slots": time_slots_info},
         "professors": {}
     }
 
-    # Group by professor
     for assignment in scheduler.assignments:
         if assignment.type == "lecture" and assignment.instructor:
             prof_name = assignment.instructor
-
-            # If specific professor requested, skip others
             if professor_name and prof_name != professor_name:
                 continue
 
@@ -241,15 +245,11 @@ def get_professors_table(professor_name=None):
                 "groups": assignment.assigned_to
             })
 
-    # If specific professor requested but not found
     if professor_name and not professors_data["professors"]:
         return jsonify({"error": f"Professor '{professor_name}' not found"}), 404
 
-    # Sort each professor's lectures by day and time
     for professor in professors_data["professors"].values():
-        professor["lectures"].sort(
-            key=lambda x: (days.index(x["day"]), x["slot"])
-        )
+        professor["lectures"].sort(key=lambda x: (days.index(x["day"]), x["slot"]))
 
     return jsonify(professors_data)
 
@@ -257,13 +257,6 @@ def get_professors_table(professor_name=None):
 @app.route('/api/lab-instructors', methods=['GET'])
 @app.route('/api/lab-instructors/<string:instructor_name>', methods=['GET'])
 def get_lab_instructors_table(instructor_name=None):
-    """
-    Endpoint 2: Get timetable organized by lab instructors
-    Returns: Schedule for each lab instructor showing their assigned labs
-
-    Parameters:
-    - instructor_name (optional): Specific lab instructor name to retrieve
-    """
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
@@ -276,19 +269,13 @@ def get_lab_instructors_table(instructor_name=None):
     ]
 
     instructors_data = {
-        "metadata": {
-            "days": days,
-            "time_slots": time_slots_info
-        },
+        "metadata": {"days": days, "time_slots": time_slots_info},
         "instructors": {}
     }
 
-    # Group by lab instructor
     for assignment in scheduler.assignments:
         if assignment.type == "lab" and assignment.lab_instructor_name:
             instr_name = assignment.lab_instructor_name
-
-            # If specific instructor requested, skip others
             if instructor_name and instr_name != instructor_name:
                 continue
 
@@ -309,15 +296,11 @@ def get_lab_instructors_table(instructor_name=None):
                 "sections": assignment.assigned_to
             })
 
-    # If specific instructor requested but not found
     if instructor_name and not instructors_data["instructors"]:
         return jsonify({"error": f"Lab instructor '{instructor_name}' not found"}), 404
 
-    # Sort each instructor's labs by day and time
     for instructor in instructors_data["instructors"].values():
-        instructor["labs"].sort(
-            key=lambda x: (days.index(x["day"]), x["slot"])
-        )
+        instructor["labs"].sort(key=lambda x: (days.index(x["day"]), x["slot"]))
 
     return jsonify(instructors_data)
 
@@ -325,13 +308,6 @@ def get_lab_instructors_table(instructor_name=None):
 @app.route('/api/rooms', methods=['GET'])
 @app.route('/api/rooms/<string:room_id>', methods=['GET'])
 def get_rooms_table(room_id=None):
-    """
-    Endpoint 4: Get timetable organized by rooms
-    Returns: Schedule for each room showing what's happening when
-
-    Parameters:
-    - room_id (optional): Specific room code/ID to retrieve
-    """
     if scheduler is None:
         return jsonify({"error": "Scheduler not initialized"}), 500
 
@@ -344,23 +320,16 @@ def get_rooms_table(room_id=None):
     ]
 
     rooms_data = {
-        "metadata": {
-            "days": days,
-            "time_slots": time_slots_info
-        },
+        "metadata": {"days": days, "time_slots": time_slots_info},
         "rooms": {}
     }
 
-    # Group by room
     for assignment in scheduler.assignments:
         room_name = assignment.room
-
-        # If specific room requested, skip others
         if room_id and room_name != room_id:
             continue
 
         if room_name not in rooms_data["rooms"]:
-            # Find room type
             room_obj = next((r for r in scheduler.rooms if r.room_code == room_name), None)
             room_type = room_obj.room_type if room_obj else "unknown"
 
@@ -381,17 +350,244 @@ def get_rooms_table(room_id=None):
             "assigned_to": assignment.assigned_to
         })
 
-    # If specific room requested but not found
     if room_id and not rooms_data["rooms"]:
         return jsonify({"error": f"Room '{room_id}' not found"}), 404
 
-    # Sort each room's schedule by day and time
     for room in rooms_data["rooms"].values():
-        room["schedule"].sort(
-            key=lambda x: (days.index(x["day"]), x["slot"])
-        )
+        room["schedule"].sort(key=lambda x: (days.index(x["day"]), x["slot"]))
 
     return jsonify(rooms_data)
+
+
+# ==========================================
+# Data Management Endpoints (CRUD)
+# ==========================================
+
+@app.route('/api/manage/courses', methods=['GET', 'POST', 'DELETE'])
+def manage_courses():
+    """Manage courses (lectures and labs)"""
+    if request.method == 'GET':
+        return jsonify({
+            "level_1": global_data["level_1"],
+            "level_2": global_data["level_2"],
+            "level_3": global_data["level_3"],
+            "level_4": global_data["level_4"]
+        })
+
+    if request.method == 'POST':
+        data = request.json
+        # Expected format: 
+        # { "level": 1, "has_lab": true, "data": { ... } }
+        # or for L3/L4: 
+        # { "level": 3, "department": "CSC", "has_lab": true, "data": { ... } }
+        
+        try:
+            level = int(data.get("level"))
+            has_lab = data.get("has_lab", False)
+            course_data = data.get("data")
+            
+            # Prepare Lab Data if needed
+            lab_data = None
+            if has_lab:
+                lab_data = {
+                    "course_code": course_data.get("course_code"),
+                    "course_name": course_data.get("course_name"),
+                    "room_code": "", # Default empty room
+                    "level": level
+                }
+
+            if level in [1, 2]:
+                # Add Lecture
+                global_data[f"level_{level}"]["lectures"].append(course_data)
+                # Add Lab if requested
+                if has_lab and lab_data:
+                    global_data[f"level_{level}"]["labs"].append(lab_data)
+                    
+            elif level in [3, 4]:
+                dept = data.get("department")
+                if not dept:
+                    return jsonify({"status": "error", "message": "Department is required for levels 3 and 4"}), 400
+                
+                # Add Lecture
+                global_data[f"level_{level}"][dept]["lectures"].append(course_data)
+                # Add Lab if requested
+                if has_lab and lab_data:
+                    global_data[f"level_{level}"][dept]["labs"].append(lab_data)
+            
+            save_course_data(file_paths["courses"], global_data["level_1"], global_data["level_2"], global_data["level_3"], global_data["level_4"])
+            
+            msg = "Course added successfully"
+            if has_lab:
+                msg += " (with Lab)"
+            return jsonify({"status": "success", "message": msg})
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 400
+
+    if request.method == 'DELETE':
+        # Expected format: { "level": 1, "course_code": "CSC111" }
+        data = request.json
+        try:
+            level = int(data.get("level"))
+            course_code = data.get("course_code")
+            
+            deleted = False
+            if level in [1, 2]:
+                for type_key in ["lectures", "labs"]:
+                    original_len = len(global_data[f"level_{level}"][type_key])
+                    global_data[f"level_{level}"][type_key] = [
+                        c for c in global_data[f"level_{level}"][type_key] 
+                        if c["course_code"] != course_code
+                    ]
+                    if len(global_data[f"level_{level}"][type_key]) < original_len:
+                        deleted = True
+            elif level in [3, 4]:
+                for dept in global_data[f"level_{level}"]:
+                    for type_key in ["lectures", "labs"]:
+                        original_len = len(global_data[f"level_{level}"][dept][type_key])
+                        global_data[f"level_{level}"][dept][type_key] = [
+                            c for c in global_data[f"level_{level}"][dept][type_key]
+                            if c["course_code"] != course_code
+                        ]
+                        if len(global_data[f"level_{level}"][dept][type_key]) < original_len:
+                            deleted = True
+            
+            if deleted:
+                save_course_data(file_paths["courses"], global_data["level_1"], global_data["level_2"], global_data["level_3"], global_data["level_4"])
+                return jsonify({"status": "success", "message": "Course deleted successfully"})
+            else:
+                return jsonify({"status": "error", "message": "Course not found"}), 404
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 400
+
+
+@app.route('/api/manage/rooms', methods=['GET', 'POST', 'DELETE'])
+def manage_rooms():
+    """Manage rooms"""
+    if request.method == 'GET':
+        return jsonify([
+            {"room_code": r.room_code, "room_type": r.room_type, "capacity": r.capacity, "building": r.building}
+            for r in global_data["rooms"]
+        ])
+
+    if request.method == 'POST':
+        data = request.json
+        try:
+            new_room = Room(
+                room_code=data["room_code"],
+                room_type=data["room_type"],
+                capacity=int(data.get("capacity", 0)),
+                building=data.get("building", "")
+            )
+            # Check if exists
+            if any(r.room_code == new_room.room_code for r in global_data["rooms"]):
+                return jsonify({"status": "error", "message": "Room already exists"}), 400
+            
+            global_data["rooms"].append(new_room)
+            save_rooms_to_csv(file_paths["rooms"], global_data["rooms"])
+            return jsonify({"status": "success", "message": "Room added successfully"})
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 400
+
+    if request.method == 'DELETE':
+        data = request.json
+        room_code = data.get("room_code")
+        
+        original_len = len(global_data["rooms"])
+        global_data["rooms"] = [r for r in global_data["rooms"] if r.room_code != room_code]
+        
+        if len(global_data["rooms"]) < original_len:
+            save_rooms_to_csv(file_paths["rooms"], global_data["rooms"])
+            return jsonify({"status": "success", "message": "Room deleted successfully"})
+        else:
+            return jsonify({"status": "error", "message": "Room not found"}), 404
+
+
+@app.route('/api/manage/lab-instructors', methods=['GET', 'POST', 'DELETE'])
+def manage_lab_instructors():
+    """Manage lab instructors (TAs)"""
+    if request.method == 'GET':
+        return jsonify([
+            {
+                "instructor_id": i.instructor_id,
+                "instructor_name": i.instructor_name,
+                "qualified_labs": i.qualified_labs,
+                "max_hours_per_week": i.max_hours_per_week,
+                "instructor_type": i.instructor_type
+            }
+            for i in global_data["lab_instructors"]
+        ])
+
+    if request.method == 'POST':
+        data = request.json
+        try:
+            new_inst = LabInstructor(
+                instructor_id=str(data["instructor_id"]),
+                instructor_name=data["instructor_name"],
+                qualified_labs=data.get("qualified_labs", []),
+                max_hours_per_week=float(data.get("max_hours_per_week", 20)),
+                instructor_type=data.get("instructor_type", "TA")
+            )
+            
+            # Check if exists
+            if any(i.instructor_id == new_inst.instructor_id for i in global_data["lab_instructors"]):
+                return jsonify({"status": "error", "message": "Instructor ID already exists"}), 400
+                
+            global_data["lab_instructors"].append(new_inst)
+            save_lab_instructors_to_csv(file_paths["lab_instructors"], global_data["lab_instructors"])
+            return jsonify({"status": "success", "message": "Lab Instructor added successfully"})
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 400
+
+    if request.method == 'DELETE':
+        data = request.json
+        instructor_id = str(data.get("instructor_id"))
+        
+        original_len = len(global_data["lab_instructors"])
+        global_data["lab_instructors"] = [i for i in global_data["lab_instructors"] if i.instructor_id != instructor_id]
+        
+        if len(global_data["lab_instructors"]) < original_len:
+            save_lab_instructors_to_csv(file_paths["lab_instructors"], global_data["lab_instructors"])
+            return jsonify({"status": "success", "message": "Lab Instructor deleted successfully"})
+        else:
+            return jsonify({"status": "error", "message": "Instructor not found"}), 404
+
+
+@app.route('/api/manage/professors', methods=['GET', 'POST', 'DELETE'])
+def manage_professors():
+    """Manage professors"""
+    if request.method == 'GET':
+        return jsonify(global_data["professors"])
+
+    if request.method == 'POST':
+        data = request.json
+        try:
+            new_prof = {
+                "instructor_id": int(data["instructor_id"]),
+                "instructor_name": data["instructor_name"]
+            }
+            
+            # Check if exists
+            if any(p["instructor_id"] == new_prof["instructor_id"] for p in global_data["professors"]):
+                return jsonify({"status": "error", "message": "Professor ID already exists"}), 400
+                
+            global_data["professors"].append(new_prof)
+            save_professors_to_csv(file_paths["professors"], global_data["professors"])
+            return jsonify({"status": "success", "message": "Professor added successfully"})
+        except Exception as e:
+            return jsonify({"status": "error", "message": str(e)}), 400
+
+    if request.method == 'DELETE':
+        data = request.json
+        instructor_id = int(data.get("instructor_id"))
+        
+        original_len = len(global_data["professors"])
+        global_data["professors"] = [p for p in global_data["professors"] if p["instructor_id"] != instructor_id]
+        
+        if len(global_data["professors"]) < original_len:
+            save_professors_to_csv(file_paths["professors"], global_data["professors"])
+            return jsonify({"status": "success", "message": "Professor deleted successfully"})
+        else:
+            return jsonify({"status": "error", "message": "Professor not found"}), 404
 
 
 @app.route('/api/health', methods=['GET'])
@@ -401,71 +597,6 @@ def health_check():
         "status": "ok",
         "scheduler_initialized": scheduler is not None,
         "assignments": len(scheduler.assignments) if scheduler else 0
-    })
-
-
-@app.route('/api/list/professors', methods=['GET'])
-def list_professors():
-    """
-    Get list of all professors (lecture instructors)
-    Returns: Array of professor names
-    """
-    if scheduler is None:
-        return jsonify({"error": "Scheduler not initialized"}), 500
-
-    professors = set()
-    for assignment in scheduler.assignments:
-        if assignment.type == "lecture" and assignment.instructor:
-            professors.add(assignment.instructor)
-
-    return jsonify({
-        "professors": sorted(list(professors))
-    })
-
-
-@app.route('/api/list/lab-instructors', methods=['GET'])
-def list_lab_instructors():
-    """
-    Get list of all lab instructors
-    Returns: Array of lab instructor names
-    """
-    if scheduler is None:
-        return jsonify({"error": "Scheduler not initialized"}), 500
-
-    instructors = set()
-    for assignment in scheduler.assignments:
-        if assignment.type == "lab" and assignment.lab_instructor_name:
-            instructors.add(assignment.lab_instructor_name)
-
-    return jsonify({
-        "lab_instructors": sorted(list(instructors))
-    })
-
-
-@app.route('/api/list/rooms', methods=['GET'])
-def list_rooms():
-    """
-    Get list of all rooms with basic info
-    Returns: Array of room objects with room_code and room_type
-    """
-    if scheduler is None:
-        return jsonify({"error": "Scheduler not initialized"}), 500
-
-    rooms = []
-    for room in scheduler.rooms:
-        rooms.append({
-            "room_code": room.room_code,
-            "room_type": room.room_type
-        })
-
-    # Sort by room type (lecture first, then lab) and then by room code
-    rooms.sort(key=lambda x: (x["room_type"], x["room_code"]))
-
-    return jsonify({
-        "rooms": rooms,
-        "total_count": len(rooms),
-        "lecture_rooms": len([r for r in rooms if r["room_type"] == "lec"]),
-        "lab_rooms": len([r for r in rooms if r["room_type"] == "lab"])
     })
 
 
@@ -486,6 +617,41 @@ def regenerate_schedule():
         }), 500
 
 
+@app.route('/api/list/professors', methods=['GET'])
+def list_professors():
+    """Get list of all professors (from loaded data)"""
+    return jsonify({
+        "professors": [p["instructor_name"] for p in global_data["professors"]]
+    })
+
+
+@app.route('/api/list/lab-instructors', methods=['GET'])
+def list_lab_instructors():
+    """Get list of all lab instructors"""
+    return jsonify({
+        "lab_instructors": [i.instructor_name for i in global_data["lab_instructors"]]
+    })
+
+
+@app.route('/api/list/rooms', methods=['GET'])
+def list_rooms():
+    """Get list of all rooms"""
+    rooms = []
+    for room in global_data["rooms"]:
+        rooms.append({
+            "room_code": room.room_code,
+            "room_type": room.room_type
+        })
+    rooms.sort(key=lambda x: (x["room_type"], x["room_code"]))
+    
+    return jsonify({
+        "rooms": rooms,
+        "total_count": len(rooms),
+        "lecture_rooms": len([r for r in rooms if r["room_type"] == "lec"]),
+        "lab_rooms": len([r for r in rooms if r["room_type"] == "lab"])
+    })
+
+
 if __name__ == '__main__':
     # Initialize scheduler on startup
     try:
@@ -494,18 +660,14 @@ if __name__ == '__main__':
         print("API Server Starting...")
         print("=" * 60)
         print("\nAvailable Endpoints:")
-        print("  - GET  /api/levels                    - Timetable by levels and groups (all levels)")
-        print("  - GET  /api/levels/<id>               - Timetable for specific level (1-4)")
-        print("  - GET  /api/lab-instructors           - Timetable by lab instructors (all)")
-        print("  - GET  /api/lab-instructors/<name>    - Timetable for specific lab instructor")
-        print("  - GET  /api/professors                - Timetable by professors (all)")
-        print("  - GET  /api/professors/<name>         - Timetable for specific professor")
-        print("  - GET  /api/rooms                     - Timetable by rooms (all)")
-        print("  - GET  /api/rooms/<id>                - Timetable for specific room")
-        print("  - GET  /api/list/professors           - List of all professors")
-        print("  - GET  /api/list/lab-instructors      - List of all lab instructors")
-        print("  - GET  /api/list/rooms                - List of all rooms")
-        print("  - GET  /api/health                    - Health check")
+        print("  - GET  /api/levels                    - Timetable by levels")
+        print("  - GET  /api/professors                - Timetable by professors")
+        print("  - GET  /api/lab-instructors           - Timetable by lab instructors")
+        print("  - GET  /api/rooms                     - Timetable by rooms")
+        print("  - CRUD /api/manage/courses            - Manage courses")
+        print("  - CRUD /api/manage/rooms              - Manage rooms")
+        print("  - CRUD /api/manage/lab-instructors    - Manage lab instructors")
+        print("  - CRUD /api/manage/professors         - Manage professors")
         print("  - POST /api/regenerate                - Regenerate timetable")
         print("\nServer running on http://localhost:5000")
         print("=" * 60 + "\n")
@@ -513,4 +675,3 @@ if __name__ == '__main__':
         app.run(debug=True, host='0.0.0.0', port=5000)
     except Exception as e:
         print(f"ERROR: Failed to initialize scheduler: {e}")
-
