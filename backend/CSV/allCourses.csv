@@ -1,47 +1,144 @@
 course_code,course_name,level,has_lab
-MTH111,Math 1,1,true
-LRA104,Music,1,false
+# Level 1
+MTH111,Mathematics (1),1,true
+LRA101,Japanese Culture,1,false
+LRA104,Music and Technology,1,false
+LRA105,Theater and Drama,1,false
 ECE111,Digital Logic Design,1,true
 CSC111,Fundamentals of Programming,1,true
 PHY113,Physics 1,1,true
-LRA101,JA Culture,1,false
-LRA401,JA Language 1,1,true
+LRA401,Japanese Language (1),1,false
+LRA402,Japanese Language (2),1,false
+LRA102,History of World Arts,1,false
+LRA103,Introduction to Philosophy,1,false
+CSC112,Introduction to Computer Science,1,false
+PHY114,Physics 2,1,true
+MTH112,Calculus,1,true
+CHM111,General Chemistry,1,true
+ENG101,Academic English (1),1,false
+ENG102,Academic English (2),1,false
+LRA107,Introduction to Sociology,1,false
+CSC113,Computer Literacy and Applications,1,false
+
+
+# Level 2
+CSC114,Algorithms Analysis and Design,2,true
 CSC211,Software Engineering,2,true
-CNC111,Network and Web Programming,2,true
+CNC111,Networks and Web Programming,2,true
 MTH212,Probability and Statistics,2,true
 CSE214,Computer Organization,2,true
 LRA306,Natural Resources and Sustainability,2,false
-ACM215,ODE,2,true
-LRA403,JA Language 3,2,true
-CSC317,Computer Graphics and Visualization,3,true
-AID312,Intelligent Systems,3,true
-CNC314,Database Systems,3,true
-CNC311,Computer Networks,3,true
+ACM215,Ordinary Differential Equations,2,true
+LRA403,Japanese Language (3),2,false
+LRA404,Japanese Language (4),2,false
+LRA405,Key Skills Seminar (1),2,false
+LRA406,Key Skills Seminar (2),2,false
+CSC318,Operating Systems,2,true
+CSC212,Object-Oriented Programming,2,true
+CSC213,Introduction to Data Science,2,true
+MTH213,Discrete Mathematics,2,true
+MTH214,Linear Algebra,2,true
+ECE211,Circuit Analysis,2,true
+ECE212,Electronics 1,2,true
+CNC212,Introduction to Cybersecurity,2,false
+CNC213,Web Application Development,2,true
+STA201,Statistical Methods,2,true
+LRA203,Professional Communication Skills,2,false
+
+# Level 3
 CSC314,Software Modeling and Analysis,3,true
-AID311,Mathematics of Data Science,3,true
-BIF311,Human Biology,3,true
+CSC317,Computer Graphics and Visualization,3,true
+CSC315,Seminar and Project-Based Learning on CSIT,3,true
+CNC311,Computer Networks,3,true
 CNC312,Foundations of Information Systems,3,true
+CNC314,Database Systems,3,true
+AID311,Mathematics of Data Science,3,true
+AID312,Intelligent Systems,3,true
+BIF311,Human Biology,3,true
+ECE324,Digital Signal Processing,3,true
+CSC316,Understanding Computers,3,false
+CSC121,Data Structures and Algorithms,3,true
+CSC122,Advanced Programming,3,true
+CSC112,Project Management,3,true
+CSC113,Compiler Design,3,true
+ECE213,Introduction to Electronics Engineering,3,true
+ECE214,Digital Signal Processing,3,true
+CNC222,Introduction to Embedded Systems,3,true
+AID111,Data Science,3,true
+AID221,Introduction to Artificial Intelligence,3,true
+AID322,Data Mining,3,true
+AID323,Parallel & Distributed Computing,3,true
+AID324,Image Processing,3,true
+AID325,BlockChain & Distributed Ledgers,3,true
+AID326,Data Science in Business,3,true
+AID327,Human Computer Interface,3,true
+AID328,Game Theory,3,true
+AID412,Introduction to Neural Network,3,true
+AID421,Computer Vision,3,true
+AID422,Natural Language Processing,3,true
+CNC313,Cryptography,3,true
+CNC315,Wireless and Mobile Networks,3,true
+CNC316,Network Security,3,true
+AID313,Deep Learning Fundamentals,3,true
+AID314,Reinforcement Learning,3,true
+AID315,Ethics in AI,3,false
+AID329,Time Series Analysis,3,true
+BIF312,Genetics and Genomics,3,true
+BIF313,Molecular Biology,3,true
+ECE311,Microprocessor Systems,3,true
+ECE312,Control Systems,3,true
+MTH311,Numerical Methods,3,true
+CSC320,Web Technologies,3,true
+LRA307,Technical Writing,3,false
+
+# Level 4
 CSC410,Software Quality,4,true
 CSC411,Software Verification and Validation,4,true
 CSC412,Software Security,4,true
+CSC414,Game Design & Development,4,true
+CSC415,New Trends in Computer Science,4,true
 CSC426,Distributed Systems,4,true
-CSC413,Graduation Project I,4,false
 AID321,Machine Learning,4,true
 AID411,Big Data Analytics & Visualization,4,true
 AID413,Data Security,4,true
 AID417,Advanced Data Mining,4,true
 AID427,New Trends in Data Science,4,true
 AID428,New Trends in AI,4,true
-AID414,Graduation Project I,4,false
 BIF411,Structural Bioinformatics,4,true
 BIF412,Management and Design of Health Care Systems,4,true
 BIF413,Algorithms in Bioinformatics,4,true
 BIF424,IT Infrastructure,4,true
 BIF425,New Trends in Bioinformatics,4,true
-BIF410,Graduation Project I,4,false
 CNC411,Fundamentals of Cybersecurity,4,true
 CNC413,Digital Forensics,4,true
 CNC415,Network Design and Management,4,true
 CNC418,Software Security,4,true
 CNC419,IT Security and Risk Management,4,true
+CSC413,Graduation Project I,4,false
+AID414,Graduation Project I,4,false
+BIF410,Graduation Project I,4,false
 CNC414,Graduation Project I,4,false
+CSC416,Cloud Computing,4,true
+CSC417,Mobile Application Development,4,true
+CSC418,Internet of Things (IoT),4,true
+CSC419,Advanced Algorithms,4,true
+CSC420,Ethical Hacking and Penetration Testing,4,true
+CNC416,Advanced Cybersecurity,4,true
+CNC417,Incident Response and Disaster Recovery,4,true
+CNC420,Secure Software Development,4,true
+AID415,Advanced Machine Learning,4,true
+AID416,AI in Healthcare,4,true
+AID423,Robotics and Automation,4,true
+AID424,AI for Business Strategy,4,true
+AID425,Explainable AI (XAI),4,true
+AID426,AI Ethics and Law,4,false
+BIF414,Computational Biology,4,true
+BIF415,Proteomics and Metabolomics,4,true
+BIF416,Biomedical Data Analysis,4,true
+BIF417,Pharmaceutical Informatics,4,true
+MGT401,Technology Entrepreneurship,4,false
+PRJ401,Internship/Co-op Program,4,false
+CSC421,Graduation Project II,4,false
+AID429,Graduation Project II,4,false
+BIF420,Graduation Project II,4,false
+CNC421,Graduation Project II,4,false

@@ -109,6 +109,9 @@ def initialize_scheduler():
     return scheduler
 
 
+
+
+
 # ==========================================
 # Timetable View Endpoints
 # ==========================================
@@ -411,6 +414,33 @@ def get_all_courses():
     return jsonify(all_courses)
 
 
+@app.route('/api/all-courses-master', methods=['GET'])
+def get_all_courses_master():
+    """Get the master list of all courses from the CSV"""
+    try:
+        csv_path = os.path.join(os.path.dirname(file_paths["courses"]), "allCourses.csv")
+        if not os.path.exists(csv_path):
+             return jsonify([])
+
+        courses = []
+        import csv
+        with open(csv_path, 'r', encoding='utf-8-sig') as f:
+            # Filter out comments and empty lines
+            filtered_lines = (line for line in f if line.strip() and not line.strip().startswith('#'))
+            reader = csv.DictReader(filtered_lines)
+            for row in reader:
+                if not row.get("course_code"): continue # Skip if empty
+                courses.append({
+                    "course_code": row["course_code"].strip(),
+                    "course_name": row["course_name"].strip(),
+                    "level": int(row["level"]),
+                    "has_lab": row["has_lab"].lower() == 'true'
+                })
+        return jsonify(courses)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 @app.route('/api/manage/courses', methods=['GET', 'POST', 'DELETE'])
 def manage_courses():
     """Manage courses (lectures and labs)"""
@@ -464,6 +494,12 @@ def manage_courses():
 
             save_course_data(file_paths["courses"], global_data["level_1"], global_data["level_2"], global_data["level_3"], global_data["level_4"])
 
+            # Regenerate schedule to reflect changes
+            try:
+                initialize_scheduler()
+            except Exception as e:
+                print(f"Warning: Failed to regenerate schedule after course update: {e}")
+
             msg = "Course added successfully"
             if has_lab:
                 msg += " (with Lab)"
@@ -501,6 +537,13 @@ def manage_courses():
 
             if deleted:
                 save_course_data(file_paths["courses"], global_data["level_1"], global_data["level_2"], global_data["level_3"], global_data["level_4"])
+                
+                # Regenerate schedule to reflect changes
+                try:
+                    initialize_scheduler()
+                except Exception as e:
+                    print(f"Warning: Failed to regenerate schedule after course deletion: {e}")
+
                 return jsonify({"status": "success", "message": "Course deleted successfully"})
             else:
                 return jsonify({"status": "error", "message": "Course not found"}), 404
@@ -611,7 +654,8 @@ def manage_professors():
         try:
             new_prof = {
                 "instructor_id": int(data["instructor_id"]),
-                "instructor_name": data["instructor_name"]
+                "instructor_name": data["instructor_name"],
+                "qualified_courses": data.get("qualified_courses", []) # Add qualified_courses
             }
 
             # Check if exists

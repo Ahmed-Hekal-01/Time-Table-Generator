@@ -2,20 +2,6 @@
     "level_1": {
         "lectures": [
             {
-                "course_code": "MTH111",
-                "course_name": "Math 1",
-                "instructor_name": "Prof. Ayman Arafa",
-                "instructor_id": 1,
-                "level": 1
-            },
-            {
-                "course_code": "LRA104",
-                "course_name": "Music",
-                "instructor_name": "Music Prof",
-                "instructor_id": 2,
-                "level": 1
-            },
-            {
                 "course_code": "ECE111",
                 "course_name": "Digital Logic Design",
                 "instructor_name": "Prof. Ahmed Allam",
@@ -41,6 +27,20 @@
                 "course_name": "JA Culture",
                 "instructor_name": "Prof. Sherien",
                 "instructor_id": 6,
+                "level": 1
+            },
+            {
+                "course_code": "MTH111",
+                "course_name": "Math 1",
+                "instructor_name": "Prof. Ayman Arafa",
+                "instructor_id": 1,
+                "level": 1
+            },
+            {
+                "course_code": "LRA401",
+                "course_name": "Japanese Language (1)",
+                "instructor_name": "dr.miko",
+                "instructor_id": 1001,
                 "level": 1
             }
         ],
@@ -90,7 +90,7 @@
                 "course_code": "CNC111",
                 "course_name": "Network and Web Programming",
                 "instructor_name": "Prof. Ahmed Antar",
-                "instructor_id": 8,
+                "instructor_id": 17,
                 "level": 2
             },
             {
@@ -119,6 +119,13 @@
                 "course_name": "ODE",
                 "instructor_name": "Prof. Ahmed Allam",
                 "instructor_id": 3,
+                "level": 2
+            },
+            {
+                "course_code": "ECE212",
+                "course_name": "Electronics 1",
+                "instructor_name": "Dr. Mohamed Akhames",
+                "instructor_id": 21,
                 "level": 2
             }
         ],
@@ -156,6 +163,12 @@
             {
                 "course_code": "ACM215",
                 "course_name": "ODE",
+                "room_code": "",
+                "level": 2
+            },
+            {
+                "course_code": "ECE212",
+                "course_name": "Electronics 1",
                 "room_code": "",
                 "level": 2
             }

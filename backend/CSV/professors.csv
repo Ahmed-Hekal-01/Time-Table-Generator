@@ -1,25 +1,28 @@
-instructor_id,instructor_name
-1,Prof. Ayman Arafa
-2,Music Prof
-3,Prof. Ahmed Allam
-4,Prof. Reda Elbasyoine
-5,Prof. Adel Fathy
-6,Prof. Sherien
-7,Prof. Ahmed Arafa
-8,Prof. Ahmed Antar
-9,Prof. Ahmed Zakaria
-10,Prof. Mostafa Soliman
-11,Prof. LRA
-12,Dr. Hataba
-13,Dr. Ahmed Bayumi
-14,Dr. Mohamed Issa
-15,Prof. Samir Ahmed
-16,Dr. Mustafa AlSayed
-17,Dr. Ahmed Anter
-18,Prof. Eman Allam
-19,Dr. Reda
-20,Dr. Mohamed Khames
-21,Dr. Mohamed Akhames
-22,Prof. Marghany Hassan
-23,Dr. Sameh Shreif
-24,Prof. Marghany
+﻿instructor_id,instructor_name,qualified_courses
+1,Prof. Ayman Arafa,MTH111
+2,Music Prof,LRA104
+3,Prof. Ahmed Allam,ACM215|ECE111
+4,Prof. Reda Elbasyoine,CSC111
+5,Prof. Adel Fathy,PHY113
+6,Prof. Sherien,LRA101
+7,Prof. Ahmed Arafa,AID413|AID427|CNC411|CSC211
+8,Prof. Ahmed Antar,
+9,Prof. Ahmed Zakaria,MTH212
+10,Prof. Mostafa Soliman,CSE214
+11,Prof. LRA,LRA306
+12,Dr. Hataba,CNC418|CNC419|CSC317
+13,Dr. Ahmed Bayumi,AID312|AID428
+14,Dr. Mohamed Issa,AID417|BIF425|CNC314
+15,Prof. Samir Ahmed,CNC311|CNC413
+16,Dr. Mustafa AlSayed,CNC415|CSC314|CSC412|CSC426
+17,Dr. Ahmed Anter,AID311|CNC111
+18,Prof. Eman Allam,BIF311
+19,Dr. Reda,CNC312
+20,Dr. Mohamed Khames,CSC410
+21,Dr. Mohamed Akhames,BIF424|CSC411|ECE212
+22,Prof. Marghany Hassan,AID321|AID411
+23,Dr. Sameh Shreif,BIF411|BIF412
+24,Prof. Marghany,BIF413
+999,Test Prof,CSC111|MTH111
+1000,dr.hekal,MTH111|CSC211|CSE214
+1001,dr.miko,LRA401

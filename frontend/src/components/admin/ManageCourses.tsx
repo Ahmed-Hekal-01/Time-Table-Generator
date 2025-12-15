@@ -11,13 +11,26 @@ interface Course {
   has_lab?: boolean;
 }
 
+interface MasterCourse {
+  course_code: string;
+  course_name: string;
+  level: number;
+  has_lab: boolean;
+}
+
 interface Professor {
   instructor_id: number;
   instructor_name: string;
+  qualified_courses?: string[];
 }
 
-const ManageCourses = () => {
+interface ManageCoursesProps {
+  onBack: () => void;
+}
+
+const ManageCourses = ({ onBack }: ManageCoursesProps) => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [masterCourses, setMasterCourses] = useState<MasterCourse[]>([]);
   const [professors, setProfessors] = useState<Professor[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,16 +49,19 @@ const ManageCourses = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [coursesRes, profsRes] = await Promise.all([
+      const [coursesRes, profsRes, masterRes] = await Promise.all([
         fetch('http://localhost:5000/api/courses'),
-        fetch('http://localhost:5000/api/manage/professors')
+        fetch('http://localhost:5000/api/manage/professors'),
+        fetch('http://localhost:5000/api/all-courses-master')
       ]);
 
       const coursesData = await coursesRes.json();
       const profsData = await profsRes.json();
+      const masterData = await masterRes.json();
 
       setCourses(coursesData);
       setProfessors(profsData);
+      setMasterCourses(masterData);
     } catch (err) {
       console.error(err);
     } finally {
@@ -124,18 +140,13 @@ const ManageCourses = () => {
     }
   };
 
-  const handleCourseSelect = (code: string) => {
-    const course = courses.find(c => c.course_code === code);
-    if (course) {
-      setCourseCode(course.course_code);
-      setCourseName(course.course_name);
-      setLevel(course.level);
-      if (course.department) setDepartment(course.department);
-      setHasLab(!!course.has_lab);
-
-      // Find prof
-      const prof = professors.find(p => p.instructor_id === course.instructor_id);
-      if (prof) setSelectedProfId(prof.instructor_id.toString());
+  const handleMasterCourseSelect = (code: string) => {
+    const masterCourse = masterCourses.find(c => c.course_code === code);
+    if (masterCourse) {
+      setCourseCode(masterCourse.course_code);
+      setCourseName(masterCourse.course_name);
+      setLevel(masterCourse.level);
+      setHasLab(masterCourse.has_lab);
     }
   };
 
@@ -148,21 +159,40 @@ const ManageCourses = () => {
     setDepartment('CSC');
   };
 
-  const courseOptions = courses.map(c => ({
-    value: c.course_code,
-    label: `${c.course_code} - ${c.course_name}`
-  }));
+  const masterCourseOptions = masterCourses
+    .filter(c => c.level === level && !courses.some(existing => existing.course_code === c.course_code))
+    .map(c => ({
+      value: c.course_code,
+      label: `${c.course_code} - ${c.course_name}`
+    }));
 
-  const profOptions = professors.map(p => ({
-    value: p.instructor_id.toString(),
-    label: p.instructor_name
-  }));
+  const profOptions = professors
+    .filter(p => !courseCode || (p.qualified_courses && p.qualified_courses.includes(courseCode)))
+    .map(p => ({
+      value: p.instructor_id.toString(),
+      label: p.instructor_name
+    }));
 
   if (loading) return <div>Loading...</div>;
 
   return (
     <div style={{ padding: '20px', color: 'white' }}>
-      <h2>Manage Courses</h2>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '20px' }}>
+        <button
+          onClick={onBack}
+          style={{
+            padding: '8px 12px',
+            backgroundColor: '#333',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
+          }}
+        >
+          ← Back
+        </button>
+        <h2 style={{ margin: 0 }}>Manage Courses</h2>
+      </div>
 
       {/* Add Form */}
       <div style={{
@@ -175,42 +205,29 @@ const ManageCourses = () => {
         gap: '15px',
         alignItems: 'end'
       }}>
-        <div style={{ gridColumn: '1 / -1', marginBottom: '10px', display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#aaa' }}>Select Existing Course to Edit</label>
-            <SearchableDropdown
-              options={courseOptions}
-              value={courseOptions.find(o => o.value === courseCode)?.value || ''}
-              onChange={(val) => handleCourseSelect(val as string)}
-              placeholder="Search Course..."
-            />
-          </div>
-          <button
-            onClick={clearForm}
-            style={{
-              padding: '8px 15px',
-              backgroundColor: '#555',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              height: '38px',
-              marginTop: '22px'
-            }}
-          >
-            New Course
-          </button>
-        </div>
-
         <div>
           <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#aaa' }}>Level</label>
           <select
             value={level}
-            onChange={e => setLevel(parseInt(e.target.value))}
+            onChange={e => {
+              setLevel(parseInt(e.target.value));
+              setCourseCode(''); // Reset selection when level changes
+              setCourseName('');
+            }}
             style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #444', backgroundColor: '#333', color: 'white' }}
           >
             {[1, 2, 3, 4].map(l => <option key={l} value={l}>Level {l}</option>)}
           </select>
+        </div>
+
+        <div style={{ gridColumn: '1 / -1', marginBottom: '10px' }}>
+          <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#aaa' }}>Select Course to Assign</label>
+          <SearchableDropdown
+            options={masterCourseOptions}
+            value={masterCourseOptions.find(o => o.value === courseCode)?.value || ''}
+            onChange={(val) => handleMasterCourseSelect(val as string)}
+            placeholder={masterCourseOptions.length > 0 ? "Search Available Course..." : "No available courses for this level"}
+          />
         </div>
 
         {level >= 3 && (
@@ -227,26 +244,6 @@ const ManageCourses = () => {
         )}
 
         <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#aaa' }}>Course Code</label>
-          <input
-            type="text"
-            value={courseCode}
-            onChange={e => setCourseCode(e.target.value)}
-            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #444', backgroundColor: '#333', color: 'white' }}
-          />
-        </div>
-
-        <div>
-          <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#aaa' }}>Course Name</label>
-          <input
-            type="text"
-            value={courseName}
-            onChange={e => setCourseName(e.target.value)}
-            style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #444', backgroundColor: '#333', color: 'white' }}
-          />
-        </div>
-
-        <div>
           <label style={{ display: 'block', marginBottom: '5px', fontSize: '0.9rem', color: '#aaa' }}>Instructor</label>
           <SearchableDropdown
             options={profOptions}
@@ -254,18 +251,6 @@ const ManageCourses = () => {
             onChange={(val) => setSelectedProfId(val as string)}
             placeholder="Select Prof..."
           />
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
-          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', color: '#fff' }}>
-            <input
-              type="checkbox"
-              checked={hasLab}
-              onChange={e => setHasLab(e.target.checked)}
-              style={{ marginRight: '8px', width: '18px', height: '18px' }}
-            />
-            Has Lab?
-          </label>
         </div>
 
         <button
@@ -280,7 +265,22 @@ const ManageCourses = () => {
             fontWeight: 'bold'
           }}
         >
-          {courses.find(c => c.course_code === courseCode) ? 'Update Course' : 'Add Course'}
+          Add Course
+        </button>
+
+        <button
+          onClick={clearForm}
+          style={{
+            padding: '10px',
+            backgroundColor: '#555',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontWeight: 'bold'
+          }}
+        >
+          Clear
         </button>
       </div>
 
@@ -298,32 +298,34 @@ const ManageCourses = () => {
           </tr>
         </thead>
         <tbody>
-          {courses.map((course, idx) => (
-            <tr key={`${course.course_code}-${idx}`} style={{ borderTop: '1px solid #333' }}>
-              <td style={{ padding: '12px' }}>{course.course_code}</td>
-              <td style={{ padding: '12px' }}>{course.course_name}</td>
-              <td style={{ padding: '12px' }}>{course.level}</td>
-              <td style={{ padding: '12px' }}>{course.department || '-'}</td>
-              <td style={{ padding: '12px' }}>{course.instructor_name}</td>
-              <td style={{ padding: '12px' }}>{course.has_lab ? '✅' : '❌'}</td>
-              <td style={{ padding: '12px' }}>
-                <button
-                  onClick={() => handleDelete(course)}
-                  style={{
-                    padding: '6px 12px',
-                    backgroundColor: '#f44336',
-                    color: 'white',
-                    border: 'none',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    fontSize: '0.85rem'
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+          {courses
+            .filter(course => course.level === level)
+            .map((course, idx) => (
+              <tr key={`${course.course_code}-${idx}`} style={{ borderTop: '1px solid #333' }}>
+                <td style={{ padding: '12px' }}>{course.course_code}</td>
+                <td style={{ padding: '12px' }}>{course.course_name}</td>
+                <td style={{ padding: '12px' }}>{course.level}</td>
+                <td style={{ padding: '12px' }}>{course.department || '-'}</td>
+                <td style={{ padding: '12px' }}>{course.instructor_name}</td>
+                <td style={{ padding: '12px' }}>{course.has_lab ? 'true' : 'false'}</td>
+                <td style={{ padding: '12px' }}>
+                  <button
+                    onClick={() => handleDelete(course)}
+                    style={{
+                      padding: '6px 12px',
+                      backgroundColor: '#f44336',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      fontSize: '0.85rem'
+                    }}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

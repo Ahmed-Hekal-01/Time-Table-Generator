@@ -16,7 +16,7 @@ interface Assignment {
 }
 
 interface TimetableProps {
-  type: 'professor' | 'student' | 'room' | 'lab-instructor' | 'section';
+  type: 'professor' | 'student' | 'room' | 'lab-instructor' | 'section' | 'group';
   title: string;
   subtitle?: string;
   schedule: Record<string, Record<number, Assignment | null>>;
@@ -100,6 +100,21 @@ const Timetable = ({
             </div>
             <div style={{ color: '#666', fontSize: '0.75rem' }}>
               {assignment.sections?.join(', ')}
+            </div>
+          </div>
+        );
+
+      case 'group':
+        return (
+          <div style={{ fontSize: '0.8rem', lineHeight: '1.4' }}>
+            <div style={{ fontWeight: 'bold', color: '#333', marginBottom: '4px' }}>
+              {assignment.course_name}
+            </div>
+            <div style={{ color: '#666', fontSize: '0.75rem' }}>
+              {assignment.room}
+            </div>
+            <div style={{ color: '#666', fontSize: '0.75rem' }}>
+              {assignment.instructor}
             </div>
           </div>
         );

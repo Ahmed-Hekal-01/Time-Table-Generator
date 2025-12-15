@@ -155,22 +155,28 @@ def load_professors_from_csv(filename: str) -> List[dict]:
     if not os.path.exists(filename):
         return []
         
-    with open(filename, 'r', encoding='utf-8') as file:
+    with open(filename, 'r', encoding='utf-8-sig') as file:
         reader = csv.DictReader(file)
         for row in reader:
             professors.append({
                 "instructor_id": int(row['instructor_id']),
-                "instructor_name": row['instructor_name']
+                "instructor_name": row['instructor_name'],
+                "qualified_courses": row.get("qualified_courses", "").split("|") if row.get("qualified_courses") else []
             })
     return professors
 
 def save_professors_to_csv(filename: str, professors: List[dict]):
     """Save professors to CSV file"""
-    with open(filename, 'w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=["instructor_id", "instructor_name"])
+    with open(filename, 'w', newline='', encoding='utf-8-sig') as file:
+        fieldnames = ["instructor_id", "instructor_name", "qualified_courses"]
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
         writer.writeheader()
         for prof in professors:
-            writer.writerow(prof)
+            writer.writerow({
+                "instructor_id": prof["instructor_id"],
+                "instructor_name": prof["instructor_name"],
+                "qualified_courses": "|".join(prof.get("qualified_courses", []))
+            })
 
 def load_course_data(filename: str = None):
     """Load course data from JSON file"""

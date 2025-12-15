@@ -5,13 +5,14 @@ import ManageRooms from '../components/admin/ManageRooms';
 import ManageProfessors from '../components/admin/ManageProfessors';
 import ManageLabInstructors from '../components/admin/ManageLabInstructors';
 import ManageCourses from '../components/admin/ManageCourses';
+import AllLevelsTimetable from '../components/admin/AllLevelsTimetable';
 import type { RoomsResponse, RoomData } from '../types/rooms';
 
 interface AdminProps {
   onBackToHome: () => void;
 }
 
-type ViewMode = 'dashboard' | 'courses' | 'professors' | 'instructors' | 'rooms' | 'assign';
+type ViewMode = 'dashboard' | 'all_levels' | 'courses' | 'professors' | 'instructors' | 'rooms' | 'assign';
 
 const Admin = ({ onBackToHome }: AdminProps) => {
   const [viewMode, setViewMode] = useState<ViewMode>('dashboard');
@@ -79,6 +80,7 @@ const Admin = ({ onBackToHome }: AdminProps) => {
   // Sidebar Menu Items
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', color: '#1976d2' },
+    { id: 'all_levels', label: 'All Levels Timetable', color: '#00bcd4' },
     { id: 'courses', label: 'Manage Courses', color: '#4caf50' },
     { id: 'professors', label: 'Manage Professors', color: '#ff9800' },
     { id: 'instructors', label: 'Manage Lab Instructors', color: '#9c27b0' },
@@ -87,7 +89,8 @@ const Admin = ({ onBackToHome }: AdminProps) => {
 
   const renderContent = () => {
     switch (viewMode) {
-      case 'courses': return <ManageCourses />;
+      case 'all_levels': return <AllLevelsTimetable />;
+      case 'courses': return <ManageCourses onBack={() => setViewMode('dashboard')} />;
       case 'professors': return <ManageProfessors />;
       case 'instructors': return <ManageLabInstructors />;
       case 'rooms': return <ManageRooms />;
@@ -186,21 +189,6 @@ const Admin = ({ onBackToHome }: AdminProps) => {
             </button>
           ))}
         </div>
-
-        <button
-          onClick={onBackToHome}
-          style={{
-            marginTop: '20px',
-            padding: '12px',
-            backgroundColor: '#333',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer'
-          }}
-        >
-          ← Back to Home
-        </button>
       </div>
 
       {/* Main Content */}
@@ -218,22 +206,39 @@ const Admin = ({ onBackToHome }: AdminProps) => {
             {menuItems.find(i => i.id === viewMode)?.label}
           </h2>
 
-          <button
-            onClick={handleRegenerate}
-            disabled={regenerating}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: regenerating ? '#555' : '#ff9800',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: regenerating ? 'not-allowed' : 'pointer',
-              fontWeight: 'bold',
-              boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
-            }}
-          >
-            {regenerating ? 'Regenerating...' : '♻️ Regenerate Timetable'}
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button
+              onClick={handleRegenerate}
+              disabled={regenerating}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: regenerating ? '#333' : '#000000',
+                color: regenerating ? '#888' : '#ff0000',
+                border: '1px solid #ff0000',
+                borderRadius: '5px',
+                cursor: regenerating ? 'not-allowed' : 'pointer',
+                fontWeight: 'bold',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+              }}
+            >
+              {regenerating ? 'Regenerating...' : 'Regenerate Timetable'}
+            </button>
+
+            <button
+              onClick={onBackToHome}
+              style={{
+                padding: '10px 20px',
+                backgroundColor: '#333',
+                color: 'white',
+                border: 'none',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              Back to Home
+            </button>
+          </div>
         </div>
 
         {/* Content Area */}

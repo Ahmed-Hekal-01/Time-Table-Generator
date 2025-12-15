@@ -615,8 +615,7 @@ class TimetableScheduler:
         
         print(f"\n✓ Phase 2 complete!")
         print(f"\n{'='*60}")
-        print(f"TOTAL ASSIGNMENTS: {len(self.assignments)}")
-        print(f"{'='*60}")
-
         print(f"\nTotal assignments: {len(self.assignments)}")
         return True
+
+
