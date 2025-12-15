@@ -8,7 +8,7 @@ interface MenuProps {
   color?: string;
 }
 
-const Menu = ({ items, selectedItem, onSelectItem, title, color = '#673AB7' }: MenuProps) => {
+const Menu = ({ items, selectedItem, onSelectItem, title, color = '#8B0000' }: MenuProps) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredItems = items.filter(item =>

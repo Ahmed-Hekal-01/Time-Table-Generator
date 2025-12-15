@@ -88,7 +88,7 @@ const Prof = ({ onBackToHome }: ProfProps) => {
         selectedItem={selectedProfessor}
         onSelectItem={setSelectedProfessor}
         title="Professors"
-        color="#9C27B0"
+        color="#8B0000"
       />
 
       {/* Main Content */}

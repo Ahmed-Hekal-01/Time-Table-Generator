@@ -80,13 +80,6 @@
     "level_2": {
         "lectures": [
             {
-                "course_code": "ACM215",
-                "course_name": "ODE",
-                "instructor_name": "Prof. Ayman Arafa",
-                "instructor_id": 1,
-                "level": 2
-            },
-            {
                 "course_code": "CSC211",
                 "course_name": "Software Engineering",
                 "instructor_name": "Prof. Ahmed Arafa",
@@ -120,15 +113,16 @@
                 "instructor_name": "Prof. LRA",
                 "instructor_id": 11,
                 "level": 2
-            }
-        ],
-        "labs": [
+            },
             {
                 "course_code": "ACM215",
                 "course_name": "ODE",
-                "room_code": "",
+                "instructor_name": "Prof. Ahmed Allam",
+                "instructor_id": 3,
                 "level": 2
-            },
+            }
+        ],
+        "labs": [
             {
                 "course_code": "CSC211",
                 "course_name": "Software Engineering",
@@ -156,6 +150,12 @@
             {
                 "course_code": "LRA403",
                 "course_name": "JA Language 3",
+                "room_code": "",
+                "level": 2
+            },
+            {
+                "course_code": "ACM215",
+                "course_name": "ODE",
                 "room_code": "",
                 "level": 2
             }

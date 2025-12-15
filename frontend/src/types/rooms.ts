@@ -18,6 +18,7 @@ export interface RoomAssignment {
 export interface RoomData {
   room_name: string;
   room_type: 'lec' | 'lab';
+  capacity: number;
   schedule: RoomAssignment[];
 }
 

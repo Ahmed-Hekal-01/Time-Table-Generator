@@ -1,0 +1,47 @@
+course_code,course_name,level,has_lab
+MTH111,Math 1,1,true
+LRA104,Music,1,false
+ECE111,Digital Logic Design,1,true
+CSC111,Fundamentals of Programming,1,true
+PHY113,Physics 1,1,true
+LRA101,JA Culture,1,false
+LRA401,JA Language 1,1,true
+CSC211,Software Engineering,2,true
+CNC111,Network and Web Programming,2,true
+MTH212,Probability and Statistics,2,true
+CSE214,Computer Organization,2,true
+LRA306,Natural Resources and Sustainability,2,false
+ACM215,ODE,2,true
+LRA403,JA Language 3,2,true
+CSC317,Computer Graphics and Visualization,3,true
+AID312,Intelligent Systems,3,true
+CNC314,Database Systems,3,true
+CNC311,Computer Networks,3,true
+CSC314,Software Modeling and Analysis,3,true
+AID311,Mathematics of Data Science,3,true
+BIF311,Human Biology,3,true
+CNC312,Foundations of Information Systems,3,true
+CSC410,Software Quality,4,true
+CSC411,Software Verification and Validation,4,true
+CSC412,Software Security,4,true
+CSC426,Distributed Systems,4,true
+CSC413,Graduation Project I,4,false
+AID321,Machine Learning,4,true
+AID411,Big Data Analytics & Visualization,4,true
+AID413,Data Security,4,true
+AID417,Advanced Data Mining,4,true
+AID427,New Trends in Data Science,4,true
+AID428,New Trends in AI,4,true
+AID414,Graduation Project I,4,false
+BIF411,Structural Bioinformatics,4,true
+BIF412,Management and Design of Health Care Systems,4,true
+BIF413,Algorithms in Bioinformatics,4,true
+BIF424,IT Infrastructure,4,true
+BIF425,New Trends in Bioinformatics,4,true
+BIF410,Graduation Project I,4,false
+CNC411,Fundamentals of Cybersecurity,4,true
+CNC413,Digital Forensics,4,true
+CNC415,Network Design and Management,4,true
+CNC418,Software Security,4,true
+CNC419,IT Security and Risk Management,4,true
+CNC414,Graduation Project I,4,false

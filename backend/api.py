@@ -76,11 +76,11 @@ def initialize_scheduler():
     # Load all data
     time_slots = generate_time_slots()
     groups, sections = generate_groups_and_sections()
-    
+
     global_data["rooms"] = load_rooms_from_csv(file_paths["rooms"])
     global_data["lab_instructors"] = load_lab_instructors_from_csv(file_paths["lab_instructors"])
     global_data["professors"] = load_professors_from_csv(file_paths["professors"])
-    
+
     l1, l2, l3, l4 = load_course_data(file_paths["courses"])
     global_data["level_1"] = l1
     global_data["level_2"] = l2
@@ -90,7 +90,7 @@ def initialize_scheduler():
     # Create scheduler
     scheduler = TimetableScheduler(
         global_data["rooms"], groups, sections, time_slots,
-        global_data["level_1"], global_data["level_2"], 
+        global_data["level_1"], global_data["level_2"],
         global_data["level_3"], global_data["level_4"],
         global_data["lab_instructors"]
     )
@@ -363,6 +363,54 @@ def get_rooms_table(room_id=None):
 # Data Management Endpoints (CRUD)
 # ==========================================
 
+@app.route('/api/courses', methods=['GET'])
+def get_all_courses():
+    """Get a flat list of all courses across all levels"""
+    all_courses = []
+
+    # Helper to check if a course has a lab
+    def has_lab(course_code, labs):
+        return any(l["course_code"] == course_code for l in labs)
+
+    # Level 1 & 2
+    for level in [1, 2]:
+        level_key = f"level_{level}"
+        if level_key in global_data:
+            lectures = global_data[level_key].get("lectures", [])
+            labs = global_data[level_key].get("labs", [])
+
+            for lec in lectures:
+                all_courses.append({
+                    "course_code": lec["course_code"],
+                    "course_name": lec["course_name"],
+                    "instructor_name": lec["instructor_name"],
+                    "instructor_id": lec["instructor_id"],
+                    "level": level,
+                    "has_lab": has_lab(lec["course_code"], labs)
+                })
+
+    # Level 3 & 4
+    for level in [3, 4]:
+        level_key = f"level_{level}"
+        if level_key in global_data:
+            for dept, content in global_data[level_key].items():
+                lectures = content.get("lectures", [])
+                labs = content.get("labs", [])
+
+                for lec in lectures:
+                    all_courses.append({
+                        "course_code": lec["course_code"],
+                        "course_name": lec["course_name"],
+                        "instructor_name": lec["instructor_name"],
+                        "instructor_id": lec["instructor_id"],
+                        "level": level,
+                        "department": dept,
+                        "has_lab": has_lab(lec["course_code"], labs)
+                    })
+
+    return jsonify(all_courses)
+
+
 @app.route('/api/manage/courses', methods=['GET', 'POST', 'DELETE'])
 def manage_courses():
     """Manage courses (lectures and labs)"""
@@ -376,16 +424,16 @@ def manage_courses():
 
     if request.method == 'POST':
         data = request.json
-        # Expected format: 
+        # Expected format:
         # { "level": 1, "has_lab": true, "data": { ... } }
-        # or for L3/L4: 
+        # or for L3/L4:
         # { "level": 3, "department": "CSC", "has_lab": true, "data": { ... } }
-        
+
         try:
             level = int(data.get("level"))
             has_lab = data.get("has_lab", False)
             course_data = data.get("data")
-            
+
             # Prepare Lab Data if needed
             lab_data = None
             if has_lab:
@@ -402,20 +450,20 @@ def manage_courses():
                 # Add Lab if requested
                 if has_lab and lab_data:
                     global_data[f"level_{level}"]["labs"].append(lab_data)
-                    
+
             elif level in [3, 4]:
                 dept = data.get("department")
                 if not dept:
                     return jsonify({"status": "error", "message": "Department is required for levels 3 and 4"}), 400
-                
+
                 # Add Lecture
                 global_data[f"level_{level}"][dept]["lectures"].append(course_data)
                 # Add Lab if requested
                 if has_lab and lab_data:
                     global_data[f"level_{level}"][dept]["labs"].append(lab_data)
-            
+
             save_course_data(file_paths["courses"], global_data["level_1"], global_data["level_2"], global_data["level_3"], global_data["level_4"])
-            
+
             msg = "Course added successfully"
             if has_lab:
                 msg += " (with Lab)"
@@ -429,13 +477,13 @@ def manage_courses():
         try:
             level = int(data.get("level"))
             course_code = data.get("course_code")
-            
+
             deleted = False
             if level in [1, 2]:
                 for type_key in ["lectures", "labs"]:
                     original_len = len(global_data[f"level_{level}"][type_key])
                     global_data[f"level_{level}"][type_key] = [
-                        c for c in global_data[f"level_{level}"][type_key] 
+                        c for c in global_data[f"level_{level}"][type_key]
                         if c["course_code"] != course_code
                     ]
                     if len(global_data[f"level_{level}"][type_key]) < original_len:
@@ -450,7 +498,7 @@ def manage_courses():
                         ]
                         if len(global_data[f"level_{level}"][dept][type_key]) < original_len:
                             deleted = True
-            
+
             if deleted:
                 save_course_data(file_paths["courses"], global_data["level_1"], global_data["level_2"], global_data["level_3"], global_data["level_4"])
                 return jsonify({"status": "success", "message": "Course deleted successfully"})
@@ -481,7 +529,7 @@ def manage_rooms():
             # Check if exists
             if any(r.room_code == new_room.room_code for r in global_data["rooms"]):
                 return jsonify({"status": "error", "message": "Room already exists"}), 400
-            
+
             global_data["rooms"].append(new_room)
             save_rooms_to_csv(file_paths["rooms"], global_data["rooms"])
             return jsonify({"status": "success", "message": "Room added successfully"})
@@ -491,10 +539,10 @@ def manage_rooms():
     if request.method == 'DELETE':
         data = request.json
         room_code = data.get("room_code")
-        
+
         original_len = len(global_data["rooms"])
         global_data["rooms"] = [r for r in global_data["rooms"] if r.room_code != room_code]
-        
+
         if len(global_data["rooms"]) < original_len:
             save_rooms_to_csv(file_paths["rooms"], global_data["rooms"])
             return jsonify({"status": "success", "message": "Room deleted successfully"})
@@ -527,11 +575,11 @@ def manage_lab_instructors():
                 max_hours_per_week=float(data.get("max_hours_per_week", 20)),
                 instructor_type=data.get("instructor_type", "TA")
             )
-            
+
             # Check if exists
             if any(i.instructor_id == new_inst.instructor_id for i in global_data["lab_instructors"]):
                 return jsonify({"status": "error", "message": "Instructor ID already exists"}), 400
-                
+
             global_data["lab_instructors"].append(new_inst)
             save_lab_instructors_to_csv(file_paths["lab_instructors"], global_data["lab_instructors"])
             return jsonify({"status": "success", "message": "Lab Instructor added successfully"})
@@ -541,10 +589,10 @@ def manage_lab_instructors():
     if request.method == 'DELETE':
         data = request.json
         instructor_id = str(data.get("instructor_id"))
-        
+
         original_len = len(global_data["lab_instructors"])
         global_data["lab_instructors"] = [i for i in global_data["lab_instructors"] if i.instructor_id != instructor_id]
-        
+
         if len(global_data["lab_instructors"]) < original_len:
             save_lab_instructors_to_csv(file_paths["lab_instructors"], global_data["lab_instructors"])
             return jsonify({"status": "success", "message": "Lab Instructor deleted successfully"})
@@ -565,11 +613,11 @@ def manage_professors():
                 "instructor_id": int(data["instructor_id"]),
                 "instructor_name": data["instructor_name"]
             }
-            
+
             # Check if exists
             if any(p["instructor_id"] == new_prof["instructor_id"] for p in global_data["professors"]):
                 return jsonify({"status": "error", "message": "Professor ID already exists"}), 400
-                
+
             global_data["professors"].append(new_prof)
             save_professors_to_csv(file_paths["professors"], global_data["professors"])
             return jsonify({"status": "success", "message": "Professor added successfully"})
@@ -579,10 +627,10 @@ def manage_professors():
     if request.method == 'DELETE':
         data = request.json
         instructor_id = int(data.get("instructor_id"))
-        
+
         original_len = len(global_data["professors"])
         global_data["professors"] = [p for p in global_data["professors"] if p["instructor_id"] != instructor_id]
-        
+
         if len(global_data["professors"]) < original_len:
             save_professors_to_csv(file_paths["professors"], global_data["professors"])
             return jsonify({"status": "success", "message": "Professor deleted successfully"})
@@ -643,7 +691,7 @@ def list_rooms():
             "room_type": room.room_type
         })
     rooms.sort(key=lambda x: (x["room_type"], x["room_code"]))
-    
+
     return jsonify({
         "rooms": rooms,
         "total_count": len(rooms),

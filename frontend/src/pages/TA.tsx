@@ -88,7 +88,7 @@ const TA = ({ onBackToHome }: TAProps) => {
         selectedItem={selectedInstructor}
         onSelectItem={setSelectedInstructor}
         title="Lab Instructors"
-        color="#FF5722"
+        color="#8B0000"
       />
 
       {/* Main Content */}
